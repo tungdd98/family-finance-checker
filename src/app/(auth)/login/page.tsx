@@ -30,14 +30,14 @@ export default function LoginPage() {
 
   return (
     <div className="bg-background flex min-h-screen items-center justify-center px-7">
-      <div className="bg-surface w-full max-w-sm p-10">
+      <div className="bg-surface w-full max-w-sm px-8 py-10">
         {/* Header */}
-        <div className="mb-7 flex flex-col gap-4">
+        <div className="mb-7 flex flex-col items-center gap-4">
           <div className="bg-accent h-8 w-8" />
-          <h1 className="text-foreground text-[28px] font-bold tracking-[-1px]">
+          <h1 className="text-foreground text-center text-[28px] font-bold tracking-[-1px]">
             FAMILY FINANCE
           </h1>
-          <p className="text-foreground-secondary text-[11px] font-medium tracking-[2px]">
+          <p className="text-foreground-secondary text-center text-[11px] font-medium tracking-[2px]">
             QUẢN LÝ TÀI SẢN GIA ĐÌNH
           </p>
           <div className="bg-accent h-px w-full" />
@@ -50,15 +50,16 @@ export default function LoginPage() {
             <div className="flex flex-col gap-2">
               <Label
                 htmlFor="email"
-                className="text-foreground-secondary flex items-center gap-2 text-[11px] tracking-[1.5px]"
+                className="text-foreground-muted flex items-center gap-2 text-[11px] font-semibold tracking-[1.5px]"
               >
-                <span className="text-accent">✦</span>
+                <span className="bg-accent h-[14px] w-[3px] shrink-0" />
                 EMAIL
               </Label>
               <Input
                 id="email"
                 type="email"
                 autoComplete="email"
+                placeholder="email@example.com"
                 disabled={isPending}
                 {...form.register("email")}
               />
@@ -73,15 +74,16 @@ export default function LoginPage() {
             <div className="flex flex-col gap-2">
               <Label
                 htmlFor="password"
-                className="text-foreground-secondary flex items-center gap-2 text-[11px] tracking-[1.5px]"
+                className="text-foreground-muted flex items-center gap-2 text-[11px] font-semibold tracking-[1.5px]"
               >
-                <span className="text-accent">✦</span>
+                <span className="bg-accent h-[14px] w-[3px] shrink-0" />
                 MẬT KHẨU
               </Label>
               <Input
                 id="password"
                 type="password"
                 autoComplete="current-password"
+                placeholder="••••••••"
                 disabled={isPending}
                 {...form.register("password")}
               />
