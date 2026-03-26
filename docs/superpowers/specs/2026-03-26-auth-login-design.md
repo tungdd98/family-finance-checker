@@ -31,7 +31,7 @@ src/
 │   │   └── server.ts             — existing server client
 │   └── validations/
 │       └── auth.ts               — loginSchema (zod)
-└── middleware.ts                  — route protection
+└── proxy.ts                       — route protection
 ```
 
 ---
@@ -99,13 +99,13 @@ export type LoginInput = z.infer<typeof loginSchema>;
 | Field error           | `ĐĂNG NHẬP`         | Yes, error shown inline below field     |
 | Root error            | `ĐĂNG NHẬP`         | Yes, error shown as banner above button |
 
-### `src/middleware.ts`
+### `src/proxy.ts`
 
-- Creates a Supabase client inline using `createServerClient` from `@supabase/ssr`, with cookie adapter reading from `NextRequest` and writing to `NextResponse` (cannot use `server.ts` — middleware runs at Edge, no `cookies()` from `next/headers`)
+- Creates a Supabase client inline using `createServerClient` from `@supabase/ssr`, with cookie adapter reading from `NextRequest` and writing to `NextResponse` (cannot use `server.ts` — middleware runs at Edge, no `cookies()` from `next/headers`). _(Next.js 16 breaking change: `middleware.ts` is deprecated; use `proxy.ts` with `export function proxy()`)_
 - Calls `supabase.auth.getUser()` on every matched request (strict verification, no stale-cookie optimism)
 - Unauthenticated user on protected route → `redirect('/login')`
 - Authenticated user on `/login` → `redirect('/dashboard')`
-- Otherwise → `NextResponse.next()` with refreshed cookies forwarded
+- Otherwise → redirect responses now forward cookies from `supabaseResponse`
 
 ```ts
 export const config = {
