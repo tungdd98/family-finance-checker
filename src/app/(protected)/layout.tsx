@@ -2,17 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Battery,
-  Coins,
-  House,
-  Landmark,
-  LogOut,
-  Settings,
-  Signal,
-  Trophy,
-  Wifi,
-} from "lucide-react";
+import { Coins, House, Landmark, LogOut, Settings, Trophy } from "lucide-react";
 
 import { logoutAction } from "@/app/actions/auth";
 import { TabBar } from "@/components/common";
@@ -33,18 +23,6 @@ export default function ProtectedLayout({
 
   return (
     <div className="bg-background flex h-dvh flex-col">
-      {/* Status Bar */}
-      <div className="bg-background flex h-[62px] items-center justify-between px-5">
-        <span className="text-[15px] font-semibold tracking-[-0.3px] text-white">
-          9:41
-        </span>
-        <div className="flex items-center gap-1.5">
-          <Signal size={18} className="text-white" />
-          <Wifi size={18} className="text-white" />
-          <Battery size={18} className="text-white" />
-        </div>
-      </div>
-
       {/* Content Area */}
       <div className="flex flex-1 flex-col gap-5 overflow-y-auto pt-6 pr-7 pb-7 pl-7">
         {/* Header Row */}
