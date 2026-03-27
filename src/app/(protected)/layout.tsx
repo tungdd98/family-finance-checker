@@ -1,6 +1,7 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Battery,
   Coins,
@@ -25,11 +26,10 @@ const TAB_ITEMS = [
 
 export default function ProtectedLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   const pathname = usePathname();
-  const router = useRouter();
 
   return (
     <div className="bg-background flex h-dvh flex-col">
@@ -49,15 +49,17 @@ export default function ProtectedLayout({
       <div className="flex flex-1 flex-col gap-5 overflow-y-auto pt-6 pr-7 pb-7 pl-7">
         {/* Header Row */}
         <div className="flex justify-end gap-2">
-          <button
-            onClick={() => router.push("/goals")}
+          <Link
+            href="/goals"
             className="border-border bg-surface flex h-[38px] w-[38px] items-center justify-center rounded-lg border"
+            aria-label="Goals"
           >
             <Trophy size={18} className="text-foreground-secondary" />
-          </button>
+          </Link>
           <form action={logoutAction}>
             <button
               type="submit"
+              aria-label="Đăng xuất"
               className="border-border bg-surface flex h-[38px] w-[38px] items-center justify-center rounded-lg border"
             >
               <LogOut size={18} className="text-foreground-secondary" />
