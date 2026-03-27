@@ -14,7 +14,7 @@ interface TabBarProps {
 
 export function TabBar({ items, activeHref }: Readonly<TabBarProps>) {
   return (
-    <nav className="bg-surface rounded-pill flex items-center gap-1 px-5.25 pt-3 pb-5.25">
+    <nav className="bg-surface rounded-pill border-border flex h-full border p-1">
       {items.map((item) => {
         const Icon = item.icon;
         const isActive = item.href === activeHref;
@@ -24,8 +24,8 @@ export function TabBar({ items, activeHref }: Readonly<TabBarProps>) {
             href={item.href}
             className={
               isActive
-                ? "bg-accent rounded-pill-item flex items-center gap-1.5 px-3.5 py-1"
-                : "rounded-pill-item flex items-center gap-1.5 px-3.5 py-1"
+                ? "bg-accent rounded-pill-item flex flex-1 flex-col items-center justify-center gap-1"
+                : "rounded-pill-item flex flex-1 flex-col items-center justify-center gap-1"
             }
           >
             <Icon
@@ -33,7 +33,7 @@ export function TabBar({ items, activeHref }: Readonly<TabBarProps>) {
               className={isActive ? "text-[#111111]" : "text-foreground-muted"}
             />
             <span
-              className={`type-tab-label font-semibold ${isActive ? "text-[#111111]" : "text-foreground-muted"}`}
+              className={`type-tab-label ${isActive ? "font-semibold text-[#111111]" : "text-foreground-muted font-medium"}`}
             >
               {item.label}
             </span>
