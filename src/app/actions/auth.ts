@@ -27,7 +27,7 @@ export async function loginAction(
   redirect("/dashboard");
 }
 
-export async function logoutAction(): Promise<void> {
+export async function logoutAction(): Promise<never> {
   const supabase = await createClient();
   await supabase.auth.signOut();
   redirect("/login");
