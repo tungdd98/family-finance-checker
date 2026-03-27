@@ -52,7 +52,7 @@ export default function ProtectedLayout({
           <Link
             href="/goals"
             className="border-border bg-surface flex h-[38px] w-[38px] items-center justify-center rounded-lg border"
-            aria-label="Goals"
+            aria-label="Mục tiêu"
           >
             <Trophy size={18} className="text-foreground-secondary" />
           </Link>
