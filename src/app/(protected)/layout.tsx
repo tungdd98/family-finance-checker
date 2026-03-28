@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LogOut, Trophy } from "lucide-react";
+import { redirect } from "next/navigation";
 
 import { logoutAction } from "@/app/actions/auth";
 import { TabBar } from "@/components/common";
@@ -15,7 +16,12 @@ export default async function ProtectedLayout({
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  const settings = user ? await getSettings(supabase, user.id) : null;
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const settings = await getSettings(supabase, user.id);
   const displayName =
     settings?.display_name || user?.email?.split("@")[0] || "Bạn";
 

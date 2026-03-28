@@ -1,4 +1,4 @@
-import { Home, BarChart2, PiggyBank, Settings, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 
 import { Badge, MetricCard, TabBar } from "@/components/common";
 import { Button } from "@/components/ui/button";
@@ -43,13 +43,6 @@ function ColorSwatch({
 /* ── Page ─────────────────────────────────────────── */
 
 export default function DesignSystemPage() {
-  const tabItems = [
-    { icon: Home, label: "Home", href: "/" },
-    { icon: BarChart2, label: "Stats", href: "/stats" },
-    { icon: PiggyBank, label: "Budget", href: "/budget" },
-    { icon: Settings, label: "Settings", href: "/settings" },
-  ];
-
   return (
     <div className="bg-background min-h-screen px-12 py-10">
       {/* Header */}
@@ -304,7 +297,7 @@ export default function DesignSystemPage() {
           {/* Tab Bar */}
           <Section title="Tab Bar — Pill Nav">
             <div className="flex justify-start">
-              <TabBar items={tabItems} activeHref="/stats" />
+              <TabBar />
             </div>
           </Section>
         </div>
