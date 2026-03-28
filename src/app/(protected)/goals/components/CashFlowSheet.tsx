@@ -1,6 +1,7 @@
 // src/app/(protected)/goals/components/CashFlowSheet.tsx
 "use client";
 
+import type { ReactNode } from "react";
 import { useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -12,6 +13,7 @@ import { cashFlowSchema, type CashFlowInput } from "@/lib/validations/goals";
 import type { HouseholdCashFlow } from "@/lib/services/goals";
 import { saveCashFlowAction } from "@/app/actions/goals";
 import { formatVND } from "@/lib/gold-utils";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   cashFlow: HouseholdCashFlow | null;
@@ -21,6 +23,18 @@ interface Props {
 
 function stripFormatting(n: number) {
   return n > 0 ? new Intl.NumberFormat("vi-VN").format(n) : "";
+}
+
+function Label({ children }: { children: ReactNode }) {
+  return (
+    <span className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px] uppercase">
+      {children}
+    </span>
+  );
+}
+
+function ErrorMsg({ children }: { children: ReactNode }) {
+  return <p className="text-status-negative text-[11px]">{children}</p>;
 }
 
 export function CashFlowSheet({ cashFlow, open, onOpenChange }: Props) {
@@ -89,7 +103,7 @@ export function CashFlowSheet({ cashFlow, open, onOpenChange }: Props) {
       <Drawer.Portal>
         <Drawer.Backdrop className="fixed inset-0 z-40 bg-black/60 opacity-100 transition-opacity duration-300 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
         <Drawer.Popup className="bg-background fixed inset-x-0 bottom-0 z-50 flex max-h-[92dvh] flex-col overflow-y-auto transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-[ending-style]:translate-y-full data-[starting-style]:translate-y-full">
-          <div className="bg-background border-border sticky top-0 flex items-center justify-between border-b px-5 pt-5 pb-4">
+          <div className="bg-background border-border sticky top-0 flex items-center justify-between border-b px-7 pt-5 pb-4">
             <span className="text-foreground text-[16px] font-bold tracking-[-0.5px]">
               Thu chi trung bình / tháng
             </span>
@@ -100,12 +114,10 @@ export function CashFlowSheet({ cashFlow, open, onOpenChange }: Props) {
 
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-5 px-5 py-5 pb-10"
+            className="flex flex-col gap-5 px-7 py-5 pb-10"
           >
             <div className="flex flex-col gap-2">
-              <label className="text-foreground-muted text-[11px] font-semibold tracking-[1px] uppercase">
-                Thu nhập TB / tháng (₫) *
-              </label>
+              <Label>Thu nhập TB / tháng (₫) *</Label>
               <input
                 value={incomeDisplay}
                 onChange={makeChangeHandler(
@@ -117,16 +129,14 @@ export function CashFlowSheet({ cashFlow, open, onOpenChange }: Props) {
                 placeholder="VD: 45.000.000"
               />
               {form.formState.errors.avg_monthly_income && (
-                <p className="text-[12px] text-red-400">
+                <ErrorMsg>
                   {form.formState.errors.avg_monthly_income.message}
-                </p>
+                </ErrorMsg>
               )}
             </div>
 
             <div className="flex flex-col gap-2">
-              <label className="text-foreground-muted text-[11px] font-semibold tracking-[1px] uppercase">
-                Chi tiêu TB / tháng (₫) *
-              </label>
+              <Label>Chi tiêu TB / tháng (₫) *</Label>
               <input
                 value={expenseDisplay}
                 onChange={makeChangeHandler(
@@ -138,9 +148,9 @@ export function CashFlowSheet({ cashFlow, open, onOpenChange }: Props) {
                 placeholder="VD: 28.000.000"
               />
               {form.formState.errors.avg_monthly_expense && (
-                <p className="text-[12px] text-red-400">
+                <ErrorMsg>
                   {form.formState.errors.avg_monthly_expense.message}
-                </p>
+                </ErrorMsg>
               )}
             </div>
 
@@ -157,13 +167,13 @@ export function CashFlowSheet({ cashFlow, open, onOpenChange }: Props) {
               </p>
             </div>
 
-            <button
+            <Button
               type="submit"
               disabled={isPending}
-              className="bg-accent text-background mt-2 p-4 text-[14px] font-bold tracking-[1px] uppercase disabled:opacity-50"
+              className="mt-2 h-14 w-full"
             >
-              {isPending ? "Đang lưu..." : "Lưu cài đặt"}
-            </button>
+              {isPending ? "ĐANG LƯU..." : "LƯU CÀI ĐẶT"}
+            </Button>
           </form>
         </Drawer.Popup>
       </Drawer.Portal>
