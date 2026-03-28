@@ -36,10 +36,14 @@ export function PositionCard({ position, livePrice, onTap }: Props) {
 
   const pnlColor =
     pnl === null
-      ? ""
+      ? "text-foreground-muted"
       : pnl.pnlVnd >= 0
         ? "text-status-positive"
         : "text-status-negative";
+
+  const pnlValue = pnl
+    ? `${pnl.pnlVnd >= 0 ? "+" : ""}${formatVND(pnl.pnlVnd)} (${formatPct(pnl.pnlPercent)})`
+    : "—";
 
   return (
     <button
@@ -47,7 +51,7 @@ export function PositionCard({ position, livePrice, onTap }: Props) {
       className="bg-surface active:bg-surface-elevated flex w-full flex-col gap-3 p-4 text-left transition-colors"
     >
       {/* Header row */}
-      <div className="flex items-center justify-between">
+      <div className="flex w-full items-center justify-between">
         <div className="flex flex-col gap-0.5">
           <span className="text-foreground text-[14px] font-semibold">
             {position.brand_name}
@@ -67,7 +71,7 @@ export function PositionCard({ position, livePrice, onTap }: Props) {
       <div className="border-border border-t" />
 
       {/* Detail rows */}
-      <div className="flex flex-col gap-2">
+      <div className="flex w-full flex-col gap-2">
         <DetailRow
           label="Giá mua"
           value={formatVND(position.buy_price_per_chi) + "/chỉ"}
@@ -77,24 +81,29 @@ export function PositionCard({ position, livePrice, onTap }: Props) {
           label="Giá trị hiện tại"
           value={pnl ? formatVND(pnl.currentValue) : "—"}
         />
-        <div className="flex items-center justify-between">
-          <span className="text-foreground-muted text-[12px]">Lãi dự tính</span>
-          <span className={`text-[13px] font-semibold ${pnlColor}`}>
-            {pnl
-              ? `${pnl.pnlVnd >= 0 ? "+" : ""}${formatVND(pnl.pnlVnd)} (${formatPct(pnl.pnlPercent)})`
-              : "—"}
-          </span>
-        </div>
+        <DetailRow
+          label="Lãi dự tính"
+          value={pnlValue}
+          valueClass={`font-semibold ${pnlColor}`}
+        />
       </div>
     </button>
   );
 }
 
-function DetailRow({ label, value }: { label: string; value: string }) {
+function DetailRow({
+  label,
+  value,
+  valueClass = "text-foreground font-medium",
+}: {
+  label: string;
+  value: string;
+  valueClass?: string;
+}) {
   return (
     <div className="flex items-center justify-between">
       <span className="text-foreground-muted text-[12px]">{label}</span>
-      <span className="text-foreground text-[13px] font-medium">{value}</span>
+      <span className={`text-[13px] ${valueClass}`}>{value}</span>
     </div>
   );
 }
