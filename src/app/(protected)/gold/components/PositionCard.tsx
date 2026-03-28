@@ -16,6 +16,11 @@ interface Props {
   onTap: () => void;
 }
 
+function formatDate(dateStr: string) {
+  const d = new Date(dateStr);
+  return `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")}/${d.getFullYear()}`;
+}
+
 export function PositionCard({ position, livePrice, onTap }: Props) {
   const remaining = position.quantity - position.sold_quantity;
   const hasPnl = livePrice !== undefined;
@@ -39,7 +44,7 @@ export function PositionCard({ position, livePrice, onTap }: Props) {
   return (
     <button
       onClick={onTap}
-      className="bg-surface flex w-full flex-col gap-3 p-4 text-left"
+      className="bg-surface active:bg-surface-elevated flex w-full flex-col gap-3 p-4 text-left transition-colors"
     >
       {/* Header row */}
       <div className="flex items-center justify-between">
@@ -48,7 +53,7 @@ export function PositionCard({ position, livePrice, onTap }: Props) {
             {position.brand_name}
           </span>
           <span className="text-foreground-muted text-[11px]">
-            {position.buy_date} · {days} ngày
+            {formatDate(position.buy_date)} · {days} ngày
           </span>
         </div>
         <div className="text-right">

@@ -108,7 +108,7 @@ export function GoldClient({ initialPositions, initialPrices = [] }: Props) {
       {/* FAB */}
       <button
         onClick={() => setActiveSheet("add")}
-        className="bg-accent text-background fixed right-7 bottom-[116px] flex h-14 w-14 items-center justify-center shadow-lg"
+        className="bg-accent text-background fixed right-5 bottom-[116px] flex h-14 w-14 items-center justify-center shadow-lg"
         aria-label="Thêm tài sản"
       >
         <Plus size={24} />
