@@ -32,7 +32,7 @@ export function SettingsForm({ initialData }: Props) {
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value.replace(/\D/g, "");
     const num = raw ? parseInt(raw, 10) : 0;
-    setAmountDisplay(raw ? new Intl.NumberFormat("vi-VN").format(num) : "");
+    setAmountDisplay(raw ? formatVND(num) : "");
     form.setValue("initial_cash_balance", num, { shouldValidate: true });
   };
 
