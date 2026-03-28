@@ -111,7 +111,7 @@ Add a **"Tài sản Vàng"** card:
 
 1. `page.tsx` (RSC) fetches positions from Supabase
 2. `GoldClient.tsx` fetches live prices from `/api/gold/prices` on mount
-3. Client matches `position.brand_code` → `price.type_code` → computes `current_value = remaining_qty × sell_price`
+3. Client matches `position.brand_code` → `price.type_code` → computes `current_value = remaining_qty × api_sell_price` (the live sell/bid price from vang.today)
 4. No live price match → display "—"
 
 ### Sell flow
