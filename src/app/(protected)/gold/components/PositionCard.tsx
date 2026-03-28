@@ -1,4 +1,6 @@
 // src/app/(protected)/gold/components/PositionCard.tsx
+"use client";
+
 import { formatVND, formatPct, calcPnl, daysHeld } from "@/lib/gold-utils";
 import type { GoldAsset, GoldPrice } from "@/lib/services/gold";
 

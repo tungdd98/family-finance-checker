@@ -22,7 +22,7 @@ export function GoldClient({ initialPositions }: Props) {
   useEffect(() => {
     fetch("/api/gold/prices")
       .then((r) => r.json())
-      .then((json) => {
+      .then((json: { success: boolean; data: GoldPrice[] }) => {
         if (json.success && Array.isArray(json.data)) {
           setPrices(json.data);
         }

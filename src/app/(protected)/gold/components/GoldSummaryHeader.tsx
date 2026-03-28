@@ -1,4 +1,6 @@
 // src/app/(protected)/gold/components/GoldSummaryHeader.tsx
+"use client";
+
 import { formatVND } from "@/lib/gold-utils";
 
 interface Brand {

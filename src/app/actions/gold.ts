@@ -71,16 +71,11 @@ export async function editAssetAction(
 
 export async function sellAssetAction(
   id: string,
-  data: SellAssetInput,
-  remainingQty: number
+  data: SellAssetInput
 ): Promise<ActionResult> {
   const parsed = sellAssetSchema.safeParse(data);
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Dữ liệu không hợp lệ" };
-  }
-
-  if (parsed.data.sell_quantity > remainingQty) {
-    return { error: "Số lượng bán vượt quá số lượng đang nắm giữ" };
   }
 
   const { supabase, user } = await getAuthenticatedUser();
@@ -90,7 +85,11 @@ export async function sellAssetAction(
     await sellGoldAsset(supabase, user.id, id, parsed.data);
     revalidatePath("/gold");
     revalidatePath("/dashboard");
-  } catch {
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : "";
+    if (msg.includes("exceeds available")) {
+      return { error: "Số lượng bán vượt quá số lượng đang nắm giữ" };
+    }
     return { error: "Không thể bán tài sản" };
   }
 }
