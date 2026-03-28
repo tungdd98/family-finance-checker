@@ -1,0 +1,201 @@
+// src/lib/services/goals.ts
+import type { SupabaseClient } from "@supabase/supabase-js";
+import type {
+  GoalInput,
+  CashFlowInput,
+  MonthlyActualInput,
+} from "@/lib/validations/goals";
+
+// ── Types ─────────────────────────────────────────────────────
+
+export interface Goal {
+  id: string;
+  user_id: string;
+  name: string;
+  emoji: string;
+  target_amount: number;
+  deadline: string | null;
+  note: string | null;
+  is_completed: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface HouseholdCashFlow {
+  id: string;
+  user_id: string;
+  avg_monthly_income: number;
+  avg_monthly_expense: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface MonthlyActual {
+  id: string;
+  user_id: string;
+  year: number;
+  month: number;
+  actual_income: number;
+  actual_expense: number;
+  note: string | null;
+  created_at: string;
+}
+
+export interface GoalProjection {
+  currentAssets: number;
+  remaining: number;
+  monthsToGoal: number | null; // null when surplus <= 0
+  estimatedDate: Date | null;
+  progressPct: number; // 0–100, capped
+}
+
+// ── Pure computation ──────────────────────────────────────────
+
+export function calcProjection(
+  goal: Goal,
+  cashFlow: HouseholdCashFlow | null,
+  currentAssets: number
+): GoalProjection {
+  const progressPct = Math.min(
+    100,
+    Math.round((currentAssets / goal.target_amount) * 100)
+  );
+  const remaining = Math.max(0, goal.target_amount - currentAssets);
+
+  if (remaining === 0) {
+    return {
+      currentAssets,
+      remaining: 0,
+      monthsToGoal: 0,
+      estimatedDate: new Date(),
+      progressPct: 100,
+    };
+  }
+
+  if (!cashFlow) {
+    return {
+      currentAssets,
+      remaining,
+      monthsToGoal: null,
+      estimatedDate: null,
+      progressPct,
+    };
+  }
+
+  const monthlySurplus =
+    cashFlow.avg_monthly_income - cashFlow.avg_monthly_expense;
+
+  if (monthlySurplus <= 0) {
+    return {
+      currentAssets,
+      remaining,
+      monthsToGoal: null,
+      estimatedDate: null,
+      progressPct,
+    };
+  }
+
+  const monthsToGoal = Math.ceil(remaining / monthlySurplus);
+  const estimatedDate = new Date();
+  estimatedDate.setMonth(estimatedDate.getMonth() + monthsToGoal);
+
+  return { currentAssets, remaining, monthsToGoal, estimatedDate, progressPct };
+}
+
+// ── DB helpers ────────────────────────────────────────────────
+
+export async function getGoal(
+  supabase: SupabaseClient,
+  userId: string
+): Promise<Goal | null> {
+  const { data } = await supabase
+    .from("goals")
+    .select("*")
+    .eq("user_id", userId)
+    .maybeSingle();
+  return data;
+}
+
+export async function upsertGoal(
+  supabase: SupabaseClient,
+  userId: string,
+  data: GoalInput
+) {
+  const { error } = await supabase.from("goals").upsert(
+    {
+      user_id: userId,
+      name: data.name,
+      emoji: data.emoji,
+      target_amount: data.target_amount,
+      deadline: data.deadline ?? null,
+      note: data.note ?? null,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: "user_id" }
+  );
+  return error;
+}
+
+export async function getCashFlow(
+  supabase: SupabaseClient,
+  userId: string
+): Promise<HouseholdCashFlow | null> {
+  const { data } = await supabase
+    .from("household_cash_flow")
+    .select("*")
+    .eq("user_id", userId)
+    .maybeSingle();
+  return data;
+}
+
+export async function upsertCashFlow(
+  supabase: SupabaseClient,
+  userId: string,
+  data: CashFlowInput
+) {
+  const { error } = await supabase.from("household_cash_flow").upsert(
+    {
+      user_id: userId,
+      avg_monthly_income: data.avg_monthly_income,
+      avg_monthly_expense: data.avg_monthly_expense,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: "user_id" }
+  );
+  return error;
+}
+
+export async function getMonthlyActual(
+  supabase: SupabaseClient,
+  userId: string,
+  year: number,
+  month: number
+): Promise<MonthlyActual | null> {
+  const { data } = await supabase
+    .from("monthly_actuals")
+    .select("*")
+    .eq("user_id", userId)
+    .eq("year", year)
+    .eq("month", month)
+    .maybeSingle();
+  return data;
+}
+
+export async function upsertMonthlyActual(
+  supabase: SupabaseClient,
+  userId: string,
+  data: MonthlyActualInput
+) {
+  const { error } = await supabase.from("monthly_actuals").upsert(
+    {
+      user_id: userId,
+      year: data.year,
+      month: data.month,
+      actual_income: data.actual_income,
+      actual_expense: data.actual_expense,
+      note: data.note ?? null,
+    },
+    { onConflict: "user_id, year, month" }
+  );
+  return error;
+}
