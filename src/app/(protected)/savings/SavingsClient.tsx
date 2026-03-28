@@ -30,10 +30,17 @@ export function SavingsClient({ initialAccounts }: Props) {
   return (
     <div className="flex flex-col gap-5 pb-20">
       {/* Page Header */}
-      <div className="pt-2">
+      <div className="flex items-center justify-between pt-2">
         <h1 className="text-foreground text-[28px] font-bold tracking-[-1px] uppercase">
           TIẾT KIỆM
         </h1>
+        <button
+          onClick={() => setActiveSheet("add")}
+          className="bg-accent text-background flex h-11 w-11 shrink-0 items-center justify-center"
+          aria-label="Thêm tiết kiệm"
+        >
+          <Plus size={20} />
+        </button>
       </div>
 
       {/* Summary */}
@@ -75,15 +82,6 @@ export function SavingsClient({ initialAccounts }: Props) {
           ))}
         </div>
       )}
-
-      {/* FAB */}
-      <button
-        onClick={() => setActiveSheet("add")}
-        className="bg-accent text-background fixed right-5 bottom-[116px] flex h-14 w-14 items-center justify-center shadow-lg"
-        aria-label="Thêm tiết kiệm"
-      >
-        <Plus size={24} />
-      </button>
 
       {/* Action Sheet */}
       <SavingsActionSheet

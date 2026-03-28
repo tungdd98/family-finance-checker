@@ -2,7 +2,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Plus } from "lucide-react";
 import type { GoldAsset, GoldPrice } from "@/lib/services/gold";
 import { calcPnl, CHI_PER_LUONG } from "@/lib/gold-utils";
 import { GoldSummaryHeader } from "./components/GoldSummaryHeader";
@@ -80,6 +79,7 @@ export function GoldClient({ initialPositions, initialPrices = [] }: Props) {
         brands={uniqueBrands}
         filterBrand={filterBrand}
         onFilterChange={setFilterBrand}
+        onAdd={() => setActiveSheet("add")}
       />
 
       {/* Position list */}
@@ -104,15 +104,6 @@ export function GoldClient({ initialPositions, initialPrices = [] }: Props) {
           ))}
         </div>
       )}
-
-      {/* FAB */}
-      <button
-        onClick={() => setActiveSheet("add")}
-        className="bg-accent text-background fixed right-5 bottom-[116px] flex h-14 w-14 items-center justify-center shadow-lg"
-        aria-label="Thêm tài sản"
-      >
-        <Plus size={24} />
-      </button>
 
       {/* Sheets */}
       <PositionActionSheet

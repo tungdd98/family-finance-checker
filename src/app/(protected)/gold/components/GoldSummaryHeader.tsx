@@ -1,6 +1,7 @@
 // src/app/(protected)/gold/components/GoldSummaryHeader.tsx
 "use client";
 
+import { Plus } from "lucide-react";
 import { formatVND } from "@/lib/gold-utils";
 
 interface Brand {
@@ -14,6 +15,7 @@ interface Props {
   brands: Brand[];
   filterBrand: string | null;
   onFilterChange: (brandCode: string | null) => void;
+  onAdd: () => void;
 }
 
 export function GoldSummaryHeader({
@@ -22,13 +24,23 @@ export function GoldSummaryHeader({
   brands,
   filterBrand,
   onFilterChange,
+  onAdd,
 }: Props) {
   return (
     <div className="flex flex-col gap-4">
-      {/* Page title */}
-      <h1 className="text-foreground pt-2 text-[28px] font-bold tracking-[-1px]">
-        TÀI SẢN VÀNG
-      </h1>
+      {/* Page title row */}
+      <div className="flex items-center justify-between pt-2">
+        <h1 className="text-foreground text-[28px] font-bold tracking-[-1px]">
+          TÀI SẢN VÀNG
+        </h1>
+        <button
+          onClick={onAdd}
+          className="bg-accent text-background flex h-11 w-11 shrink-0 items-center justify-center"
+          aria-label="Thêm tài sản"
+        >
+          <Plus size={20} />
+        </button>
+      </div>
 
       {/* Summary card */}
       <div className="bg-surface flex flex-col gap-1 p-4">
