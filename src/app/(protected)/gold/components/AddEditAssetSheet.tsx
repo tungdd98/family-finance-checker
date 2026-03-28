@@ -52,8 +52,19 @@ export function AddEditAssetSheet({
     },
   });
 
+  const rawQty = form.watch("quantity") ?? 0;
+  const rawPrice = form.watch("buy_price_per_chi") ?? 0;
   const totalVnd =
-    (form.watch("quantity") ?? 0) * (form.watch("buy_price_per_chi") ?? 0);
+    rawQty > 0 && rawPrice > 0
+      ? (() => {
+          const { quantityChi, pricePerChi } = convertInputToChiAndPrice(
+            rawQty,
+            rawPrice,
+            unit
+          );
+          return quantityChi * pricePerChi;
+        })()
+      : 0;
 
   const onSubmit = (data: AddAssetInput) => {
     const { quantityChi, pricePerChi } = convertInputToChiAndPrice(
