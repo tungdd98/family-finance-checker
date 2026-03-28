@@ -1,6 +1,7 @@
 // src/app/actions/settings.ts
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { settingsSchema, type SettingsInput } from "@/lib/validations/settings";
 import { upsertSettings } from "@/lib/services/settings";
@@ -22,4 +23,6 @@ export async function saveSettingsAction(
 
   const error = await upsertSettings(supabase, user.id, parsed.data);
   if (error) return { error: "Không thể lưu cài đặt" };
+
+  revalidatePath("/", "layout");
 }
