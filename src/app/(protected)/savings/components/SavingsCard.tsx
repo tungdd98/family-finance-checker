@@ -97,7 +97,7 @@ export function SavingsCard({ account, onTap }: Props) {
       <div className="border-border border-t" />
 
       {/* Detail rows */}
-      <div className="flex flex-col gap-2">
+      <div className="flex w-full flex-col gap-2">
         <DetailRow label="Tiền gốc" value={formatVND(account.principal)} />
         <DetailRow
           label="Lãi tích lũy"
@@ -116,28 +116,27 @@ export function SavingsCard({ account, onTap }: Props) {
               label="Ngày đáo hạn"
               value={formatDate(account.maturity_date)}
             />
-            <div className="flex items-center justify-between">
-              <span className="text-foreground-muted text-[12px]">Còn lại</span>
-              <span
-                className={`text-[13px] font-semibold ${
-                  daysLeft === null
-                    ? "text-foreground-muted"
-                    : daysLeft < 0
-                      ? "text-status-negative"
-                      : daysLeft <= 7
-                        ? "text-accent"
-                        : "text-foreground-muted"
-                }`}
-              >
-                {daysLeft === null
+            <DetailRow
+              label="Còn lại"
+              value={
+                daysLeft === null
                   ? "—"
                   : daysLeft < 0
                     ? `Quá hạn ${Math.abs(daysLeft)} ngày`
                     : daysLeft === 0
                       ? "Hôm nay đáo hạn"
-                      : `${daysLeft} ngày`}
-              </span>
-            </div>
+                      : `${daysLeft} ngày`
+              }
+              valueClass={`font-semibold ${
+                daysLeft === null
+                  ? "text-foreground-muted"
+                  : daysLeft < 0
+                    ? "text-status-negative"
+                    : daysLeft <= 7
+                      ? "text-accent"
+                      : "text-foreground-muted"
+              }`}
+            />
             <DetailRow
               label="GT đến đáo hạn"
               value={formatVND(maturityValue)}
