@@ -1,3 +1,5 @@
+export { formatVND } from "@/lib/utils";
+
 export const CHI_PER_LUONG = 10;
 
 export function chiToLuong(chi: number): number {
@@ -6,10 +8,6 @@ export function chiToLuong(chi: number): number {
 
 export function luongToChi(luong: number): number {
   return luong * CHI_PER_LUONG;
-}
-
-export function formatVND(amount: number): string {
-  return new Intl.NumberFormat("vi-VN").format(amount) + " ₫";
 }
 
 export function formatPct(pct: number): string {
@@ -35,10 +33,11 @@ export function calcPnl(
   return { currentValue, pnlVnd, pnlPercent };
 }
 
-export function daysHeld(buyDate: string): number {
-  const now = new Date();
+const MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+export function daysHeld(buyDate: string, now: Date = new Date()): number {
   const buy = new Date(buyDate);
-  return Math.floor((now.getTime() - buy.getTime()) / (1000 * 60 * 60 * 24));
+  return Math.floor((now.getTime() - buy.getTime()) / MS_PER_DAY);
 }
 
 export function convertInputToChiAndPrice(

@@ -3,6 +3,7 @@ import {
   chiToLuong,
   luongToChi,
   formatVND,
+  formatPct,
   calcPnl,
   daysHeld,
   convertInputToChiAndPrice,
@@ -28,10 +29,24 @@ describe("luongToChi", () => {
 
 describe("formatVND", () => {
   it("formats 84300000 as VND string", () => {
-    expect(formatVND(84300000)).toBe("84.300.000 ₫");
+    expect(formatVND(84300000)).toBe("84.300.000\u00a0\u20ab");
   });
   it("formats 0", () => {
-    expect(formatVND(0)).toBe("0 ₫");
+    expect(formatVND(0)).toBe("0\u00a0\u20ab");
+  });
+});
+
+describe("formatPct", () => {
+  it("prefixes positive value with '+'", () => {
+    expect(formatPct(5.882)).toMatch(/^\+/);
+  });
+  it("prefixes negative value with '-' and no '+'", () => {
+    const result = formatPct(-1.4);
+    expect(result).toMatch(/^-/);
+    expect(result).not.toContain("+");
+  });
+  it("formats zero as '+0.00%'", () => {
+    expect(formatPct(0)).toBe("+0.00%");
   });
 });
 
@@ -55,14 +70,16 @@ describe("calcPnl", () => {
 
 describe("daysHeld", () => {
   it("returns 0 for today", () => {
-    const today = new Date().toISOString().slice(0, 10);
-    expect(daysHeld(today)).toBe(0);
+    const now = new Date("2026-03-28T12:00:00Z");
+    expect(daysHeld("2026-03-28", now)).toBe(0);
   });
   it("returns 1 for yesterday", () => {
-    const yesterday = new Date(Date.now() - 86_400_000)
-      .toISOString()
-      .slice(0, 10);
-    expect(daysHeld(yesterday)).toBe(1);
+    const now = new Date("2026-03-28T12:00:00Z");
+    expect(daysHeld("2026-03-27", now)).toBe(1);
+  });
+  it("returns 30 for 30 days ago", () => {
+    const now = new Date("2026-03-28T12:00:00Z");
+    expect(daysHeld("2026-02-26", now)).toBe(30);
   });
 });
 
