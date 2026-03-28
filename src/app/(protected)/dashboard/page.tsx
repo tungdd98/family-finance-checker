@@ -3,6 +3,7 @@ import {
   getActiveGoldAssets,
   getExternalGoldPrices,
 } from "@/lib/services/gold";
+import { getSavingsAccounts } from "@/lib/services/savings";
 import { DashboardClient } from "./DashboardClient";
 
 export default async function DashboardPage() {
@@ -11,12 +12,19 @@ export default async function DashboardPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const [goldPositions, prices] = await Promise.all([
-    user ? getActiveGoldAssets(supabase, user.id) : [],
+  if (!user) return null;
+
+  const [goldPositions, prices, savingsAccounts] = await Promise.all([
+    getActiveGoldAssets(supabase, user.id),
     getExternalGoldPrices(),
+    getSavingsAccounts(supabase, user.id),
   ]);
 
   return (
-    <DashboardClient goldPositions={goldPositions} initialPrices={prices} />
+    <DashboardClient
+      goldPositions={goldPositions}
+      initialPrices={prices}
+      savingsAccounts={savingsAccounts}
+    />
   );
 }

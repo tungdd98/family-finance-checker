@@ -6,13 +6,22 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import type { GoldAsset, GoldPrice } from "@/lib/services/gold";
 import { calcPnl, formatVND, formatPct, CHI_PER_LUONG } from "@/lib/gold-utils";
+import {
+  type SavingsAccount,
+  calcAccruedInterest,
+} from "@/lib/services/savings";
 
 interface Props {
   goldPositions: GoldAsset[];
   initialPrices: GoldPrice[];
+  savingsAccounts: SavingsAccount[];
 }
 
-export function DashboardClient({ goldPositions, initialPrices = [] }: Props) {
+export function DashboardClient({
+  goldPositions,
+  initialPrices = [],
+  savingsAccounts,
+}: Props) {
   const [prices, setPrices] = useState<GoldPrice[]>(initialPrices);
 
   useEffect(() => {
@@ -61,14 +70,65 @@ export function DashboardClient({ goldPositions, initialPrices = [] }: Props) {
     .map(([code, name]) => ({ code, name, price: priceMap.get(code) }))
     .filter((b) => b.price !== undefined);
 
+  // Savings math
+  const savingsTotalPrincipal = savingsAccounts.reduce(
+    (s: number, a: SavingsAccount) => s + a.principal,
+    0
+  );
+  const savingsTotalAccrued = savingsAccounts.reduce(
+    (s: number, a: SavingsAccount) => s + calcAccruedInterest(a),
+    0
+  );
+  const savingsTotalValue = savingsTotalPrincipal + savingsTotalAccrued;
+
   return (
     <div className="flex flex-col gap-5">
       <h1 className="text-foreground pt-2 text-[28px] font-bold tracking-[-1px]">
         TỔNG QUAN
       </h1>
 
+      {/* Savings asset card */}
+      <div className="bg-surface border-border overflow-visible border p-4">
+        {/* Section header */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent h-3.5 w-0.75 shrink-0" />
+            <span className="text-foreground-secondary text-[11px] font-semibold tracking-[1.5px] uppercase">
+              TIẾT KIỆM NGÂN HÀNG
+            </span>
+          </div>
+          <Link
+            href="/savings"
+            className="text-foreground-muted flex items-center gap-1"
+          >
+            <ChevronRight size={14} />
+          </Link>
+        </div>
+
+        {savingsAccounts.length === 0 ? (
+          <p className="text-foreground-muted pt-4 text-[13px]">
+            Chưa có tài sản tiết kiệm
+          </p>
+        ) : (
+          <div className="flex flex-col gap-1 pt-3">
+            <p className="text-foreground text-[24px] font-bold tracking-[-1px]">
+              {formatVND(savingsTotalValue)}
+            </p>
+            <p className="text-foreground-secondary text-[12px]">
+              Vốn: {formatVND(savingsTotalPrincipal)}
+            </p>
+            <p className="text-status-positive text-[12px] font-semibold">
+              +{formatVND(savingsTotalAccrued)} (Lãi tích lũy)
+            </p>
+            <p className="text-foreground-muted pt-1 text-[11px]">
+              {savingsAccounts.length} khoản tiết kiệm
+            </p>
+          </div>
+        )}
+      </div>
+
       {/* Gold asset card */}
-      <div className="bg-surface border-border overflow-visible rounded-xl border p-4">
+      <div className="bg-surface border-border overflow-visible border p-4">
         {/* Section header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
