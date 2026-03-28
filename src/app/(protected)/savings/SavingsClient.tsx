@@ -96,6 +96,7 @@ export function SavingsClient({ initialAccounts }: Props) {
 
       {/* Add/Edit Drawer */}
       <AddEditSavingsSheet
+        key={selected?.id ?? "add"}
         mode={activeSheet === "edit" ? "edit" : "add"}
         account={selected || undefined}
         open={activeSheet === "add" || activeSheet === "edit"}

@@ -180,7 +180,13 @@ export function AddEditSavingsSheet({
                   placeholder="5.2"
                   disabled={isPending}
                   className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
-                  {...form.register("interest_rate", { valueAsNumber: true })}
+                  {...form.register("interest_rate", {
+                    setValueAs: (v: string) => {
+                      const normalized = String(v).replace(",", ".");
+                      const num = parseFloat(normalized);
+                      return isNaN(num) ? NaN : num;
+                    },
+                  })}
                 />
                 <span className="text-foreground-muted shrink-0 text-[12px]">
                   %/năm
