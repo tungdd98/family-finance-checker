@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import type { GoldAsset, GoldPrice } from "@/lib/services/gold";
+import { PortfolioChart } from "./components/PortfolioChart";
 import { calcPnl, formatVND, formatPct, CHI_PER_LUONG } from "@/lib/gold-utils";
 import {
   type SavingsAccount,
@@ -42,15 +43,15 @@ export function DashboardClient({
     (prices || []).map((p) => [p.type_code, p])
   );
 
-  let totalValue = 0;
-  let totalCapital = 0;
+  let goldTotalValue = 0;
+  let goldTotalCapital = 0;
 
   for (const pos of goldPositions) {
     const remaining = pos.quantity - pos.sold_quantity;
     const livePrice = priceMap.get(pos.brand_code);
-    totalCapital += remaining * pos.buy_price_per_chi;
+    goldTotalCapital += remaining * pos.buy_price_per_chi;
     if (livePrice) {
-      totalValue += calcPnl(
+      goldTotalValue += calcPnl(
         remaining,
         pos.buy_price_per_chi,
         livePrice.sell / CHI_PER_LUONG
@@ -58,9 +59,10 @@ export function DashboardClient({
     }
   }
 
-  const totalPnl = totalValue - totalCapital;
-  const totalPnlPct = totalCapital > 0 ? (totalPnl / totalCapital) * 100 : 0;
-  const hasPrices = totalValue > 0;
+  const goldTotalPnl = goldTotalValue - goldTotalCapital;
+  const goldTotalPnlPct =
+    goldTotalCapital > 0 ? (goldTotalPnl / goldTotalCapital) * 100 : 0;
+  const hasGoldPrices = goldTotalValue > 0;
 
   const trackedBrands = [
     ...new Map(
@@ -81,11 +83,26 @@ export function DashboardClient({
   );
   const savingsTotalValue = savingsTotalPrincipal + savingsTotalAccrued;
 
+  const portfolioData = [
+    { name: "TÀI SẢN VÀNG", value: goldTotalValue, color: "var(--accent)" },
+    { name: "TIẾT KIỆM", value: savingsTotalValue, color: "#4f46e5" },
+  ];
+
   return (
     <div className="flex flex-col gap-5">
       <h1 className="text-foreground pt-2 text-[28px] font-bold tracking-[-1px]">
         TỔNG QUAN
       </h1>
+
+      {/* Portfolio Allocation Chart */}
+      {(goldTotalValue > 0 || savingsTotalValue > 0) && (
+        <div className="bg-surface border-border border p-5">
+          <p className="text-foreground-muted pb-4 text-[11px] font-semibold tracking-[1.5px] uppercase">
+            PHÂN BỔ TÀI SẢN
+          </p>
+          <PortfolioChart data={portfolioData} />
+        </div>
+      )}
 
       {/* Savings asset card */}
       <div className="bg-surface border-border overflow-visible border p-4">
@@ -154,21 +171,21 @@ export function DashboardClient({
             {/* Total value */}
             <div className="flex flex-col gap-1">
               <p className="text-foreground text-[24px] font-bold tracking-[-1px]">
-                {hasPrices ? formatVND(totalValue) : "—"}
+                {hasGoldPrices ? formatVND(goldTotalValue) : "—"}
               </p>
               <p className="text-foreground-secondary text-[12px]">
-                Vốn: {formatVND(totalCapital)}
+                Vốn: {formatVND(goldTotalCapital)}
               </p>
-              {hasPrices && (
+              {hasGoldPrices && (
                 <p
                   className={`text-[12px] font-semibold ${
-                    totalPnl >= 0
+                    goldTotalPnl >= 0
                       ? "text-status-positive"
                       : "text-status-negative"
                   }`}
                 >
-                  {totalPnl >= 0 ? "+" : ""}
-                  {formatVND(totalPnl)} ({formatPct(totalPnlPct)})
+                  {goldTotalPnl >= 0 ? "+" : ""}
+                  {formatVND(goldTotalPnl)} ({formatPct(goldTotalPnlPct)})
                 </p>
               )}
             </div>
