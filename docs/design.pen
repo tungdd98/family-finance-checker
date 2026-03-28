@@ -1,0 +1,57 @@
+{
+  "version": "2.9",
+  "children": [
+    {
+      "type": "frame",
+      "id": "bi8Au",
+      "x": 0,
+      "y": 0,
+      "name": "Frame",
+      "clip": true,
+      "width": 800,
+      "height": 600,
+      "fill": "#FFFFFF",
+      "layout": "none"
+    },
+    {
+      "type": "note",
+      "id": "rYCQf",
+      "x": 0,
+      "y": 0,
+      "name": "Label Phase 1",
+      "width": 520,
+      "height": 36,
+      "content": "Phase 1 — Design System"
+    },
+    {
+      "type": "note",
+      "id": "zPg6L",
+      "x": 680,
+      "y": 0,
+      "name": "Label Phase 2",
+      "width": 390,
+      "height": 36,
+      "content": "Phase 2 — Auth"
+    },
+    {
+      "type": "note",
+      "id": "UK1bO",
+      "x": 1360,
+      "y": 0,
+      "name": "Label Phase 3",
+      "width": 390,
+      "height": 36,
+      "content": "Phase 3 — App Shell"
+    },
+    {
+      "type": "note",
+      "id": "i36N2",
+      "x": 2040,
+      "y": 0,
+      "name": "Label Phase 4",
+      "width": 390,
+      "height": 36,
+      "content": "Phase 4 — Settings"
+    }
+  ]
+}
