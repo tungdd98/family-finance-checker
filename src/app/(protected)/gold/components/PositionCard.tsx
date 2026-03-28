@@ -1,7 +1,13 @@
 // src/app/(protected)/gold/components/PositionCard.tsx
 "use client";
 
-import { formatVND, formatPct, calcPnl, daysHeld } from "@/lib/gold-utils";
+import {
+  formatVND,
+  formatPct,
+  calcPnl,
+  daysHeld,
+  CHI_PER_LUONG,
+} from "@/lib/gold-utils";
 import type { GoldAsset, GoldPrice } from "@/lib/services/gold";
 
 interface Props {
@@ -14,7 +20,11 @@ export function PositionCard({ position, livePrice, onTap }: Props) {
   const remaining = position.quantity - position.sold_quantity;
   const hasPnl = livePrice !== undefined;
   const pnl = hasPnl
-    ? calcPnl(remaining, position.buy_price_per_chi, livePrice.sell)
+    ? calcPnl(
+        remaining,
+        position.buy_price_per_chi,
+        livePrice.sell / CHI_PER_LUONG
+      )
     : null;
   const days = daysHeld(position.buy_date);
   const totalCapital = remaining * position.buy_price_per_chi;

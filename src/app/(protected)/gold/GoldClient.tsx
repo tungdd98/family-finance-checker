@@ -4,7 +4,7 @@
 import { useState, useEffect } from "react";
 import { Plus } from "lucide-react";
 import type { GoldAsset, GoldPrice } from "@/lib/services/gold";
-import { calcPnl } from "@/lib/gold-utils";
+import { calcPnl, CHI_PER_LUONG } from "@/lib/gold-utils";
 import { GoldSummaryHeader } from "./components/GoldSummaryHeader";
 import { PositionCard } from "./components/PositionCard";
 import { PositionActionSheet } from "./components/PositionActionSheet";
@@ -14,11 +14,27 @@ import { SellAssetSheet } from "./components/SellAssetSheet";
 
 interface Props {
   initialPositions: GoldAsset[];
+  initialPrices: GoldPrice[];
 }
 
-export function GoldClient({ initialPositions }: Props) {
-  const [positions] = useState<GoldAsset[]>(initialPositions);
-  const [prices, setPrices] = useState<GoldPrice[]>([]);
+export function GoldClient({ initialPositions, initialPrices = [] }: Props) {
+  const positions = initialPositions;
+  const [prices, setPrices] = useState<GoldPrice[]>(initialPrices);
+
+  useEffect(() => {
+    // Fallback in case server-side fetch failed or returned empty
+    if (prices.length === 0) {
+      fetch("/api/gold/prices")
+        .then((r) => r.json())
+        .then((json: { success: boolean; data: GoldPrice[] }) => {
+          if (json.success && Array.isArray(json.data)) {
+            setPrices(json.data);
+          }
+        })
+        .catch(() => {});
+    }
+  }, [prices.length]);
+
   const [activeSheet, setActiveSheet] = useState<
     "add" | "edit" | "sell" | "delete" | "action" | null
   >(null);
@@ -27,19 +43,8 @@ export function GoldClient({ initialPositions }: Props) {
   );
   const [filterBrand, setFilterBrand] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetch("/api/gold/prices")
-      .then((r) => r.json())
-      .then((json: { success: boolean; data: GoldPrice[] }) => {
-        if (json.success && Array.isArray(json.data)) {
-          setPrices(json.data);
-        }
-      })
-      .catch(() => {});
-  }, []);
-
   const priceMap = new Map<string, GoldPrice>(
-    prices.map((p) => [p.type_code, p])
+    (prices || []).map((p) => [p.type_code, p])
   );
 
   const filteredPositions = filterBrand
@@ -57,7 +62,7 @@ export function GoldClient({ initialPositions }: Props) {
     const { currentValue } = calcPnl(
       remaining,
       pos.buy_price_per_chi,
-      livePrice.sell
+      livePrice.sell / CHI_PER_LUONG
     );
     return sum + currentValue;
   }, 0);
@@ -88,7 +93,7 @@ export function GoldClient({ initialPositions }: Props) {
           </p>
         </div>
       ) : (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 pb-24">
           {filteredPositions.map((pos) => (
             <PositionCard
               key={pos.id}

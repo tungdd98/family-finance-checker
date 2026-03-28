@@ -13,6 +13,7 @@ import { addAssetSchema, type AddAssetInput } from "@/lib/validations/gold";
 import { addAssetAction, editAssetAction } from "@/app/actions/gold";
 import { convertInputToChiAndPrice, formatVND } from "@/lib/gold-utils";
 import { BrandPicker } from "./BrandPicker";
+import { DatePickerDrawer } from "./DatePickerDrawer";
 import { Button } from "@/components/ui/button";
 import type { GoldAsset, GoldPrice } from "@/lib/services/gold";
 
@@ -106,8 +107,8 @@ export function AddEditAssetSheet({
   return (
     <Drawer.Root open={open} onOpenChange={onOpenChange}>
       <Drawer.Portal>
-        <Drawer.Backdrop className="fixed inset-0 z-40 bg-black/60" />
-        <Drawer.Popup className="bg-background fixed inset-x-0 bottom-0 z-50 flex max-h-[92dvh] flex-col overflow-y-auto">
+        <Drawer.Backdrop className="fixed inset-0 z-40 bg-black/60 opacity-100 transition-opacity duration-300 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
+        <Drawer.Popup className="bg-background fixed inset-x-0 bottom-0 z-50 flex max-h-[92dvh] flex-col overflow-y-auto transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-[ending-style]:translate-y-full data-[starting-style]:translate-y-full">
           {/* Header */}
           <div className="bg-background border-border sticky top-0 flex items-center justify-between border-b px-7 pt-5 pb-4">
             <span className="text-foreground text-[16px] font-bold tracking-[-0.5px]">
@@ -230,14 +231,17 @@ export function AddEditAssetSheet({
             {/* Buy date */}
             <div className="flex flex-col gap-2">
               <Label>NGÀY MUA</Label>
-              <div className="bg-background border-border flex h-12 items-center border px-3.5">
-                <input
-                  type="date"
-                  disabled={isPending}
-                  className="text-foreground w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
-                  {...form.register("buy_date")}
-                />
-              </div>
+              <Controller
+                name="buy_date"
+                control={form.control}
+                render={({ field }) => (
+                  <DatePickerDrawer
+                    value={field.value}
+                    onChange={field.onChange}
+                    disabled={isPending}
+                  />
+                )}
+              />
               {form.formState.errors.buy_date && (
                 <ErrorMsg>{form.formState.errors.buy_date.message}</ErrorMsg>
               )}

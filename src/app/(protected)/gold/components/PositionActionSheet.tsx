@@ -23,14 +23,13 @@ export function PositionActionSheet({
   onSell,
   onDelete,
 }: Props) {
-  if (!position) return null;
-  const remaining = position.quantity - position.sold_quantity;
+  const remaining = position ? position.quantity - position.sold_quantity : 0;
 
   return (
     <Drawer.Root open={open} onOpenChange={onOpenChange}>
       <Drawer.Portal>
-        <Drawer.Backdrop className="fixed inset-0 z-40 bg-black/60" />
-        <Drawer.Popup className="bg-surface fixed right-0 bottom-0 left-0 z-50 flex flex-col pb-8">
+        <Drawer.Backdrop className="fixed inset-0 z-40 bg-black/60 opacity-100 transition-opacity duration-300 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
+        <Drawer.Popup className="bg-surface fixed right-0 bottom-0 left-0 z-50 flex flex-col pb-8 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-[ending-style]:translate-y-full data-[starting-style]:translate-y-full">
           <div className="flex justify-center pt-3 pb-4">
             <div className="bg-border-strong h-1 w-10 rounded-full" />
           </div>

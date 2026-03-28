@@ -23,6 +23,7 @@ export interface GoldAsset {
 
 export interface GoldPrice {
   type_code: string;
+  name: string;
   buy: number;
   sell: number;
   change_buy: number;
@@ -39,7 +40,7 @@ export async function getActiveGoldAssets(
     .select("*")
     .eq("user_id", userId)
     .is("sold_at", null)
-    .order("created_at", { ascending: false });
+    .order("buy_date", { ascending: false });
   if (error) throw error;
   return data ?? [];
 }
@@ -108,4 +109,47 @@ export async function deleteGoldAsset(
     .eq("id", id)
     .eq("user_id", userId);
   if (error) throw error;
+}
+
+export async function getExternalGoldPrices(): Promise<GoldPrice[]> {
+  try {
+    const res = await fetch("https://www.vang.today/api/prices", {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      },
+      next: { revalidate: 300 }, // 5 minutes
+    });
+
+    if (!res.ok) return [];
+
+    const rawData = await res.json();
+    const pricesArray: GoldPrice[] = [];
+
+    if (rawData.prices && typeof rawData.prices === "object") {
+      const updateTime = `${rawData.date} ${rawData.time}`;
+      for (const [code, infoRaw] of Object.entries(rawData.prices)) {
+        const info = infoRaw as {
+          name?: string;
+          buy?: number;
+          sell?: number;
+          change_buy?: number;
+          change_sell?: number;
+        };
+        pricesArray.push({
+          type_code: code,
+          name: info.name ?? code,
+          buy: info.buy ?? 0,
+          sell: info.sell ?? 0,
+          change_buy: info.change_buy ?? 0,
+          change_sell: info.change_sell ?? 0,
+          update_time: updateTime,
+        });
+      }
+    }
+    return pricesArray;
+  } catch (error) {
+    console.error("Fetch prices error:", error);
+    return [];
+  }
 }

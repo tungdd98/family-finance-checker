@@ -1,21 +1,29 @@
+"use client";
+
 import Link from "next/link";
-import { type LucideIcon } from "lucide-react";
+import { usePathname } from "next/navigation";
+import {
+  Coins,
+  House,
+  Landmark,
+  Settings,
+  TrendingUp,
+  type LucideIcon,
+} from "lucide-react";
 
-interface TabItem {
-  icon: LucideIcon;
-  label: string;
-  href: string;
-}
+const TAB_ITEMS = [
+  { icon: House, label: "DASHBOARD", href: "/dashboard" },
+  { icon: Coins, label: "VÀNG", href: "/gold" },
+  { icon: TrendingUp, label: "THỊ TRƯỜNG", href: "/market" },
+  { icon: Landmark, label: "TIẾT KIỆM", href: "/savings" },
+  { icon: Settings, label: "CÀI ĐẶT", href: "/settings" },
+];
 
-interface TabBarProps {
-  items: TabItem[];
-  activeHref: string;
-}
-
-export function TabBar({ items, activeHref }: Readonly<TabBarProps>) {
+export function TabBar() {
+  const activeHref = usePathname();
   return (
     <nav className="bg-surface rounded-pill border-border flex h-full border p-1">
-      {items.map((item) => {
+      {TAB_ITEMS.map((item) => {
         const Icon = item.icon;
         const isActive = item.href === activeHref;
         return (

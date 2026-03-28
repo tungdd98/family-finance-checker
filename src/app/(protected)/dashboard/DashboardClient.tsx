@@ -5,28 +5,32 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import type { GoldAsset, GoldPrice } from "@/lib/services/gold";
-import { calcPnl, formatVND, formatPct } from "@/lib/gold-utils";
+import { calcPnl, formatVND, formatPct, CHI_PER_LUONG } from "@/lib/gold-utils";
 
 interface Props {
   goldPositions: GoldAsset[];
+  initialPrices: GoldPrice[];
 }
 
-export function DashboardClient({ goldPositions }: Props) {
-  const [prices, setPrices] = useState<GoldPrice[]>([]);
+export function DashboardClient({ goldPositions, initialPrices = [] }: Props) {
+  const [prices, setPrices] = useState<GoldPrice[]>(initialPrices);
 
   useEffect(() => {
-    fetch("/api/gold/prices")
-      .then((r) => r.json())
-      .then((json: { success: boolean; data: GoldPrice[] }) => {
-        if (json.success && Array.isArray(json.data)) {
-          setPrices(json.data);
-        }
-      })
-      .catch(() => {});
-  }, []);
+    // Fallback in case server-side fetch failed or returned empty
+    if (prices.length === 0) {
+      fetch("/api/gold/prices")
+        .then((r) => r.json())
+        .then((json: { success: boolean; data: GoldPrice[] }) => {
+          if (json.success && Array.isArray(json.data)) {
+            setPrices(json.data);
+          }
+        })
+        .catch(() => {});
+    }
+  }, [prices.length]);
 
   const priceMap = new Map<string, GoldPrice>(
-    prices.map((p) => [p.type_code, p])
+    (prices || []).map((p) => [p.type_code, p])
   );
 
   let totalValue = 0;
@@ -40,7 +44,7 @@ export function DashboardClient({ goldPositions }: Props) {
       totalValue += calcPnl(
         remaining,
         pos.buy_price_per_chi,
-        livePrice.sell
+        livePrice.sell / CHI_PER_LUONG
       ).currentValue;
     }
   }
@@ -64,7 +68,7 @@ export function DashboardClient({ goldPositions }: Props) {
       </h1>
 
       {/* Gold asset card */}
-      <div className="bg-surface flex flex-col gap-4 p-4">
+      <div className="bg-surface border-border overflow-visible rounded-xl border p-4">
         {/* Section header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -120,15 +124,15 @@ export function DashboardClient({ goldPositions }: Props) {
                 </div>
                 <div className="flex flex-col">
                   {/* Header row */}
-                  <div className="border-border flex items-center justify-between border-b py-2">
-                    <span className="text-foreground-muted text-[10px] tracking-[1px]">
+                  <div className="bg-surface/80 border-border sticky top-0 z-10 flex items-center justify-between border-b py-2 backdrop-blur-md">
+                    <span className="text-foreground-muted items-center px-1 text-[10px] tracking-[1px] uppercase">
                       THƯƠNG HIỆU
                     </span>
-                    <div className="flex gap-6">
-                      <span className="text-foreground-muted text-[10px] tracking-[1px]">
+                    <div className="flex">
+                      <span className="text-foreground-muted w-[90px] text-right text-[10px] tracking-[1px] uppercase">
                         MUA VÀO
                       </span>
-                      <span className="text-foreground-muted text-[10px] tracking-[1px]">
+                      <span className="text-foreground-muted w-[90px] text-right text-[10px] tracking-[1px] uppercase">
                         BÁN RA
                       </span>
                     </div>
@@ -141,11 +145,11 @@ export function DashboardClient({ goldPositions }: Props) {
                       <span className="text-foreground text-[12px] font-medium">
                         {name}
                       </span>
-                      <div className="flex gap-6">
-                        <span className="text-status-positive text-[12px] font-semibold">
+                      <div className="flex">
+                        <span className="text-status-positive w-[90px] text-right text-[12px] font-semibold">
                           {new Intl.NumberFormat("vi-VN").format(price!.buy)}
                         </span>
-                        <span className="text-status-negative text-[12px] font-semibold">
+                        <span className="text-status-negative w-[90px] text-right text-[12px] font-semibold">
                           {new Intl.NumberFormat("vi-VN").format(price!.sell)}
                         </span>
                       </div>

@@ -5,8 +5,10 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { LogOut } from "lucide-react";
 
 import { saveSettingsAction } from "@/app/actions/settings";
+import { logoutAction } from "@/app/actions/auth";
 import { settingsSchema, type SettingsInput } from "@/lib/validations/settings";
 import { Button } from "@/components/ui/button";
 
@@ -48,80 +50,102 @@ export function SettingsForm({ initialData }: Props) {
   };
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
-      {/* Top section: title + cash balance */}
-      <div className="flex flex-col gap-6 pb-6">
-        <h1 className="text-foreground pt-4 text-[28px] font-bold tracking-[-1px]">
-          CÀI ĐẶT
-        </h1>
+    <div className="flex flex-col gap-12 pb-20">
+      <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
+        {/* Top section: title + cash balance */}
+        <div className="flex flex-col gap-6 pb-6">
+          <h1 className="text-foreground pt-4 text-[28px] font-bold tracking-[-1px]">
+            CÀI ĐẶT
+          </h1>
 
-        {/* TIỀN MẶT */}
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-3">
-            <div className="bg-accent h-3.5 w-0.75 shrink-0" />
-            <span className="text-foreground-secondary text-[11px] font-semibold tracking-[1.5px]">
-              TIỀN MẶT
-            </span>
-          </div>
-          <div className="bg-surface flex flex-col gap-3 p-4.5">
-            <p className="text-foreground-secondary text-[12px] font-medium">
-              Số dư ban đầu
-            </p>
-            <div className="bg-background border-border flex h-12 items-center border px-3.5">
-              <input
-                inputMode="numeric"
-                placeholder="0 đ"
-                value={amountDisplay}
-                onChange={handleAmountChange}
-                disabled={isPending}
-                className="placeholder:text-foreground-muted text-foreground w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
-              />
+          {/* TIỀN MẶT */}
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-3">
+              <div className="bg-accent h-3.5 w-0.75 shrink-0" />
+              <span className="text-foreground-secondary text-[11px] font-semibold tracking-[1.5px]">
+                TIỀN MẶT
+              </span>
             </div>
-            {form.formState.errors.initial_cash_balance && (
-              <p className="text-status-negative text-[11px]">
-                {form.formState.errors.initial_cash_balance.message}
+            <div className="bg-surface flex flex-col gap-3 p-4.5">
+              <p className="text-foreground-secondary text-[12px] font-medium">
+                Số dư ban đầu
               </p>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom section: personal info + save button */}
-      <div className="flex flex-col gap-8 pb-12">
-        {/* THÔNG TIN CÁ NHÂN */}
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-3">
-            <div className="bg-accent h-3.5 w-0.75 shrink-0" />
-            <span className="text-foreground-secondary text-[11px] font-semibold tracking-[2px]">
-              THÔNG TIN CÁ NHÂN
-            </span>
-          </div>
-          <div className="bg-surface border-border-strong flex flex-col gap-2 border px-4 py-3.5">
-            <label
-              htmlFor="display_name"
-              className="text-foreground-muted text-[10px] font-medium tracking-[1.5px]"
-            >
-              TÊN HIỂN THỊ
-            </label>
-            <input
-              id="display_name"
-              placeholder="Nhập tên của bạn..."
-              disabled={isPending}
-              className="placeholder:text-border-strong text-foreground bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
-              {...form.register("display_name")}
-            />
-            {form.formState.errors.display_name && (
-              <p className="text-status-negative text-[11px]">
-                {form.formState.errors.display_name.message}
-              </p>
-            )}
+              <div className="bg-background border-border flex h-12 items-center border px-3.5">
+                <input
+                  inputMode="numeric"
+                  placeholder="0 đ"
+                  value={amountDisplay}
+                  onChange={handleAmountChange}
+                  disabled={isPending}
+                  className="placeholder:text-foreground-muted text-foreground w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+                />
+              </div>
+              {form.formState.errors.initial_cash_balance && (
+                <p className="text-status-negative text-[11px]">
+                  {form.formState.errors.initial_cash_balance.message}
+                </p>
+              )}
+            </div>
           </div>
         </div>
 
-        <Button type="submit" disabled={isPending} className="h-14 w-full">
-          {isPending ? "ĐANG LƯU..." : "LƯU CÀI ĐẶT"}
-        </Button>
+        {/* Bottom section: personal info + save button */}
+        <div className="border-border flex flex-col gap-8 border-b pb-12">
+          {/* THÔNG TIN CÁ NHÂN */}
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-3">
+              <div className="bg-accent h-3.5 w-0.75 shrink-0" />
+              <span className="text-foreground-secondary text-[11px] font-semibold tracking-[2px]">
+                THÔNG TIN CÁ NHÂN
+              </span>
+            </div>
+            <div className="bg-surface border-border-strong flex flex-col gap-2 border px-4 py-3.5">
+              <label
+                htmlFor="display_name"
+                className="text-foreground-muted text-[10px] font-medium tracking-[1.5px]"
+              >
+                TÊN HIỂN THỊ
+              </label>
+              <input
+                id="display_name"
+                placeholder="Nhập tên của bạn..."
+                disabled={isPending}
+                className="placeholder:text-border-strong text-foreground bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+                {...form.register("display_name")}
+              />
+              {form.formState.errors.display_name && (
+                <p className="text-status-negative text-[11px]">
+                  {form.formState.errors.display_name.message}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <Button type="submit" disabled={isPending} className="h-14 w-full">
+            {isPending ? "ĐANG LƯU..." : "LƯU CÀI ĐẶT"}
+          </Button>
+        </div>
+      </form>
+
+      {/* Logout Section */}
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <div className="bg-status-negative/40 h-3.5 w-0.75 shrink-0" />
+          <span className="text-foreground-secondary text-[11px] font-semibold tracking-[2px]">
+            HÀNH ĐỘNG
+          </span>
+        </div>
+        <form action={logoutAction}>
+          <Button
+            type="submit"
+            variant="outline"
+            className="border-status-negative/20 text-status-negative hover:bg-status-negative/10 flex h-14 w-full items-center justify-center gap-2 font-bold"
+          >
+            <LogOut size={18} />
+            ĐĂNG XUẤT TÀI KHOẢN
+          </Button>
+        </form>
       </div>
-    </form>
+    </div>
   );
 }

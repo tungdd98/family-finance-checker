@@ -1,56 +1,58 @@
-"use client";
-
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Coins, House, Landmark, LogOut, Settings, Trophy } from "lucide-react";
+import { LogOut, Trophy } from "lucide-react";
 
 import { logoutAction } from "@/app/actions/auth";
 import { TabBar } from "@/components/common";
+import { createClient } from "@/lib/supabase/server";
+import { getSettings } from "@/lib/services/settings";
 
-const TAB_ITEMS = [
-  { icon: House, label: "DASHBOARD", href: "/dashboard" },
-  { icon: Coins, label: "VÀNG", href: "/gold" },
-  { icon: Landmark, label: "TIẾT KIỆM", href: "/savings" },
-  { icon: Settings, label: "CÀI ĐẶT", href: "/settings" },
-];
-
-export default function ProtectedLayout({
+export default async function ProtectedLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const pathname = usePathname();
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const settings = user ? await getSettings(supabase, user.id) : null;
+  const displayName =
+    settings?.display_name || user?.email?.split("@")[0] || "Bạn";
 
   return (
-    <div className="bg-background flex h-dvh flex-col">
-      {/* Content Area */}
-      <div className="flex flex-1 flex-col gap-5 overflow-y-auto pt-6 pr-7 pb-7 pl-7">
-        {/* Header Row */}
-        <div className="flex justify-end gap-2">
-          <Link
-            href="/goals"
-            className="border-border bg-surface flex h-[38px] w-[38px] items-center justify-center rounded-lg border"
-            aria-label="Mục tiêu"
-          >
-            <Trophy size={18} className="text-foreground-secondary" />
-          </Link>
-          <form action={logoutAction}>
-            <button
-              type="submit"
-              aria-label="Đăng xuất"
-              className="border-border bg-surface flex h-[38px] w-[38px] items-center justify-center rounded-lg border"
-            >
-              <LogOut size={18} className="text-foreground-secondary" />
-            </button>
-          </form>
+    <div className="bg-background flex h-dvh flex-col overflow-hidden">
+      {/* Header Row - Fixed at top */}
+      <div className="flex items-center justify-between px-7 py-4">
+        {/* Left side: Greeting */}
+        <div className="flex flex-col gap-0.5">
+          <span className="text-foreground-muted text-[10px] font-semibold tracking-[1px] uppercase">
+            XIN CHÀO,
+          </span>
+          <span className="text-foreground text-[14px] font-bold">
+            {displayName} 👋
+          </span>
         </div>
 
+        {/* Right side: Actions */}
+        <div className="flex justify-end gap-2">
+          <Link href="/goals">
+            <div className="flex items-center gap-3">
+              <div className="bg-surface/50 border-border flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border">
+                <Trophy size={20} className="text-accent" />
+              </div>
+            </div>
+          </Link>
+        </div>
+      </div>
+
+      {/* Content Area - Scrollable */}
+      <div className="flex flex-1 flex-col gap-5 overflow-y-auto px-7 pb-7">
         {children}
       </div>
 
       {/* Bottom Tab Bar */}
       <div className="bg-background h-[95px] px-[21px] pt-3 pb-[21px]">
-        <TabBar activeHref={pathname} items={TAB_ITEMS} />
+        <TabBar />
       </div>
     </div>
   );

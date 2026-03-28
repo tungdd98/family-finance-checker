@@ -3,7 +3,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Drawer } from "@base-ui/react/drawer";
@@ -11,6 +11,7 @@ import { X } from "lucide-react";
 import { sellAssetSchema, type SellAssetInput } from "@/lib/validations/gold";
 import { sellAssetAction } from "@/app/actions/gold";
 import { Button } from "@/components/ui/button";
+import { DatePickerDrawer } from "./DatePickerDrawer";
 import type { GoldAsset } from "@/lib/services/gold";
 
 interface Props {
@@ -32,11 +33,10 @@ export function SellAssetSheet({ position, open, onOpenChange }: Props) {
     },
   });
 
-  if (!position) return null;
-
-  const remaining = position.quantity - position.sold_quantity;
+  const remaining = position ? position.quantity - position.sold_quantity : 0;
 
   const onSubmit = (data: SellAssetInput) => {
+    if (!position) return;
     startTransition(async () => {
       const result = await sellAssetAction(position.id, data);
       if (result?.error) {
@@ -54,8 +54,8 @@ export function SellAssetSheet({ position, open, onOpenChange }: Props) {
   return (
     <Drawer.Root open={open} onOpenChange={onOpenChange}>
       <Drawer.Portal>
-        <Drawer.Backdrop className="fixed inset-0 z-40 bg-black/60" />
-        <Drawer.Popup className="bg-background fixed inset-x-0 bottom-0 z-50 flex flex-col">
+        <Drawer.Backdrop className="fixed inset-0 z-40 bg-black/60 opacity-100 transition-opacity duration-300 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
+        <Drawer.Popup className="bg-background fixed inset-x-0 bottom-0 z-50 flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-[ending-style]:translate-y-full data-[starting-style]:translate-y-full">
           {/* Header */}
           <div className="border-border flex items-center justify-between border-b px-7 pt-5 pb-4">
             <span className="text-foreground text-[16px] font-bold tracking-[-0.5px]">
@@ -69,7 +69,7 @@ export function SellAssetSheet({ position, open, onOpenChange }: Props) {
           {/* Asset info */}
           <div className="border-border border-b px-7 py-4">
             <p className="text-foreground-secondary text-[13px]">
-              {remaining} chỉ {position.brand_name}
+              {remaining} chỉ {position?.brand_name}
             </p>
           </div>
 
@@ -140,14 +140,17 @@ export function SellAssetSheet({ position, open, onOpenChange }: Props) {
               <span className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px]">
                 NGÀY BÁN
               </span>
-              <div className="bg-background border-border flex h-12 items-center border px-3.5">
-                <input
-                  type="date"
-                  disabled={isPending}
-                  className="text-foreground w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
-                  {...form.register("sell_date")}
-                />
-              </div>
+              <Controller
+                name="sell_date"
+                control={form.control}
+                render={({ field }) => (
+                  <DatePickerDrawer
+                    value={field.value ?? ""}
+                    onChange={field.onChange}
+                    disabled={isPending}
+                  />
+                )}
+              />
             </div>
 
             <Button

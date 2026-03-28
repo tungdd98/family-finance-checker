@@ -1,6 +1,8 @@
-// src/app/(protected)/gold/page.tsx
 import { createClient } from "@/lib/supabase/server";
-import { getActiveGoldAssets } from "@/lib/services/gold";
+import {
+  getActiveGoldAssets,
+  getExternalGoldPrices,
+} from "@/lib/services/gold";
 import { GoldClient } from "./GoldClient";
 
 export default async function GoldPage() {
@@ -9,7 +11,10 @@ export default async function GoldPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const positions = user ? await getActiveGoldAssets(supabase, user.id) : [];
+  const [positions, prices] = await Promise.all([
+    user ? getActiveGoldAssets(supabase, user.id) : [],
+    getExternalGoldPrices(),
+  ]);
 
-  return <GoldClient initialPositions={positions} />;
+  return <GoldClient initialPositions={positions} initialPrices={prices} />;
 }

@@ -21,8 +21,10 @@ export function BrandPicker({
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
 
-  const filtered = prices.filter((p) =>
-    p.type_code.toLowerCase().includes(query.toLowerCase())
+  const filtered = prices.filter(
+    (p) =>
+      (p.name && p.name.toLowerCase().includes(query.toLowerCase())) ||
+      p.type_code.toLowerCase().includes(query.toLowerCase())
   );
 
   return (
@@ -52,8 +54,8 @@ export function BrandPicker({
       {/* Dialog */}
       <Dialog.Root open={open} onOpenChange={setOpen}>
         <Dialog.Portal>
-          <Dialog.Backdrop className="fixed inset-0 z-40 bg-black/60" />
-          <Dialog.Popup className="bg-surface fixed inset-x-0 bottom-0 z-50 flex max-h-[80dvh] flex-col">
+          <Dialog.Backdrop className="fixed inset-0 z-40 bg-black/60 opacity-100 transition-opacity duration-300 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
+          <Dialog.Popup className="bg-surface fixed inset-x-0 bottom-0 z-50 flex max-h-[80dvh] flex-col transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-[ending-style]:translate-y-full data-[starting-style]:translate-y-full">
             {/* Header */}
             <div className="flex items-center justify-between px-7 pt-5 pb-4">
               <Dialog.Title className="text-foreground text-[16px] font-bold tracking-[-0.5px]">
@@ -89,7 +91,7 @@ export function BrandPicker({
                   key={p.type_code}
                   type="button"
                   onClick={() => {
-                    onSelect(p.type_code, p.type_code);
+                    onSelect(p.type_code, p.name || p.type_code);
                     setOpen(false);
                     setQuery("");
                   }}
@@ -106,7 +108,14 @@ export function BrandPicker({
                         : "bg-foreground-muted"
                     }`}
                   />
-                  <span className="text-[14px] font-medium">{p.type_code}</span>
+                  <div className="flex flex-col items-start gap-1">
+                    <span className="text-[14px] font-medium">
+                      {p.name || p.type_code}
+                    </span>
+                    <span className="text-foreground-muted text-[11px]">
+                      {p.type_code}
+                    </span>
+                  </div>
                 </button>
               ))}
             </div>
