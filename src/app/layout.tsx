@@ -16,6 +16,12 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Family Finance",
   description: "Quản lý tài chính gia đình tinh tế",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Family Finance",
+  },
 };
 
 export const viewport: Viewport = {
