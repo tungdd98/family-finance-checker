@@ -11,3 +11,21 @@ This version has breaking changes — APIs, conventions, and file structure may 
 Before coding any UI component or page, open and read the corresponding `.pen` design file using the `mcp__pencil__open_document` and `mcp__pencil__batch_get` tools. The `.pen` file is the source of truth for colors, spacing, typography, layout, and component structure. Never hardcode visual values from memory — always derive them from the design file.
 
 **Mobile mockup chrome — do not implement:** The iOS-style status bar (showing static time "9:41", signal, wifi, and battery icons) that appears at the top of mobile screen mockups is design decoration only. It simulates a real phone screen for visual context. Do NOT render it as app UI.
+
+# Tailwind CSS
+
+**Use canonical class names — never arbitrary values when a canonical equivalent exists.** The IDE enforces `suggestCanonicalClasses`. Examples:
+
+- `h-[2px]` → `h-0.5` (0.5 × 4 = 2px)
+- `h-[4px]` → `h-1`
+- `w-[8px]` → `w-2`
+- `p-[16px]` → `p-4`
+
+Always prefer Tailwind's spacing scale over `[Npx]` arbitrary values. Only use `[value]` syntax when no canonical class exists (e.g. `text-[13px]`, `tracking-[-1px]`, `text-[28px]`).
+
+Common canonical equivalents (Npx → scale):
+
+- `2px` → `0.5` · `3px` → `0.75` · `4px` → `1` · `6px` → `1.5`
+- `8px` → `2` · `10px` → `2.5` · `12px` → `3` · `14px` → `3.5`
+- `16px` → `4` · `18px` → `4.5` · `20px` → `5` · `24px` → `6`
+- `28px` → `7` · `32px` → `8` · `36px` → `9` · `40px` → `10`

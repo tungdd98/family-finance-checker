@@ -52,7 +52,7 @@ export default function LoginPage() {
                 htmlFor="email"
                 className="text-foreground-muted flex items-center gap-2 text-[11px] font-semibold tracking-[1.5px]"
               >
-                <span className="bg-accent h-[14px] w-[3px] shrink-0" />
+                <span className="bg-accent h-3.5 w-0.75 shrink-0" />
                 EMAIL
               </Label>
               <Input
@@ -76,7 +76,7 @@ export default function LoginPage() {
                 htmlFor="password"
                 className="text-foreground-muted flex items-center gap-2 text-[11px] font-semibold tracking-[1.5px]"
               >
-                <span className="bg-accent h-[14px] w-[3px] shrink-0" />
+                <span className="bg-accent h-3.5 w-0.75 shrink-0" />
                 MẬT KHẨU
               </Label>
               <Input

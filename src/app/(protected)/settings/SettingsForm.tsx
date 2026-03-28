@@ -63,11 +63,11 @@ export function SettingsForm({ initialData }: Props) {
               TIỀN MẶT
             </span>
           </div>
-          <div className="bg-surface flex flex-col gap-3 p-[18px]">
+          <div className="bg-surface flex flex-col gap-3 p-4.5">
             <p className="text-foreground-secondary text-[12px] font-medium">
               Số dư ban đầu
             </p>
-            <div className="bg-background border-border flex h-12 items-center border px-[14px]">
+            <div className="bg-background border-border flex h-12 items-center border px-3.5">
               <input
                 inputMode="numeric"
                 placeholder="0 đ"
@@ -96,7 +96,7 @@ export function SettingsForm({ initialData }: Props) {
               THÔNG TIN CÁ NHÂN
             </span>
           </div>
-          <div className="bg-surface border-border-strong flex flex-col gap-2 border px-4 py-[14px]">
+          <div className="bg-surface border-border-strong flex flex-col gap-2 border px-4 py-3.5">
             <label
               htmlFor="display_name"
               className="text-foreground-muted text-[10px] font-medium tracking-[1.5px]"
