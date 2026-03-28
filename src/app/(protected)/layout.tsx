@@ -28,7 +28,7 @@ export default async function ProtectedLayout({
   return (
     <div className="bg-background flex h-dvh flex-col overflow-hidden">
       {/* Header Row - Fixed at top */}
-      <div className="flex items-center justify-between px-7 py-4">
+      <div className="flex items-center justify-between px-5 py-4">
         {/* Left side: Greeting */}
         <div className="flex flex-col gap-0.5">
           <span className="text-foreground-muted text-[10px] font-semibold tracking-[1px] uppercase">
@@ -52,12 +52,12 @@ export default async function ProtectedLayout({
       </div>
 
       {/* Content Area - Scrollable */}
-      <div className="flex flex-1 flex-col gap-5 overflow-y-auto px-7 pb-7">
+      <div className="flex flex-1 flex-col gap-5 overflow-y-auto px-5 pb-5">
         {children}
       </div>
 
       {/* Bottom Tab Bar */}
-      <div className="bg-background h-[95px] px-[21px] pt-3 pb-[21px]">
+      <div className="bg-background h-[95px] px-5 pt-3 pb-[21px]">
         <TabBar />
       </div>
     </div>
