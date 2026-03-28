@@ -17,6 +17,10 @@ export const metadata: Metadata = {
   title: "Family Finance",
   description: "Quản lý tài chính gia đình tinh tế",
   manifest: "/manifest.webmanifest",
+  icons: {
+    icon: "/favicon.ico?v=2",
+    apple: "/icons/icon-192.png?v=2",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
