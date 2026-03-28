@@ -19,9 +19,5 @@ export default async function SettingsPage() {
     initial_cash_balance: settings?.initial_cash_balance ?? 0,
   };
 
-  return (
-    <div className="bg-background min-h-screen">
-      <SettingsForm initialData={initialData} />
-    </div>
-  );
+  return <SettingsForm initialData={initialData} />;
 }
