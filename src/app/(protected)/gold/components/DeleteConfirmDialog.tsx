@@ -2,6 +2,7 @@
 "use client";
 
 import { useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { Dialog } from "@base-ui/react/dialog";
 import { toast } from "sonner";
 import { deleteAssetAction } from "@/app/actions/gold";
@@ -15,6 +16,7 @@ interface Props {
 
 export function DeleteConfirmDialog({ position, open, onOpenChange }: Props) {
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   if (!position) return null;
 
@@ -25,6 +27,7 @@ export function DeleteConfirmDialog({ position, open, onOpenChange }: Props) {
         toast.error(result.error);
       } else {
         toast.success("Đã xóa tài sản");
+        router.refresh();
         onOpenChange(false);
       }
     });

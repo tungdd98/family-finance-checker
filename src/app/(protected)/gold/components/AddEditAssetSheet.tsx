@@ -3,7 +3,8 @@
 
 import type { ReactNode } from "react";
 import { useState, useTransition } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { useForm, Controller, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Drawer } from "@base-ui/react/drawer";
@@ -33,6 +34,7 @@ export function AddEditAssetSheet({
   onOpenChange,
 }: Props) {
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
   const [unit, setUnit] = useState<Unit>("chi");
   const [priceDisplay, setPriceDisplay] = useState(
     position ? String(position.buy_price_per_chi) : ""
@@ -52,8 +54,11 @@ export function AddEditAssetSheet({
     },
   });
 
-  const rawQty = form.watch("quantity") ?? 0;
-  const rawPrice = form.watch("buy_price_per_chi") ?? 0;
+  const brandCode = useWatch({ control: form.control, name: "brand_code" });
+  const brandName = useWatch({ control: form.control, name: "brand_name" });
+  const rawQty = useWatch({ control: form.control, name: "quantity" }) ?? 0;
+  const rawPrice =
+    useWatch({ control: form.control, name: "buy_price_per_chi" }) ?? 0;
   const totalVnd =
     rawQty > 0 && rawPrice > 0
       ? (() => {
@@ -91,6 +96,7 @@ export function AddEditAssetSheet({
         toast.success(
           mode === "add" ? "Đã thêm tài sản" : "Đã cập nhật tài sản"
         );
+        router.refresh();
         onOpenChange(false);
         form.reset();
       }
@@ -122,15 +128,13 @@ export function AddEditAssetSheet({
               <Controller
                 name="brand_code"
                 control={form.control}
-                render={(_) => (
+                render={({ field }) => (
                   <BrandPicker
                     prices={prices}
-                    selectedCode={form.watch("brand_code")}
-                    selectedName={form.watch("brand_name")}
+                    selectedCode={brandCode}
+                    selectedName={brandName}
                     onSelect={(code, name) => {
-                      form.setValue("brand_code", code, {
-                        shouldValidate: true,
-                      });
+                      field.onChange(code);
                       form.setValue("brand_name", name);
                     }}
                   />

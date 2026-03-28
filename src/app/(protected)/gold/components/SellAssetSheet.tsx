@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -20,16 +21,14 @@ interface Props {
 
 export function SellAssetSheet({ position, open, onOpenChange }: Props) {
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
   const [priceDisplay, setPriceDisplay] = useState("");
-
-  const today = new Date().toISOString().slice(0, 10);
 
   const form = useForm<SellAssetInput>({
     resolver: zodResolver(sellAssetSchema),
     defaultValues: {
       sell_quantity: undefined,
       sell_price_per_chi: undefined,
-      sell_date: today,
     },
   });
 
@@ -44,6 +43,7 @@ export function SellAssetSheet({ position, open, onOpenChange }: Props) {
         toast.error(result.error);
       } else {
         toast.success("Đã bán tài sản");
+        router.refresh();
         onOpenChange(false);
         form.reset();
         setPriceDisplay("");

@@ -127,6 +127,7 @@ export function GoldClient({ initialPositions }: Props) {
       />
 
       <AddEditAssetSheet
+        key={selectedPosition?.id ?? "edit"}
         mode="edit"
         position={selectedPosition ?? undefined}
         prices={prices}
