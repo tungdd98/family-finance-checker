@@ -50,7 +50,7 @@ export function SettingsForm({ initialData }: Props) {
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
       {/* Top section: title + cash balance */}
-      <div className="flex flex-col gap-6 px-7 pb-6">
+      <div className="flex flex-col gap-6 pb-6">
         <h1 className="text-foreground pt-4 text-[28px] font-bold tracking-[-1px]">
           CÀI ĐẶT
         </h1>
@@ -87,7 +87,7 @@ export function SettingsForm({ initialData }: Props) {
       </div>
 
       {/* Bottom section: personal info + save button */}
-      <div className="flex flex-col gap-8 px-7 pb-12">
+      <div className="flex flex-col gap-8 pb-12">
         {/* THÔNG TIN CÁ NHÂN */}
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-3">
