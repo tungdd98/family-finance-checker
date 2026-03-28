@@ -11,17 +11,23 @@ import {
   type SavingsAccount,
   calcAccruedInterest,
 } from "@/lib/services/savings";
+import type { Goal, GoalProjection } from "@/lib/services/goals";
+import { GoalsDashboardCard } from "./components/GoalsDashboardCard";
 
 interface Props {
   goldPositions: GoldAsset[];
   initialPrices: GoldPrice[];
   savingsAccounts: SavingsAccount[];
+  goal: Goal | null;
+  goalProjection: GoalProjection | null;
 }
 
 export function DashboardClient({
   goldPositions,
   initialPrices = [],
   savingsAccounts,
+  goal,
+  goalProjection,
 }: Props) {
   const [prices, setPrices] = useState<GoldPrice[]>(initialPrices);
 
@@ -241,6 +247,8 @@ export function DashboardClient({
           </>
         )}
       </div>
+
+      <GoalsDashboardCard goal={goal} projection={goalProjection} />
     </div>
   );
 }
