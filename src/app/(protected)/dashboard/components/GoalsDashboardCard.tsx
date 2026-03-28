@@ -56,14 +56,16 @@ export function GoalsDashboardCard({ goal, projection }: Props) {
               {formatVND(projection.currentAssets)} /{" "}
               {formatVND(goal.target_amount)}
             </span>
-            {projection.estimatedDate && projection.monthsToGoal! > 0 && (
-              <span className="text-foreground-muted text-[12px]">
-                Dự kiến{" "}
-                <span className="font-semibold text-[#D4AF37]">
-                  {formatEstimatedDate(projection.estimatedDate)}
+            {projection.estimatedDate &&
+              projection.monthsToGoal !== null &&
+              projection.monthsToGoal > 0 && (
+                <span className="text-foreground-muted text-[12px]">
+                  Dự kiến{" "}
+                  <span className="font-semibold text-[#D4AF37]">
+                    {formatEstimatedDate(projection.estimatedDate)}
+                  </span>
                 </span>
-              </span>
-            )}
+              )}
           </div>
         </div>
       ) : (
