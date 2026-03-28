@@ -26,9 +26,9 @@ export default async function ProtectedLayout({
     settings?.display_name || user?.email?.split("@")[0] || "Bạn";
 
   return (
-    <div className="bg-background flex h-dvh flex-col overflow-hidden">
+    <div className="bg-background flex h-dvh flex-col overflow-hidden overscroll-none">
       {/* Header Row - Fixed at top */}
-      <div className="flex items-center justify-between px-5 py-4">
+      <div className="flex touch-none items-center justify-between px-5 py-4 select-none">
         {/* Left side: Greeting */}
         <div className="flex flex-col gap-0.5">
           <span className="text-foreground-muted text-[10px] font-semibold tracking-[1px] uppercase">
@@ -52,12 +52,12 @@ export default async function ProtectedLayout({
       </div>
 
       {/* Content Area - Scrollable */}
-      <div className="flex flex-1 flex-col gap-5 overflow-y-auto px-5 pb-5">
+      <div className="flex flex-1 flex-col gap-5 overflow-y-auto overscroll-contain px-5 pb-5">
         {children}
       </div>
 
       {/* Bottom Tab Bar */}
-      <div className="bg-background h-[95px] px-5 pt-3 pb-[21px]">
+      <div className="bg-background border-border h-[95px] touch-none border-t px-5 pt-3 pb-[21px] select-none">
         <TabBar />
       </div>
     </div>
