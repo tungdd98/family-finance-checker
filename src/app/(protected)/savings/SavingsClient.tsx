@@ -72,7 +72,7 @@ export function SavingsClient({ initialAccounts }: Props) {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col gap-3 pb-24">
+        <div className="flex flex-col gap-3">
           {initialAccounts.map((account) => (
             <SavingsCard
               key={account.id}

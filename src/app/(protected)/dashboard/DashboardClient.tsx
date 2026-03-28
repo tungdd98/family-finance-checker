@@ -169,7 +169,7 @@ export function DashboardClient({
         ) : (
           <>
             {/* Total value */}
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 pt-3">
               <p className="text-foreground text-[24px] font-bold tracking-[-1px]">
                 {hasGoldPrices ? formatVND(goldTotalValue) : "—"}
               </p>
@@ -192,7 +192,7 @@ export function DashboardClient({
 
             {/* Tracked prices */}
             {trackedBrands.length > 0 && (
-              <div className="flex flex-col gap-0">
+              <div className="flex flex-col gap-0 pt-5">
                 <div className="flex items-center gap-3 pb-2">
                   <div className="bg-accent h-3.5 w-0.75 shrink-0" />
                   <span className="text-foreground-secondary text-[11px] font-semibold tracking-[1.5px]">

@@ -45,20 +45,20 @@ export function MarketClient({ initialPrices = [] }: Props) {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 px-1">
       {/* World Gold Card */}
       {worldGold && (
-        <div className="bg-surface border-border rounded-xl border p-5">
+        <div className="bg-surface border-border border p-5">
           <div className="flex items-center justify-between gap-4">
             <div className="flex min-w-0 items-center gap-3">
-              <div className="bg-accent/10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
+              <div className="bg-accent/10 flex h-10 w-10 shrink-0 items-center justify-center">
                 <Globe size={20} className="text-accent" />
               </div>
               <div className="flex min-w-0 flex-col">
                 <span className="text-foreground truncate text-[15px] font-bold">
                   {worldGold.name}
                 </span>
-                <span className="text-foreground-muted text-[11px] tracking-wider uppercase">
+                <span className="text-foreground-muted text-[11px] font-semibold tracking-wider uppercase">
                   {worldGold.type_code}
                 </span>
               </div>
@@ -70,25 +70,25 @@ export function MarketClient({ initialPrices = [] }: Props) {
                   minimumFractionDigits: 2,
                 })}
               </span>
-              {formatChange(worldGold.change_buy)}
+              <div className="h-4">{formatChange(worldGold.change_buy)}</div>
             </div>
           </div>
         </div>
       )}
 
       {/* Local Markets Table */}
-      <div className="bg-surface border-border overflow-visible rounded-xl border">
+      <div className="bg-surface border-border border">
         <div className="flex flex-col">
           {/* Table Header */}
-          <div className="bg-surface/80 border-border sticky top-0 z-10 flex items-center justify-between border-b px-5 py-3 backdrop-blur-md">
-            <span className="text-foreground-muted text-[10px] font-bold tracking-[1px] uppercase">
+          <div className="bg-surface/90 border-border sticky top-0 z-10 flex items-center justify-between border-b px-5 py-3 backdrop-blur-md">
+            <span className="text-foreground-muted text-[10px] font-bold tracking-[1.5px] uppercase">
               LOẠI VÀNG
             </span>
-            <div className="flex">
-              <span className="text-foreground-muted w-[90px] text-right text-[10px] font-bold tracking-[1px] uppercase">
+            <div className="flex items-center">
+              <span className="text-foreground-muted w-[100px] text-right text-[10px] font-bold tracking-[1.5px] uppercase">
                 MUA VÀO
               </span>
-              <span className="text-foreground-muted w-[90px] text-right text-[10px] font-bold tracking-[1px] uppercase">
+              <span className="text-foreground-muted w-[100px] text-right text-[10px] font-bold tracking-[1.5px] uppercase">
                 BÁN RA
               </span>
             </div>
@@ -106,32 +106,32 @@ export function MarketClient({ initialPrices = [] }: Props) {
                     <span className="text-foreground truncate text-[14px] font-bold">
                       {p.name}
                     </span>
-                    <div className="mt-0.5 flex items-center gap-1.5">
+                    <div className="mt-1 flex items-center gap-1.5">
                       <Clock size={10} className="text-foreground-muted" />
                       <span className="text-foreground-muted text-[10px]">
                         {p.update_time}
                       </span>
                     </div>
                   </div>
-                  <div className="flex">
-                    <div className="flex w-[90px] flex-col items-end">
+                  <div className="flex items-start">
+                    <div className="flex w-[100px] flex-col items-end">
                       <span className="text-foreground text-[13px] font-bold">
-                        {p.buy > 0 ? formatVND(p.buy) : "-"}
+                        {p.buy > 0 ? formatVND(p.buy) : "—"}
                       </span>
-                      {formatChange(p.change_buy)}
+                      <div className="h-4">{formatChange(p.change_buy)}</div>
                     </div>
-                    <div className="ml-2 flex w-[90px] flex-col items-end">
+                    <div className="flex w-[100px] flex-col items-end">
                       <span className="text-foreground text-[13px] font-bold">
-                        {p.sell > 0 ? formatVND(p.sell) : "-"}
+                        {p.sell > 0 ? formatVND(p.sell) : "—"}
                       </span>
-                      {formatChange(p.change_sell)}
+                      <div className="h-4">{formatChange(p.change_sell)}</div>
                     </div>
                   </div>
                 </div>
               ))
             ) : (
               <div className="flex h-32 items-center justify-center">
-                <span className="text-foreground-muted text-[13px]">
+                <span className="text-foreground-muted animate-pulse text-[13px] font-medium">
                   Đang tải dữ liệu...
                 </span>
               </div>
@@ -141,7 +141,7 @@ export function MarketClient({ initialPrices = [] }: Props) {
       </div>
 
       <div className="pb-8 text-center">
-        <p className="text-foreground-muted text-[11px] italic">
+        <p className="text-foreground-muted text-[10px] font-medium tracking-wide uppercase opacity-70">
           Đơn vị: VND/Lượng | Giá vàng TG: USD/Ounce
         </p>
       </div>

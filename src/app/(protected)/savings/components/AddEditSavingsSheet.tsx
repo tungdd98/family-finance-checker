@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -42,9 +42,7 @@ export function AddEditSavingsSheet({
   const isEdit = mode === "edit";
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
-  const [principalDisplay, setPrincipalDisplay] = useState(
-    account ? formatVND(account.principal) : ""
-  );
+  const [principalDisplay, setPrincipalDisplay] = useState("");
 
   const form = useForm<SavingsInput>({
     resolver: zodResolver(savingsSchema),
@@ -70,6 +68,37 @@ export function AddEditSavingsSheet({
           rollover_type: "principal_interest",
         },
   });
+
+  useEffect(() => {
+    if (open) {
+      if (isEdit && account) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setPrincipalDisplay(formatVND(account.principal));
+        form.reset({
+          bank_name: account.bank_name,
+          account_name: account.account_name ?? "",
+          note: account.note ?? "",
+          principal: account.principal,
+          interest_rate: account.interest_rate,
+          term_months: account.term_months ?? 0,
+          start_date: account.start_date,
+          rollover_type: account.rollover_type,
+        });
+      } else {
+        setPrincipalDisplay("");
+        form.reset({
+          bank_name: "",
+          account_name: "",
+          note: "",
+          principal: 0,
+          interest_rate: 0,
+          term_months: 12,
+          start_date: new Date().toISOString().split("T")[0],
+          rollover_type: "principal_interest",
+        });
+      }
+    }
+  }, [open, isEdit, account, form]);
 
   const handlePrincipalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value.replace(/\D/g, "");

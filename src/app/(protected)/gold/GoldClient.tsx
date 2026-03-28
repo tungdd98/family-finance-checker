@@ -93,7 +93,7 @@ export function GoldClient({ initialPositions, initialPrices = [] }: Props) {
           </p>
         </div>
       ) : (
-        <div className="flex flex-col gap-3 pb-24">
+        <div className="flex flex-col gap-3">
           {filteredPositions.map((pos) => (
             <PositionCard
               key={pos.id}

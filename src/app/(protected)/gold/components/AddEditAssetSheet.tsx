@@ -2,7 +2,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, Controller, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,9 +37,7 @@ export function AddEditAssetSheet({
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const [unit, setUnit] = useState<Unit>("chi");
-  const [priceDisplay, setPriceDisplay] = useState(
-    position ? String(position.buy_price_per_chi) : ""
-  );
+  const [priceDisplay, setPriceDisplay] = useState("");
 
   const today = new Date().toISOString().slice(0, 10);
 
@@ -54,6 +52,35 @@ export function AddEditAssetSheet({
       note: position?.note ?? "",
     },
   });
+
+  useEffect(() => {
+    if (open) {
+      if (mode === "edit" && position) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setPriceDisplay(
+          new Intl.NumberFormat("vi-VN").format(position.buy_price_per_chi)
+        );
+        form.reset({
+          brand_code: position.brand_code,
+          brand_name: position.brand_name,
+          quantity: position.quantity,
+          buy_price_per_chi: position.buy_price_per_chi,
+          buy_date: position.buy_date,
+          note: position.note ?? "",
+        });
+      } else {
+        setPriceDisplay("");
+        form.reset({
+          brand_code: "",
+          brand_name: "",
+          quantity: undefined,
+          buy_price_per_chi: undefined,
+          buy_date: today,
+          note: "",
+        });
+      }
+    }
+  }, [open, mode, position, form, today]);
 
   const brandCode = useWatch({ control: form.control, name: "brand_code" });
   const brandName = useWatch({ control: form.control, name: "brand_name" });
