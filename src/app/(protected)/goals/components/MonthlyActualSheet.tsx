@@ -37,7 +37,9 @@ export function MonthlyActualSheet({
 }: Props) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
-  const [incomeDisplay, setIncomeDisplay] = useState("");
+  const [incomeHusbandDisplay, setIncomeHusbandDisplay] = useState("");
+  const [incomeWifeDisplay, setIncomeWifeDisplay] = useState("");
+  const [incomeExtraDisplay, setIncomeExtraDisplay] = useState("");
   const [expenseDisplay, setExpenseDisplay] = useState("");
 
   const form = useForm<MonthlyActualInput>({
@@ -45,15 +47,19 @@ export function MonthlyActualSheet({
     defaultValues: {
       year,
       month,
-      actual_income: 0,
+      actual_income_husband: 0,
+      actual_income_wife: 0,
+      actual_income_extra: 0,
       actual_expense: 0,
       note: null,
     },
   });
 
-  const income = form.watch("actual_income");
-  const expense = form.watch("actual_expense");
-  const surplus = income - expense;
+  const incomeHusband = form.watch("actual_income_husband") || 0;
+  const incomeWife = form.watch("actual_income_wife") || 0;
+  const incomeExtra = form.watch("actual_income_extra") || 0;
+  const expense = form.watch("actual_expense") || 0;
+  const surplus = incomeHusband + incomeWife + incomeExtra - expense;
   const baseline = cashFlow
     ? cashFlow.avg_monthly_income - cashFlow.avg_monthly_expense
     : null;
@@ -65,13 +71,29 @@ export function MonthlyActualSheet({
         form.reset({
           year,
           month,
-          actual_income: existing.actual_income,
+          actual_income_husband: existing.actual_income_husband,
+          actual_income_wife: existing.actual_income_wife,
+          actual_income_extra: existing.actual_income_extra,
           actual_expense: existing.actual_expense,
           note: existing.note ?? null,
         });
-        setIncomeDisplay(
-          existing.actual_income > 0
-            ? new Intl.NumberFormat("vi-VN").format(existing.actual_income)
+        setIncomeHusbandDisplay(
+          existing.actual_income_husband > 0
+            ? new Intl.NumberFormat("vi-VN").format(
+                existing.actual_income_husband
+              )
+            : ""
+        );
+        setIncomeWifeDisplay(
+          existing.actual_income_wife > 0
+            ? new Intl.NumberFormat("vi-VN").format(existing.actual_income_wife)
+            : ""
+        );
+        setIncomeExtraDisplay(
+          existing.actual_income_extra > 0
+            ? new Intl.NumberFormat("vi-VN").format(
+                existing.actual_income_extra
+              )
             : ""
         );
         setExpenseDisplay(
@@ -83,11 +105,15 @@ export function MonthlyActualSheet({
         form.reset({
           year,
           month,
-          actual_income: 0,
+          actual_income_husband: 0,
+          actual_income_wife: 0,
+          actual_income_extra: 0,
           actual_expense: 0,
           note: null,
         });
-        setIncomeDisplay("");
+        setIncomeHusbandDisplay("");
+        setIncomeWifeDisplay("");
+        setIncomeExtraDisplay("");
         setExpenseDisplay("");
       }
     }
@@ -95,7 +121,11 @@ export function MonthlyActualSheet({
 
   const makeChangeHandler =
     (
-      field: "actual_income" | "actual_expense",
+      field:
+        | "actual_income_husband"
+        | "actual_income_wife"
+        | "actual_income_extra"
+        | "actual_expense",
       setDisplay: (v: string) => void
     ) =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -138,17 +168,59 @@ export function MonthlyActualSheet({
           >
             <div className="flex flex-col gap-2">
               <Label>
-                Thu nhập tháng {month}/{year} *
+                Thu nhập chồng ({month}/{year}) *
               </Label>
               <div className="bg-background border-border flex h-12 items-center border px-3.5">
                 <input
-                  value={incomeDisplay}
+                  value={incomeHusbandDisplay}
                   onChange={makeChangeHandler(
-                    "actual_income",
-                    setIncomeDisplay
+                    "actual_income_husband",
+                    setIncomeHusbandDisplay
                   )}
                   inputMode="numeric"
-                  placeholder="VD: 47.500.000"
+                  placeholder="VD: 25.000.000"
+                  disabled={isPending}
+                  className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+                />
+                <span className="text-foreground-muted shrink-0 text-[13px]">
+                  ₫
+                </span>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label>
+                Thu nhập vợ ({month}/{year}) *
+              </Label>
+              <div className="bg-background border-border flex h-12 items-center border px-3.5">
+                <input
+                  value={incomeWifeDisplay}
+                  onChange={makeChangeHandler(
+                    "actual_income_wife",
+                    setIncomeWifeDisplay
+                  )}
+                  inputMode="numeric"
+                  placeholder="VD: 20.000.000"
+                  disabled={isPending}
+                  className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+                />
+                <span className="text-foreground-muted shrink-0 text-[13px]">
+                  ₫
+                </span>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label>T.Nhập Ngoài (Tùy Chọn)</Label>
+              <div className="bg-background border-border flex h-12 items-center border px-3.5">
+                <input
+                  value={incomeExtraDisplay}
+                  onChange={makeChangeHandler(
+                    "actual_income_extra",
+                    setIncomeExtraDisplay
+                  )}
+                  inputMode="numeric"
+                  placeholder="VD: 2.500.000 (Để trống nếu 0)"
                   disabled={isPending}
                   className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
                 />

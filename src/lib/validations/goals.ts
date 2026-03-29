@@ -19,7 +19,8 @@ export const goalSchema = z.object({
 export type GoalInput = z.infer<typeof goalSchema>;
 
 export const cashFlowSchema = z.object({
-  avg_monthly_income: z.number().int().min(0, "Thu nhập không được âm"),
+  avg_monthly_income_husband: z.number().int().min(0, "Thu nhập không được âm"),
+  avg_monthly_income_wife: z.number().int().min(0, "Thu nhập không được âm"),
   avg_monthly_expense: z.number().int().min(0, "Chi tiêu không được âm"),
 });
 
@@ -28,7 +29,9 @@ export type CashFlowInput = z.infer<typeof cashFlowSchema>;
 export const monthlyActualSchema = z.object({
   year: z.number().int(),
   month: z.number().int().min(1).max(12),
-  actual_income: z.number().int().min(0, "Thu nhập không được âm"),
+  actual_income_husband: z.number().int().min(0, "Thu nhập không được âm"),
+  actual_income_wife: z.number().int().min(0, "Thu nhập không được âm"),
+  actual_income_extra: z.number().int().min(0, "Thu nhập không được âm"),
   actual_expense: z.number().int().min(0, "Chi tiêu không được âm"),
   note: z.string().nullable().optional(),
 });

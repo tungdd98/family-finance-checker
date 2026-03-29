@@ -28,30 +28,45 @@ function stripFormatting(n: number) {
 export function CashFlowSheet({ cashFlow, open, onOpenChange }: Props) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
-  const [incomeDisplay, setIncomeDisplay] = useState("");
+  const [incomeHusbandDisplay, setIncomeHusbandDisplay] = useState("");
+  const [incomeWifeDisplay, setIncomeWifeDisplay] = useState("");
   const [expenseDisplay, setExpenseDisplay] = useState("");
 
   const form = useForm<CashFlowInput>({
     resolver: zodResolver(cashFlowSchema),
-    defaultValues: { avg_monthly_income: 0, avg_monthly_expense: 0 },
+    defaultValues: {
+      avg_monthly_income_husband: 0,
+      avg_monthly_income_wife: 0,
+      avg_monthly_expense: 0,
+    },
   });
 
-  const income = form.watch("avg_monthly_income");
-  const expense = form.watch("avg_monthly_expense");
-  const surplus = income - expense;
+  const incomeHusband = form.watch("avg_monthly_income_husband") || 0;
+  const incomeWife = form.watch("avg_monthly_income_wife") || 0;
+  const expense = form.watch("avg_monthly_expense") || 0;
+  const surplus = incomeHusband + incomeWife - expense;
 
   useEffect(() => {
     if (open) {
       if (cashFlow) {
         form.reset({
-          avg_monthly_income: cashFlow.avg_monthly_income,
+          avg_monthly_income_husband: cashFlow.avg_monthly_income_husband,
+          avg_monthly_income_wife: cashFlow.avg_monthly_income_wife,
           avg_monthly_expense: cashFlow.avg_monthly_expense,
         });
-        setIncomeDisplay(stripFormatting(cashFlow.avg_monthly_income));
+        setIncomeHusbandDisplay(
+          stripFormatting(cashFlow.avg_monthly_income_husband)
+        );
+        setIncomeWifeDisplay(stripFormatting(cashFlow.avg_monthly_income_wife));
         setExpenseDisplay(stripFormatting(cashFlow.avg_monthly_expense));
       } else {
-        form.reset({ avg_monthly_income: 0, avg_monthly_expense: 0 });
-        setIncomeDisplay("");
+        form.reset({
+          avg_monthly_income_husband: 0,
+          avg_monthly_income_wife: 0,
+          avg_monthly_expense: 0,
+        });
+        setIncomeHusbandDisplay("");
+        setIncomeWifeDisplay("");
         setExpenseDisplay("");
       }
     }
@@ -59,7 +74,10 @@ export function CashFlowSheet({ cashFlow, open, onOpenChange }: Props) {
 
   const makeChangeHandler =
     (
-      field: "avg_monthly_income" | "avg_monthly_expense",
+      field:
+        | "avg_monthly_income_husband"
+        | "avg_monthly_income_wife"
+        | "avg_monthly_expense",
       setDisplay: (v: string) => void
     ) =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -101,16 +119,16 @@ export function CashFlowSheet({ cashFlow, open, onOpenChange }: Props) {
             className="flex flex-col gap-5 px-7 py-5 pb-10"
           >
             <div className="flex flex-col gap-2">
-              <Label>Thu nhập TB / tháng *</Label>
+              <Label>Thu nhập chồng (TB/tháng) *</Label>
               <div className="bg-background border-border flex h-12 items-center border px-3.5">
                 <input
-                  value={incomeDisplay}
+                  value={incomeHusbandDisplay}
                   onChange={makeChangeHandler(
-                    "avg_monthly_income",
-                    setIncomeDisplay
+                    "avg_monthly_income_husband",
+                    setIncomeHusbandDisplay
                   )}
                   inputMode="numeric"
-                  placeholder="VD: 45.000.000"
+                  placeholder="VD: 25.000.000"
                   disabled={isPending}
                   className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
                 />
@@ -118,9 +136,34 @@ export function CashFlowSheet({ cashFlow, open, onOpenChange }: Props) {
                   ₫
                 </span>
               </div>
-              {form.formState.errors.avg_monthly_income && (
+              {form.formState.errors.avg_monthly_income_husband && (
                 <ErrorMsg>
-                  {form.formState.errors.avg_monthly_income.message}
+                  {form.formState.errors.avg_monthly_income_husband.message}
+                </ErrorMsg>
+              )}
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label>Thu nhập vợ (TB/tháng) *</Label>
+              <div className="bg-background border-border flex h-12 items-center border px-3.5">
+                <input
+                  value={incomeWifeDisplay}
+                  onChange={makeChangeHandler(
+                    "avg_monthly_income_wife",
+                    setIncomeWifeDisplay
+                  )}
+                  inputMode="numeric"
+                  placeholder="VD: 20.000.000"
+                  disabled={isPending}
+                  className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+                />
+                <span className="text-foreground-muted shrink-0 text-[13px]">
+                  ₫
+                </span>
+              </div>
+              {form.formState.errors.avg_monthly_income_wife && (
+                <ErrorMsg>
+                  {form.formState.errors.avg_monthly_income_wife.message}
                 </ErrorMsg>
               )}
             </div>

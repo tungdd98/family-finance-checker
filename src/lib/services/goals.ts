@@ -25,6 +25,8 @@ export interface HouseholdCashFlow {
   id: string;
   user_id: string;
   avg_monthly_income: number;
+  avg_monthly_income_husband: number;
+  avg_monthly_income_wife: number;
   avg_monthly_expense: number;
   created_at: string;
   updated_at: string;
@@ -36,6 +38,9 @@ export interface MonthlyActual {
   year: number;
   month: number;
   actual_income: number;
+  actual_income_husband: number;
+  actual_income_wife: number;
+  actual_income_extra: number;
   actual_expense: number;
   note: string | null;
   created_at: string;
@@ -156,7 +161,8 @@ export async function upsertCashFlow(
   const { error } = await supabase.from("household_cash_flow").upsert(
     {
       user_id: userId,
-      avg_monthly_income: data.avg_monthly_income,
+      avg_monthly_income_husband: data.avg_monthly_income_husband,
+      avg_monthly_income_wife: data.avg_monthly_income_wife,
       avg_monthly_expense: data.avg_monthly_expense,
       updated_at: new Date().toISOString(),
     },
@@ -191,7 +197,9 @@ export async function upsertMonthlyActual(
       user_id: userId,
       year: data.year,
       month: data.month,
-      actual_income: data.actual_income,
+      actual_income_husband: data.actual_income_husband,
+      actual_income_wife: data.actual_income_wife,
+      actual_income_extra: data.actual_income_extra,
       actual_expense: data.actual_expense,
       note: data.note ?? null,
     },
