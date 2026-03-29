@@ -25,18 +25,6 @@ function stripFormatting(n: number) {
   return n > 0 ? new Intl.NumberFormat("vi-VN").format(n) : "";
 }
 
-function Label({ children }: { children: ReactNode }) {
-  return (
-    <span className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px] uppercase">
-      {children}
-    </span>
-  );
-}
-
-function ErrorMsg({ children }: { children: ReactNode }) {
-  return <p className="text-status-negative text-[11px]">{children}</p>;
-}
-
 export function CashFlowSheet({ cashFlow, open, onOpenChange }: Props) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -59,15 +47,11 @@ export function CashFlowSheet({ cashFlow, open, onOpenChange }: Props) {
           avg_monthly_income: cashFlow.avg_monthly_income,
           avg_monthly_expense: cashFlow.avg_monthly_expense,
         });
-
         setIncomeDisplay(stripFormatting(cashFlow.avg_monthly_income));
-
         setExpenseDisplay(stripFormatting(cashFlow.avg_monthly_expense));
       } else {
         form.reset({ avg_monthly_income: 0, avg_monthly_expense: 0 });
-
         setIncomeDisplay("");
-
         setExpenseDisplay("");
       }
     }
@@ -117,17 +101,23 @@ export function CashFlowSheet({ cashFlow, open, onOpenChange }: Props) {
             className="flex flex-col gap-5 px-7 py-5 pb-10"
           >
             <div className="flex flex-col gap-2">
-              <Label>Thu nhập TB / tháng (₫) *</Label>
-              <input
-                value={incomeDisplay}
-                onChange={makeChangeHandler(
-                  "avg_monthly_income",
-                  setIncomeDisplay
-                )}
-                inputMode="numeric"
-                className="bg-surface border-border text-foreground border p-3 text-[15px]"
-                placeholder="VD: 45.000.000"
-              />
+              <Label>Thu nhập TB / tháng *</Label>
+              <div className="bg-background border-border flex h-12 items-center border px-3.5">
+                <input
+                  value={incomeDisplay}
+                  onChange={makeChangeHandler(
+                    "avg_monthly_income",
+                    setIncomeDisplay
+                  )}
+                  inputMode="numeric"
+                  placeholder="VD: 45.000.000"
+                  disabled={isPending}
+                  className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+                />
+                <span className="text-foreground-muted shrink-0 text-[13px]">
+                  ₫
+                </span>
+              </div>
               {form.formState.errors.avg_monthly_income && (
                 <ErrorMsg>
                   {form.formState.errors.avg_monthly_income.message}
@@ -136,17 +126,23 @@ export function CashFlowSheet({ cashFlow, open, onOpenChange }: Props) {
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label>Chi tiêu TB / tháng (₫) *</Label>
-              <input
-                value={expenseDisplay}
-                onChange={makeChangeHandler(
-                  "avg_monthly_expense",
-                  setExpenseDisplay
-                )}
-                inputMode="numeric"
-                className="bg-surface border-border text-foreground border p-3 text-[15px]"
-                placeholder="VD: 28.000.000"
-              />
+              <Label>Chi tiêu TB / tháng *</Label>
+              <div className="bg-background border-border flex h-12 items-center border px-3.5">
+                <input
+                  value={expenseDisplay}
+                  onChange={makeChangeHandler(
+                    "avg_monthly_expense",
+                    setExpenseDisplay
+                  )}
+                  inputMode="numeric"
+                  placeholder="VD: 28.000.000"
+                  disabled={isPending}
+                  className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+                />
+                <span className="text-foreground-muted shrink-0 text-[13px]">
+                  ₫
+                </span>
+              </div>
               {form.formState.errors.avg_monthly_expense && (
                 <ErrorMsg>
                   {form.formState.errors.avg_monthly_expense.message}
@@ -179,4 +175,16 @@ export function CashFlowSheet({ cashFlow, open, onOpenChange }: Props) {
       </Drawer.Portal>
     </Drawer.Root>
   );
+}
+
+function Label({ children }: { children: ReactNode }) {
+  return (
+    <span className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px] uppercase">
+      {children}
+    </span>
+  );
+}
+
+function ErrorMsg({ children }: { children: ReactNode }) {
+  return <p className="text-status-negative text-[11px]">{children}</p>;
 }

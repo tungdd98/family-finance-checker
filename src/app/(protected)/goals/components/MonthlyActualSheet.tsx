@@ -69,13 +69,11 @@ export function MonthlyActualSheet({
           actual_expense: existing.actual_expense,
           note: existing.note ?? null,
         });
-
         setIncomeDisplay(
           existing.actual_income > 0
             ? new Intl.NumberFormat("vi-VN").format(existing.actual_income)
             : ""
         );
-
         setExpenseDisplay(
           existing.actual_expense > 0
             ? new Intl.NumberFormat("vi-VN").format(existing.actual_expense)
@@ -89,9 +87,7 @@ export function MonthlyActualSheet({
           actual_expense: 0,
           note: null,
         });
-
         setIncomeDisplay("");
-
         setExpenseDisplay("");
       }
     }
@@ -142,31 +138,46 @@ export function MonthlyActualSheet({
           >
             <div className="flex flex-col gap-2">
               <Label>
-                Thu nhập tháng {month}/{year} (₫) *
+                Thu nhập tháng {month}/{year} *
               </Label>
-              <input
-                value={incomeDisplay}
-                onChange={makeChangeHandler("actual_income", setIncomeDisplay)}
-                inputMode="numeric"
-                className="bg-surface border-border text-foreground border p-3 text-[15px]"
-                placeholder="VD: 47.500.000"
-              />
+              <div className="bg-background border-border flex h-12 items-center border px-3.5">
+                <input
+                  value={incomeDisplay}
+                  onChange={makeChangeHandler(
+                    "actual_income",
+                    setIncomeDisplay
+                  )}
+                  inputMode="numeric"
+                  placeholder="VD: 47.500.000"
+                  disabled={isPending}
+                  className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+                />
+                <span className="text-foreground-muted shrink-0 text-[13px]">
+                  ₫
+                </span>
+              </div>
             </div>
 
             <div className="flex flex-col gap-2">
               <Label>
-                Chi tiêu tháng {month}/{year} (₫) *
+                Chi tiêu tháng {month}/{year} *
               </Label>
-              <input
-                value={expenseDisplay}
-                onChange={makeChangeHandler(
-                  "actual_expense",
-                  setExpenseDisplay
-                )}
-                inputMode="numeric"
-                className="bg-surface border-border text-foreground border p-3 text-[15px]"
-                placeholder="VD: 28.000.000"
-              />
+              <div className="bg-background border-border flex h-12 items-center border px-3.5">
+                <input
+                  value={expenseDisplay}
+                  onChange={makeChangeHandler(
+                    "actual_expense",
+                    setExpenseDisplay
+                  )}
+                  inputMode="numeric"
+                  placeholder="VD: 28.000.000"
+                  disabled={isPending}
+                  className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+                />
+                <span className="text-foreground-muted shrink-0 text-[13px]">
+                  ₫
+                </span>
+              </div>
             </div>
 
             {/* Live preview */}
@@ -199,12 +210,15 @@ export function MonthlyActualSheet({
 
             <div className="flex flex-col gap-2">
               <Label>Ghi chú</Label>
-              <textarea
-                {...form.register("note")}
-                rows={2}
-                className="bg-surface border-border text-foreground resize-none border p-3 text-[15px]"
-                placeholder="Tuỳ chọn..."
-              />
+              <div className="bg-background border-border flex min-h-[80px] items-start border px-3.5 py-3">
+                <textarea
+                  {...form.register("note")}
+                  rows={3}
+                  placeholder="Tuỳ chọn..."
+                  disabled={isPending}
+                  className="text-foreground placeholder:text-foreground-muted w-full resize-none bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+                />
+              </div>
             </div>
 
             <Button

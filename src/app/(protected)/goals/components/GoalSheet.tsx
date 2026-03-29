@@ -4,7 +4,7 @@
 import type { ReactNode } from "react";
 import { useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Drawer } from "@base-ui/react/drawer";
@@ -13,6 +13,7 @@ import { goalSchema, type GoalInput } from "@/lib/validations/goals";
 import type { Goal } from "@/lib/services/goals";
 import { saveGoalAction } from "@/app/actions/goals";
 import { Button } from "@/components/ui/button";
+import { DatePickerDrawer } from "@/app/(protected)/gold/components/DatePickerDrawer";
 
 interface Props {
   goal: Goal | null;
@@ -22,18 +23,6 @@ interface Props {
 
 function formatVND(n: number) {
   return n > 0 ? new Intl.NumberFormat("vi-VN").format(n) : "";
-}
-
-function Label({ children }: { children: ReactNode }) {
-  return (
-    <span className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px] uppercase">
-      {children}
-    </span>
-  );
-}
-
-function ErrorMsg({ children }: { children: ReactNode }) {
-  return <p className="text-status-negative text-[11px]">{children}</p>;
 }
 
 export function GoalSheet({ goal, open, onOpenChange }: Props) {
@@ -72,7 +61,6 @@ export function GoalSheet({ goal, open, onOpenChange }: Props) {
           deadline: null,
           note: null,
         });
-
         setAmountDisplay("");
       }
     }
@@ -120,19 +108,25 @@ export function GoalSheet({ goal, open, onOpenChange }: Props) {
             <div className="flex gap-3">
               <div className="flex flex-col gap-2">
                 <Label>Icon</Label>
-                <input
-                  {...form.register("emoji")}
-                  className="bg-surface border-border text-foreground w-14 border p-3 text-center text-xl"
-                  maxLength={2}
-                />
+                <div className="bg-background border-border flex h-12 w-14 items-center justify-center border">
+                  <input
+                    {...form.register("emoji")}
+                    maxLength={2}
+                    disabled={isPending}
+                    className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-center text-xl outline-none disabled:opacity-50"
+                  />
+                </div>
               </div>
               <div className="flex flex-1 flex-col gap-2">
                 <Label>Tên mục tiêu *</Label>
-                <input
-                  {...form.register("name")}
-                  className="bg-surface border-border text-foreground border p-3 text-[15px]"
-                  placeholder="VD: Mua nhà, Du lịch Nhật..."
-                />
+                <div className="bg-background border-border flex h-12 items-center border px-3.5">
+                  <input
+                    {...form.register("name")}
+                    placeholder="VD: Mua nhà, Du lịch Nhật..."
+                    disabled={isPending}
+                    className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+                  />
+                </div>
                 {form.formState.errors.name && (
                   <ErrorMsg>{form.formState.errors.name.message}</ErrorMsg>
                 )}
@@ -141,14 +135,20 @@ export function GoalSheet({ goal, open, onOpenChange }: Props) {
 
             {/* Số tiền mục tiêu */}
             <div className="flex flex-col gap-2">
-              <Label>Số tiền mục tiêu (₫) *</Label>
-              <input
-                value={amountDisplay}
-                onChange={handleAmountChange}
-                inputMode="numeric"
-                className="bg-surface border-border text-foreground border p-3 text-[15px]"
-                placeholder="VD: 1.500.000.000"
-              />
+              <Label>Số tiền mục tiêu *</Label>
+              <div className="bg-background border-border flex h-12 items-center border px-3.5">
+                <input
+                  value={amountDisplay}
+                  onChange={handleAmountChange}
+                  inputMode="numeric"
+                  placeholder="VD: 1.500.000.000"
+                  disabled={isPending}
+                  className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+                />
+                <span className="text-foreground-muted shrink-0 text-[13px]">
+                  ₫
+                </span>
+              </div>
               {form.formState.errors.target_amount && (
                 <ErrorMsg>
                   {form.formState.errors.target_amount.message}
@@ -159,22 +159,31 @@ export function GoalSheet({ goal, open, onOpenChange }: Props) {
             {/* Deadline (optional) */}
             <div className="flex flex-col gap-2">
               <Label>Ngày mục tiêu (không bắt buộc)</Label>
-              <input
-                type="date"
-                {...form.register("deadline")}
-                className="bg-surface border-border text-foreground border p-3 text-[15px]"
+              <Controller
+                name="deadline"
+                control={form.control}
+                render={({ field }) => (
+                  <DatePickerDrawer
+                    value={field.value ?? ""}
+                    onChange={field.onChange}
+                    disabled={isPending}
+                  />
+                )}
               />
             </div>
 
             {/* Ghi chú */}
             <div className="flex flex-col gap-2">
               <Label>Ghi chú</Label>
-              <textarea
-                {...form.register("note")}
-                rows={2}
-                className="bg-surface border-border text-foreground resize-none border p-3 text-[15px]"
-                placeholder="Tuỳ chọn..."
-              />
+              <div className="bg-background border-border flex min-h-[80px] items-start border px-3.5 py-3">
+                <textarea
+                  {...form.register("note")}
+                  rows={3}
+                  placeholder="Tuỳ chọn..."
+                  disabled={isPending}
+                  className="text-foreground placeholder:text-foreground-muted w-full resize-none bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+                />
+              </div>
             </div>
 
             <Button
@@ -189,4 +198,16 @@ export function GoalSheet({ goal, open, onOpenChange }: Props) {
       </Drawer.Portal>
     </Drawer.Root>
   );
+}
+
+function Label({ children }: { children: ReactNode }) {
+  return (
+    <span className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px] uppercase">
+      {children}
+    </span>
+  );
+}
+
+function ErrorMsg({ children }: { children: ReactNode }) {
+  return <p className="text-status-negative text-[11px]">{children}</p>;
 }
