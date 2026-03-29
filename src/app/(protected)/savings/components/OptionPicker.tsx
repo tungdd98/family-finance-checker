@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog } from "@base-ui/react/dialog";
 import { Check, X } from "lucide-react";
 
@@ -17,6 +17,8 @@ interface Props {
   onChange: (value: string | number) => void;
   placeholder?: string;
   disabled?: boolean;
+  autoOpen?: boolean;
+  onAfterSelect?: () => void;
 }
 
 export function OptionPicker({
@@ -26,8 +28,17 @@ export function OptionPicker({
   onChange,
   placeholder = "Chọn...",
   disabled,
+  autoOpen,
+  onAfterSelect,
 }: Props) {
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (autoOpen) {
+      const t = setTimeout(() => setOpen(true), 0);
+      return () => clearTimeout(t);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const selected = options.find((o) => o.value === value);
 
   return (
@@ -81,6 +92,7 @@ export function OptionPicker({
                     onClick={() => {
                       onChange(o.value);
                       setOpen(false);
+                      onAfterSelect?.();
                     }}
                     className={`border-border flex w-full items-center justify-between border-b px-5 py-4 last:border-b-0 ${
                       isSelected ? "text-accent" : "text-foreground"
