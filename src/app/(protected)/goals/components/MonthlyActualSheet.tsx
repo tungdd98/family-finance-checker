@@ -583,6 +583,7 @@ function IncomeRow({
 
   const watchedType = form.watch(`actual_income_details.${index}.type`);
   const watchedAmount = form.watch(`actual_income_details.${index}.amount`);
+  const watchedNote = form.watch(`actual_income_details.${index}.note`);
   const displayValue =
     watchedAmount > 0
       ? new Intl.NumberFormat("vi-VN").format(watchedAmount)
@@ -602,11 +603,18 @@ function IncomeRow({
             Khoản Thu #{index + 1}
           </div>
           {!isExpanded && (
-            <div
-              className={`mt-0.5 truncate text-[13px] font-medium ${watchedType ? "text-foreground" : "text-foreground-muted"}`}
-            >
-              {watchedType || "Chưa chọn danh mục"}
-            </div>
+            <>
+              <div
+                className={`mt-0.5 truncate text-[13px] font-medium ${watchedType ? "text-foreground" : "text-foreground-muted"}`}
+              >
+                {watchedType || "Chưa chọn danh mục"}
+              </div>
+              {watchedNote && (
+                <div className="text-foreground-muted mt-0.5 truncate text-[11px]">
+                  {watchedNote}
+                </div>
+              )}
+            </>
           )}
         </div>
         <div className="flex shrink-0 items-center gap-2">
@@ -755,6 +763,9 @@ function ExpenseRow({
   const currentAmount = form.watch(
     `actual_expense_details.${index}.amount` as const
   );
+  const watchedNote = form.watch(
+    `actual_expense_details.${index}.note` as const
+  );
   const amountDisplay =
     currentAmount > 0
       ? new Intl.NumberFormat("vi-VN").format(currentAmount)
@@ -774,11 +785,18 @@ function ExpenseRow({
             Khoản Chi #{index + 1}
           </div>
           {!isExpanded && (
-            <div
-              className={`mt-0.5 truncate text-[13px] font-medium ${watchedType ? "text-foreground" : "text-foreground-muted"}`}
-            >
-              {watchedType || "Chưa chọn danh mục"}
-            </div>
+            <>
+              <div
+                className={`mt-0.5 truncate text-[13px] font-medium ${watchedType ? "text-foreground" : "text-foreground-muted"}`}
+              >
+                {watchedType || "Chưa chọn danh mục"}
+              </div>
+              {watchedNote && (
+                <div className="text-foreground-muted mt-0.5 truncate text-[11px]">
+                  {watchedNote}
+                </div>
+              )}
+            </>
           )}
         </div>
         <div className="flex shrink-0 items-center gap-2">

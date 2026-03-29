@@ -18,7 +18,7 @@ export function DatePickerDrawer({
   value,
   onChange,
   disabled,
-}: DatePickerDrawerProps) {
+}: Readonly<DatePickerDrawerProps>) {
   const [open, setOpen] = useState(false);
 
   // Convert "yyyy-MM-dd" to Date for the calendar
@@ -47,8 +47,8 @@ export function DatePickerDrawer({
 
       <Drawer.Root open={open} onOpenChange={setOpen}>
         <Drawer.Portal>
-          <Drawer.Backdrop className="fixed inset-0 z-40 bg-black/60 opacity-100 transition-opacity duration-300 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
-          <Drawer.Popup className="bg-background fixed inset-x-0 bottom-0 z-50 flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-[ending-style]:translate-y-full data-[starting-style]:translate-y-full">
+          <Drawer.Backdrop className="fixed inset-0 z-[60] bg-black/60 opacity-100 transition-opacity duration-300 data-ending-style:opacity-0 data-starting-style:opacity-0" />
+          <Drawer.Popup className="bg-background fixed inset-x-0 bottom-0 z-[70] flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-ending-style:translate-y-full data-starting-style:translate-y-full">
             {/* Header */}
             <div className="border-border flex items-center justify-between border-b px-7 pt-5 pb-4">
               <span className="text-foreground text-[16px] font-bold tracking-[-0.5px]">
@@ -59,7 +59,7 @@ export function DatePickerDrawer({
               </Drawer.Close>
             </div>
 
-            <div className="flex flex-col items-center justify-center p-6 pb-12">
+            <div className="flex flex-col items-center justify-center p-6">
               <style>
                 {`
                   .rdp-root {
@@ -116,6 +116,7 @@ export function DatePickerDrawer({
                   }
                 }}
                 showOutsideDays
+                fixedWeeks
               />
             </div>
           </Drawer.Popup>

@@ -43,6 +43,7 @@ export function AddEditSavingsSheet({
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const [principalDisplay, setPrincipalDisplay] = useState("");
+  const [interestRateDisplay, setInterestRateDisplay] = useState("");
 
   const form = useForm<SavingsInput>({
     resolver: zodResolver(savingsSchema),
@@ -74,6 +75,10 @@ export function AddEditSavingsSheet({
       if (isEdit && account) {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setPrincipalDisplay(formatVND(account.principal));
+
+        setInterestRateDisplay(
+          account.interest_rate > 0 ? String(account.interest_rate) : ""
+        );
         form.reset({
           bank_name: account.bank_name,
           account_name: account.account_name ?? "",
@@ -86,6 +91,7 @@ export function AddEditSavingsSheet({
         });
       } else {
         setPrincipalDisplay("");
+        setInterestRateDisplay("");
         form.reset({
           bank_name: "",
           account_name: "",
@@ -99,6 +105,16 @@ export function AddEditSavingsSheet({
       }
     }
   }, [open, isEdit, account, form]);
+
+  const handleInterestRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value;
+    setInterestRateDisplay(raw);
+    const normalized = raw.replace(",", ".");
+    const num = parseFloat(normalized);
+    form.setValue("interest_rate", isNaN(num) ? 0 : num, {
+      shouldValidate: true,
+    });
+  };
 
   const handlePrincipalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value.replace(/\D/g, "");
@@ -123,6 +139,7 @@ export function AddEditSavingsSheet({
         onOpenChange(false);
         form.reset();
         setPrincipalDisplay("");
+        setInterestRateDisplay("");
       }
     });
   };
@@ -207,15 +224,10 @@ export function AddEditSavingsSheet({
                 <input
                   inputMode="decimal"
                   placeholder="5.2"
+                  value={interestRateDisplay}
+                  onChange={handleInterestRateChange}
                   disabled={isPending}
                   className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
-                  {...form.register("interest_rate", {
-                    setValueAs: (v: string) => {
-                      const normalized = String(v).replace(",", ".");
-                      const num = parseFloat(normalized);
-                      return isNaN(num) ? NaN : num;
-                    },
-                  })}
                 />
                 <span className="text-foreground-muted shrink-0 text-[12px]">
                   %/năm
