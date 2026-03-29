@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Trophy } from "lucide-react";
+import { Settings } from "lucide-react";
 import { redirect } from "next/navigation";
 
 import { getNotificationsAction } from "@/app/actions/notifications";
@@ -47,11 +47,9 @@ export default async function ProtectedLayout({
         {/* Right side: Actions */}
         <div className="flex items-center justify-end gap-2">
           <NotificationBell allNotis={notis} />
-          <Link href="/goals">
-            <div className="flex items-center gap-3">
-              <div className="bg-surface/50 border-border flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border">
-                <Trophy size={20} className="text-accent" />
-              </div>
+          <Link href="/settings">
+            <div className="bg-surface/50 border-border flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border">
+              <Settings size={20} className="text-accent" />
             </div>
           </Link>
         </div>

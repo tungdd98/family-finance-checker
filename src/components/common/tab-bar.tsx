@@ -2,14 +2,20 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Coins, House, Landmark, Settings, TrendingUp } from "lucide-react";
+import {
+  ArrowLeftRight,
+  House,
+  LayoutGrid,
+  Target,
+  TrendingUp,
+} from "lucide-react";
 
 const TAB_ITEMS = [
   { icon: House, label: "DASHBOARD", href: "/dashboard" },
-  { icon: Coins, label: "VÀNG", href: "/gold" },
+  { icon: LayoutGrid, label: "TÀI SẢN", href: "/assets" },
   { icon: TrendingUp, label: "THỊ TRƯỜNG", href: "/market" },
-  { icon: Landmark, label: "TIẾT KIỆM", href: "/savings" },
-  { icon: Settings, label: "CÀI ĐẶT", href: "/settings" },
+  { icon: ArrowLeftRight, label: "THU/CHI", href: "/cashflow" },
+  { icon: Target, label: "MỤC TIÊU", href: "/goals" },
 ];
 
 export function TabBar() {
