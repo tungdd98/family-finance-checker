@@ -628,15 +628,17 @@ function IncomeRow({
         <div className="flex items-center">
           <button
             type="button"
+            disabled={isPending}
             onClick={() => setIsExpanded(false)}
-            className="text-foreground-muted hover:text-foreground p-2"
+            className="text-foreground-muted hover:text-foreground p-2 disabled:opacity-50"
           >
             <ChevronUp size={16} />
           </button>
           <button
             type="button"
+            disabled={isPending}
             onClick={() => remove(index)}
-            className="text-foreground-muted -mr-2 px-2 hover:text-red-400"
+            className="text-foreground-muted -mr-2 px-2 hover:text-red-400 disabled:opacity-50"
           >
             <Trash2 size={14} />
           </button>
@@ -765,15 +767,17 @@ function ExpenseRow({
         <div className="flex items-center">
           <button
             type="button"
+            disabled={isPending}
             onClick={() => setIsExpanded(false)}
-            className="text-foreground-muted hover:text-foreground p-2"
+            className="text-foreground-muted hover:text-foreground p-2 disabled:opacity-50"
           >
             <ChevronUp size={16} />
           </button>
           <button
             type="button"
+            disabled={isPending}
             onClick={() => remove(index)}
-            className="text-foreground-muted -mr-2 px-2 hover:text-red-400"
+            className="text-foreground-muted -mr-2 px-2 hover:text-red-400 disabled:opacity-50"
           >
             <Trash2 size={14} />
           </button>
