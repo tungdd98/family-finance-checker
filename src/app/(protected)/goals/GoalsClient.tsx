@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Target } from "lucide-react";
 import type {
   Goal,
@@ -13,7 +14,6 @@ import { CashFlowCard } from "./components/CashFlowCard";
 import { GoalCard } from "./components/GoalCard";
 import { GoalSheet } from "./components/GoalSheet";
 import { CashFlowSheet } from "./components/CashFlowSheet";
-import { MonthlyActualSheet } from "./components/MonthlyActualSheet";
 
 interface Props {
   goal: Goal | null;
@@ -34,9 +34,8 @@ export function GoalsClient({
   currentYear,
   currentMonth,
 }: Props) {
-  const [openSheet, setOpenSheet] = useState<
-    "goal" | "cashflow" | "monthly" | null
-  >(null);
+  const router = useRouter();
+  const [openSheet, setOpenSheet] = useState<"goal" | "cashflow" | null>(null);
 
   const avgSurplus = cashFlow
     ? cashFlow.avg_monthly_income - cashFlow.avg_monthly_expense
@@ -72,7 +71,9 @@ export function GoalsClient({
             cashFlow={cashFlow}
             currentYear={currentYear}
             currentMonth={currentMonth}
-            onLogMonth={() => setOpenSheet("monthly")}
+            onLogMonth={() =>
+              router.push(`/cashflow?year=${currentYear}&month=${currentMonth}`)
+            }
           />
           <CashFlowCard
             cashFlow={cashFlow}
@@ -80,7 +81,6 @@ export function GoalsClient({
           />
         </>
       ) : (
-        /* Empty state */
         <>
           <div className="flex flex-col items-center gap-3 border border-dashed border-[#333] p-8 text-center">
             <Target size={36} className="text-[#444]" />
@@ -118,16 +118,6 @@ export function GoalsClient({
         open={openSheet === "cashflow"}
         onOpenChange={(o) => setOpenSheet(o ? "cashflow" : null)}
       />
-      {goal && (
-        <MonthlyActualSheet
-          year={currentYear}
-          month={currentMonth}
-          existing={monthlyActual}
-          cashFlow={cashFlow}
-          open={openSheet === "monthly"}
-          onOpenChange={(o) => setOpenSheet(o ? "monthly" : null)}
-        />
-      )}
     </div>
   );
 }
