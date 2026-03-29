@@ -14,10 +14,13 @@ export default async function SettingsPage() {
 
   const settings = await getSettings(supabase, user.id);
 
+  const displayName =
+    settings?.display_name || user?.email?.split("@")[0] || "Bạn";
+
   const initialData = {
     display_name: settings?.display_name ?? "",
     initial_cash_balance: settings?.initial_cash_balance ?? 0,
   };
 
-  return <SettingsForm initialData={initialData} />;
+  return <SettingsForm initialData={initialData} displayName={displayName} />;
 }

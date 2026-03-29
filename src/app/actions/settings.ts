@@ -26,3 +26,33 @@ export async function saveSettingsAction(
 
   revalidatePath("/", "layout");
 }
+
+export async function resetAllDataAction(): Promise<
+  { error: string } | undefined
+> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return { error: "Chưa đăng nhập" };
+
+  const tables = [
+    "savings_accounts",
+    "gold_assets",
+    "goals",
+    "household_cash_flow",
+    "monthly_actuals",
+    "user_settings",
+  ];
+
+  for (const table of tables) {
+    const { error } = await supabase
+      .from(table)
+      .delete()
+      .eq("user_id", user.id);
+    if (error) return { error: `Không thể xóa dữ liệu (${table})` };
+  }
+
+  revalidatePath("/", "layout");
+}

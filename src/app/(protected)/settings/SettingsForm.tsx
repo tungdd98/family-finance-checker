@@ -11,16 +11,18 @@ import { saveSettingsAction } from "@/app/actions/settings";
 import { logoutAction } from "@/app/actions/auth";
 import { settingsSchema, type SettingsInput } from "@/lib/validations/settings";
 import { Button } from "@/components/ui/button";
+import { ResetDataSection } from "./ResetDataSection";
 
 interface Props {
   initialData: SettingsInput;
+  displayName: string;
 }
 
 function formatVND(n: number): string {
   return n > 0 ? new Intl.NumberFormat("vi-VN").format(n) : "";
 }
 
-export function SettingsForm({ initialData }: Props) {
+export function SettingsForm({ initialData, displayName }: Props) {
   const [isPending, startTransition] = useTransition();
   const [amountDisplay, setAmountDisplay] = useState(
     formatVND(initialData.initial_cash_balance)
@@ -127,7 +129,7 @@ export function SettingsForm({ initialData }: Props) {
         </div>
       </form>
 
-      {/* Logout Section */}
+      {/* Logout + Reset Section */}
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-3">
           <div className="bg-status-negative/40 h-3.5 w-0.75 shrink-0" />
@@ -139,12 +141,13 @@ export function SettingsForm({ initialData }: Props) {
           <Button
             type="submit"
             variant="outline"
-            className="border-status-negative/20 text-status-negative hover:bg-status-negative/10 flex h-14 w-full items-center justify-center gap-2 font-bold"
+            className="border-status-negative/20 text-status-negative hover:bg-status-negative/10 flex h-14 w-full items-center justify-center gap-2 text-[13px] font-bold tracking-[1px]"
           >
             <LogOut size={18} />
             ĐĂNG XUẤT TÀI KHOẢN
           </Button>
         </form>
+        <ResetDataSection displayName={displayName} />
       </div>
     </div>
   );
