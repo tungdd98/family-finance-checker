@@ -26,6 +26,15 @@ export const cashFlowSchema = z.object({
 
 export type CashFlowInput = z.infer<typeof cashFlowSchema>;
 
+export const allocationSchema = z.object({
+  type: z.enum(["gold", "savings", "etf", "coin", "other"]),
+  amount: z.number().int().min(1, "Số tiền phải lớn hơn 0"),
+  is_executed: z.boolean(),
+  note: z.string().nullable().optional(),
+});
+
+export type AllocationItem = z.infer<typeof allocationSchema>;
+
 export const monthlyActualSchema = z.object({
   year: z.number().int(),
   month: z.number().int().min(1).max(12),
@@ -33,6 +42,7 @@ export const monthlyActualSchema = z.object({
   actual_income_wife: z.number().int().min(0, "Thu nhập không được âm"),
   actual_income_extra: z.number().int().min(0, "Thu nhập không được âm"),
   actual_expense: z.number().int().min(0, "Chi tiêu không được âm"),
+  allocations: z.array(allocationSchema),
   note: z.string().nullable().optional(),
 });
 

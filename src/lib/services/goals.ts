@@ -4,6 +4,7 @@ import type {
   GoalInput,
   CashFlowInput,
   MonthlyActualInput,
+  AllocationItem,
 } from "@/lib/validations/goals";
 
 // ── Types ─────────────────────────────────────────────────────
@@ -42,6 +43,7 @@ export interface MonthlyActual {
   actual_income_wife: number;
   actual_income_extra: number;
   actual_expense: number;
+  allocations: AllocationItem[];
   note: string | null;
   created_at: string;
 }
@@ -201,6 +203,7 @@ export async function upsertMonthlyActual(
       actual_income_wife: data.actual_income_wife,
       actual_income_extra: data.actual_income_extra,
       actual_expense: data.actual_expense,
+      allocations: data.allocations ?? [],
       note: data.note ?? null,
     },
     { onConflict: "user_id, year, month" }

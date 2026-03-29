@@ -3,7 +3,9 @@ import { LogOut, Trophy } from "lucide-react";
 import { redirect } from "next/navigation";
 
 import { logoutAction } from "@/app/actions/auth";
+import { getNotificationsAction } from "@/app/actions/notifications";
 import { TabBar } from "@/components/common";
+import { NotificationBell } from "@/components/NotificationBell";
 import { createClient } from "@/lib/supabase/server";
 import { getSettings } from "@/lib/services/settings";
 
@@ -25,6 +27,8 @@ export default async function ProtectedLayout({
   const displayName =
     settings?.display_name || user?.email?.split("@")[0] || "Bạn";
 
+  const notis = await getNotificationsAction();
+
   return (
     <div className="bg-background flex h-dvh flex-col overflow-hidden overscroll-none">
       {/* Header Row - Fixed at top */}
@@ -40,7 +44,8 @@ export default async function ProtectedLayout({
         </div>
 
         {/* Right side: Actions */}
-        <div className="flex justify-end gap-2">
+        <div className="flex items-center justify-end gap-2">
+          <NotificationBell allNotis={notis} />
           <Link href="/goals">
             <div className="flex items-center gap-3">
               <div className="bg-surface/50 border-border flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border">

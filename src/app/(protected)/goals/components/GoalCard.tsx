@@ -45,6 +45,33 @@ export function GoalCard({
       ? actualSurplus - baseline
       : null;
 
+  const totalAllocated =
+    monthlyActual?.allocations?.reduce((acc, curr) => acc + curr.amount, 0) ||
+    0;
+  const unallocated = actualSurplus ? actualSurplus - totalAllocated : 0;
+
+  const TYPE_LABELS: Record<string, string> = {
+    gold: "Vàng",
+    savings: "Tiết kiệm",
+    etf: "Quỹ ETF",
+    coin: "Coin",
+    other: "Khác",
+  };
+  const TYPE_COLORS: Record<string, string> = {
+    gold: "bg-[#D4AF37]",
+    savings: "bg-blue-500",
+    etf: "bg-purple-500",
+    coin: "bg-orange-400",
+    other: "bg-zinc-500",
+  };
+  const TYPE_TEXT_COLORS: Record<string, string> = {
+    gold: "text-[#D4AF37]",
+    savings: "text-blue-500",
+    etf: "text-purple-500",
+    coin: "text-orange-400",
+    other: "text-zinc-500",
+  };
+
   return (
     <div className="bg-surface border-border overflow-hidden border">
       {/* Header row */}
@@ -162,6 +189,81 @@ export function GoalCard({
                   </span>
                 </div>
               )}
+
+              {/* Box phân bổ Zero-Based Budget */}
+              {actualSurplus! > 0 &&
+                monthlyActual.allocations &&
+                monthlyActual.allocations.length > 0 && (
+                  <div className="border-border/50 mt-1.5 flex flex-col gap-2 border bg-[#141414] p-2.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-foreground-muted text-[10px] font-bold tracking-[1px] uppercase">
+                        Zero-Based Budget
+                      </span>
+                      <span
+                        className={`text-[10px] font-bold tracking-[0.5px] uppercase ${
+                          unallocated === 0
+                            ? "text-[#D4AF37]"
+                            : unallocated < 0
+                              ? "text-red-400"
+                              : "text-green-500"
+                        }`}
+                      >
+                        {unallocated === 0
+                          ? "✓ Hoàn hảo"
+                          : unallocated < 0
+                            ? "Cảnh báo lố"
+                            : `Còn dư ${formatVND(unallocated)}`}
+                      </span>
+                    </div>
+
+                    {/* Thanh Segments */}
+                    <div className="flex h-1 w-full overflow-hidden rounded-none bg-[#2a2a2a] opacity-90">
+                      {monthlyActual.allocations.map((a, i) => {
+                        const wPct = Math.min(
+                          100,
+                          (a.amount / actualSurplus!) * 100
+                        );
+                        return (
+                          <div
+                            key={i}
+                            style={{ width: `${wPct}%` }}
+                            className={`h-full ${TYPE_COLORS[a.type] || "bg-gray-500"}`}
+                          />
+                        );
+                      })}
+                    </div>
+
+                    {/* Chú thích hạng mục */}
+                    <div className="flex flex-wrap gap-x-3 gap-y-1">
+                      {monthlyActual.allocations.map((a, i) => {
+                        const isExec = a.is_executed;
+                        return (
+                          <div
+                            key={i}
+                            className={`flex items-center gap-1 text-[10px] font-medium tracking-[0.2px] ${TYPE_TEXT_COLORS[a.type] || "text-gray-500"} ${isExec ? "opacity-50" : ""}`}
+                          >
+                            <span className="text-[7px]">■</span>
+                            <span className={isExec ? "line-through" : ""}>
+                              {TYPE_LABELS[a.type] || a.type}
+                            </span>
+                            <span className="font-bold tabular-nums">
+                              {new Intl.NumberFormat("vi-VN").format(
+                                a.amount / 1000000
+                              )}
+                              tr
+                            </span>
+                            {isExec && (
+                              <span className="ml-0.5 text-[9px] font-black text-green-500">
+                                ✓
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
               <button
                 onClick={onLogMonth}
                 className="mt-1 text-right text-[12px] font-semibold text-[#D4AF37]"
