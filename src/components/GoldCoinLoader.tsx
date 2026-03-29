@@ -21,12 +21,12 @@ export function GoldCoinLoader({ className, size = 64 }: Props) {
       style={{ perspective: "1000px" }}
     >
       <div
-        className="relative animate-[coin-float_3s_ease-in-out_infinite]"
+        className="animate-coin-float relative"
         style={{ width: size, height: size }}
       >
         {/* The Coin Container - handled by rotating Y axis */}
         <div
-          className="relative h-full w-full animate-[coin-spin_2.5s_linear_infinite]"
+          className="animate-coin-spin relative h-full w-full"
           style={{ transformStyle: "preserve-3d" }}
         >
           {/* Main Coin Body */}
@@ -51,7 +51,7 @@ export function GoldCoinLoader({ className, size = 64 }: Props) {
             {/* Premium Shine Effect */}
             <div className="absolute inset-0 overflow-hidden rounded-full">
               <div
-                className="absolute top-0 h-full w-full skew-x-[-25deg] animate-[coin-shine_3s_ease-in-out_infinite] bg-gradient-to-r from-transparent via-white/40 to-transparent"
+                className="animate-coin-shine absolute top-0 h-full w-full skew-x-[-25deg] bg-gradient-to-r from-transparent via-white/40 to-transparent"
                 style={{ width: "200%" }}
               />
             </div>

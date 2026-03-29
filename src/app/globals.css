@@ -55,6 +55,11 @@
   --color-sidebar-primary: var(--accent);
   --color-sidebar-foreground: var(--foreground);
   --color-sidebar: var(--surface);
+
+  /* Custom Animations */
+  --animate-coin-spin: coin-spin 2.5s linear infinite;
+  --animate-coin-float: coin-float 3s ease-in-out infinite;
+  --animate-coin-shine: coin-shine 3s ease-in-out infinite;
 }
 
 :root {
