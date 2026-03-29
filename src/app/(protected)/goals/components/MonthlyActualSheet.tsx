@@ -13,10 +13,12 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Drawer } from "@base-ui/react/drawer";
-import { X } from "lucide-react";
+import { Tabs } from "@base-ui/react/tabs";
+import { X, Plus, Trash2, ChevronRight, Info } from "lucide-react";
 import {
   monthlyActualSchema,
   type MonthlyActualInput,
+  type ExpenseDetail,
 } from "@/lib/validations/goals";
 import type { MonthlyActual, HouseholdCashFlow } from "@/lib/services/goals";
 import { saveMonthlyActualAction } from "@/app/actions/goals";
@@ -33,6 +35,26 @@ interface Props {
   onOpenChange: (open: boolean) => void;
 }
 
+const EXPENSE_CATEGORIES = [
+  { value: "Ăn uống / Đi chợ", label: "Ăn uống / Đi chợ" },
+  { value: "Tiền nhà / Thuê nhà", label: "Tiền nhà / Thuê nhà" },
+  { value: "Điện nước / Internet", label: "Điện nước / Internet" },
+  { value: "Xăng xe / Đi lại", label: "Xăng xe / Đi lại" },
+  { value: "Con cái / Giáo dục", label: "Con cái / Giáo dục" },
+  { value: "Hiếu hỉ / Quà tặng", label: "Hiếu hỉ / Quà tặng" },
+  { value: "Sức khỏe / Bảo hiểm", label: "Sức khỏe / Bảo hiểm" },
+  { value: "Mua sắm / Giải trí", label: "Mua sắm / Giải trí" },
+  { value: "Khác", label: "Khác" },
+];
+
+const INCOME_CATEGORIES = [
+  { value: "Lương Chồng", label: "Lương Chồng" },
+  { value: "Lương Vợ", label: "Lương Vợ" },
+  { value: "Thưởng", label: "Thưởng" },
+  { value: "Thu nhập ngoài", label: "Thu nhập ngoài" },
+  { value: "Khác", label: "Khác" },
+];
+
 export function MonthlyActualSheet({
   year,
   month,
@@ -43,121 +65,113 @@ export function MonthlyActualSheet({
 }: Props) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
-  const [incomeHusbandDisplay, setIncomeHusbandDisplay] = useState("");
-  const [incomeWifeDisplay, setIncomeWifeDisplay] = useState("");
-  const [incomeExtraDisplay, setIncomeExtraDisplay] = useState("");
-  const [expenseDisplay, setExpenseDisplay] = useState("");
 
   const form = useForm<MonthlyActualInput>({
     resolver: zodResolver(monthlyActualSchema),
     defaultValues: {
       year,
       month,
-      actual_income_husband: 0,
-      actual_income_wife: 0,
-      actual_income_extra: 0,
+      actual_income: 0,
+      actual_income_details: [],
       actual_expense: 0,
+      actual_expense_details: [],
       allocations: [],
       note: null,
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const {
+    fields: allocationFields,
+    append: appendAllocation,
+    remove: removeAllocation,
+  } = useFieldArray({
     control: form.control,
     name: "allocations",
   });
 
-  const incomeHusband = form.watch("actual_income_husband") || 0;
-  const incomeWife = form.watch("actual_income_wife") || 0;
-  const incomeExtra = form.watch("actual_income_extra") || 0;
-  const expense = form.watch("actual_expense") || 0;
-  const surplus = incomeHusband + incomeWife + incomeExtra - expense;
-  const baseline = cashFlow
-    ? cashFlow.avg_monthly_income - cashFlow.avg_monthly_expense
-    : null;
-  const delta = baseline !== null ? surplus - baseline : null;
+  const {
+    fields: incomeFields,
+    append: appendIncome,
+    remove: removeIncome,
+  } = useFieldArray({
+    control: form.control,
+    name: "actual_income_details",
+  });
 
+  const {
+    fields: expenseFields,
+    append: appendExpense,
+    remove: removeExpense,
+  } = useFieldArray({
+    control: form.control,
+    name: "actual_expense_details",
+  });
+
+  const watchedIncomes = form.watch("actual_income_details") || [];
+  const watchedExpenses = form.watch("actual_expense_details") || [];
   const allocations = form.watch("allocations") || [];
+
+  const totalIncome = watchedIncomes.reduce(
+    (sum, item) => sum + (Number(item.amount) || 0),
+    0
+  );
+  const totalExpense = watchedExpenses.reduce(
+    (sum, item) => sum + (Number(item.amount) || 0),
+    0
+  );
+  const surplus = totalIncome - totalExpense;
+
+  useEffect(() => {
+    form.setValue("actual_income", totalIncome);
+  }, [totalIncome, form]);
+
+  useEffect(() => {
+    form.setValue("actual_expense", totalExpense);
+  }, [totalExpense, form]);
+
+  const incomeTotalDisplay =
+    totalIncome > 0 ? new Intl.NumberFormat("vi-VN").format(totalIncome) : "";
+  const expenseDisplay =
+    totalExpense > 0 ? new Intl.NumberFormat("vi-VN").format(totalExpense) : "";
+
+  useEffect(() => {
+    if (open && existing) {
+      form.reset({
+        year: existing.year,
+        month: existing.month,
+        actual_income: existing.actual_income,
+        actual_income_details: existing.actual_income_details || [],
+        actual_expense: existing.actual_expense,
+        actual_expense_details: existing.actual_expense_details || [],
+        allocations: existing.allocations || [],
+        note: existing.note,
+      });
+    } else if (open && !existing) {
+      form.reset({
+        year,
+        month,
+        actual_income: 0,
+        actual_income_details: [
+          { type: "Lương Chồng", amount: 0, note: "" },
+          { type: "Lương Vợ", amount: 0, note: "" },
+        ],
+        actual_expense: 0,
+        actual_expense_details: [],
+        allocations: [],
+        note: null,
+      });
+    }
+  }, [open, existing, year, month, form]);
+
   const totalAllocated = allocations.reduce(
     (sum, item) => sum + (Number(item.amount) || 0),
     0
   );
   const unallocated = surplus - totalAllocated;
-
-  useEffect(() => {
-    if (open) {
-      if (existing) {
-        form.reset({
-          year,
-          month,
-          actual_income_husband: existing.actual_income_husband,
-          actual_income_wife: existing.actual_income_wife,
-          actual_income_extra: existing.actual_income_extra,
-          actual_expense: existing.actual_expense,
-          allocations: (existing.allocations ?? []).map((a) => ({
-            ...a,
-            is_executed: a.is_executed ?? false,
-          })),
-          note: existing.note ?? null,
-        });
-        setIncomeHusbandDisplay(
-          existing.actual_income_husband > 0
-            ? new Intl.NumberFormat("vi-VN").format(
-                existing.actual_income_husband
-              )
-            : ""
-        );
-        setIncomeWifeDisplay(
-          existing.actual_income_wife > 0
-            ? new Intl.NumberFormat("vi-VN").format(existing.actual_income_wife)
-            : ""
-        );
-        setIncomeExtraDisplay(
-          existing.actual_income_extra > 0
-            ? new Intl.NumberFormat("vi-VN").format(
-                existing.actual_income_extra
-              )
-            : ""
-        );
-        setExpenseDisplay(
-          existing.actual_expense > 0
-            ? new Intl.NumberFormat("vi-VN").format(existing.actual_expense)
-            : ""
-        );
-      } else {
-        form.reset({
-          year,
-          month,
-          actual_income_husband: 0,
-          actual_income_wife: 0,
-          actual_income_extra: 0,
-          actual_expense: 0,
-          allocations: [],
-          note: null,
-        });
-        setIncomeHusbandDisplay("");
-        setIncomeWifeDisplay("");
-        setIncomeExtraDisplay("");
-        setExpenseDisplay("");
-      }
-    }
-  }, [open, existing, year, month, form]);
-
-  const makeChangeHandler =
-    (
-      field:
-        | "actual_income_husband"
-        | "actual_income_wife"
-        | "actual_income_extra"
-        | "actual_expense",
-      setDisplay: (v: string) => void
-    ) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const raw = e.target.value.replace(/\D/g, "");
-      const num = raw ? parseInt(raw, 10) : 0;
-      setDisplay(raw ? new Intl.NumberFormat("vi-VN").format(num) : "");
-      form.setValue(field, num, { shouldValidate: true });
-    };
+  const baseline = cashFlow
+    ? cashFlow.avg_monthly_income - cashFlow.avg_monthly_expense
+    : null;
+  const delta = baseline !== null ? surplus - baseline : null;
 
   const onSubmit = (data: MonthlyActualInput) => {
     startTransition(async () => {
@@ -176,7 +190,7 @@ export function MonthlyActualSheet({
     <Drawer.Root open={open} onOpenChange={onOpenChange}>
       <Drawer.Portal>
         <Drawer.Backdrop className="fixed inset-0 z-40 bg-black/60 opacity-100 transition-opacity duration-300 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
-        <Drawer.Popup className="bg-background fixed inset-x-0 bottom-0 z-50 flex max-h-[92dvh] flex-col overflow-y-auto transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-[ending-style]:translate-y-full data-[starting-style]:translate-y-full">
+        <Drawer.Popup className="bg-background fixed inset-x-0 bottom-0 z-50 flex h-[90dvh] flex-col transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-[ending-style]:translate-y-full data-[starting-style]:translate-y-full">
           <div className="bg-background border-border sticky top-0 flex items-center justify-between border-b px-7 pt-5 pb-4">
             <span className="text-foreground text-[16px] font-bold tracking-[-0.5px]">
               Cập nhật tháng {month}/{year}
@@ -188,189 +202,210 @@ export function MonthlyActualSheet({
 
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-5 px-7 py-5 pb-10"
+            className="flex h-full flex-col overflow-hidden"
           >
-            <div className="flex flex-col gap-2">
-              <Label>
-                Thu nhập chồng ({month}/{year}) *
-              </Label>
-              <div className="bg-background border-border flex h-12 items-center border px-3.5">
-                <input
-                  value={incomeHusbandDisplay}
-                  onChange={makeChangeHandler(
-                    "actual_income_husband",
-                    setIncomeHusbandDisplay
-                  )}
-                  inputMode="numeric"
-                  placeholder="VD: 25.000.000"
-                  disabled={isPending}
-                  className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
-                />
-                <span className="text-foreground-muted shrink-0 text-[13px]">
-                  ₫
-                </span>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <Label>
-                Thu nhập vợ ({month}/{year}) *
-              </Label>
-              <div className="bg-background border-border flex h-12 items-center border px-3.5">
-                <input
-                  value={incomeWifeDisplay}
-                  onChange={makeChangeHandler(
-                    "actual_income_wife",
-                    setIncomeWifeDisplay
-                  )}
-                  inputMode="numeric"
-                  placeholder="VD: 20.000.000"
-                  disabled={isPending}
-                  className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
-                />
-                <span className="text-foreground-muted shrink-0 text-[13px]">
-                  ₫
-                </span>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <Label>T.Nhập Ngoài (Tùy Chọn)</Label>
-              <div className="bg-background border-border flex h-12 items-center border px-3.5">
-                <input
-                  value={incomeExtraDisplay}
-                  onChange={makeChangeHandler(
-                    "actual_income_extra",
-                    setIncomeExtraDisplay
-                  )}
-                  inputMode="numeric"
-                  placeholder="VD: 2.500.000 (Để trống nếu 0)"
-                  disabled={isPending}
-                  className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
-                />
-                <span className="text-foreground-muted shrink-0 text-[13px]">
-                  ₫
-                </span>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <Label>
-                Chi tiêu tháng {month}/{year} *
-              </Label>
-              <div className="bg-background border-border flex h-12 items-center border px-3.5">
-                <input
-                  value={expenseDisplay}
-                  onChange={makeChangeHandler(
-                    "actual_expense",
-                    setExpenseDisplay
-                  )}
-                  inputMode="numeric"
-                  placeholder="VD: 28.000.000"
-                  disabled={isPending}
-                  className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
-                />
-                <span className="text-foreground-muted shrink-0 text-[13px]">
-                  ₫
-                </span>
-              </div>
-            </div>
-
-            {/* Live preview */}
-            <div className="bg-surface border-border flex flex-col gap-2 border p-4">
-              <div className="flex items-center justify-between">
-                <span className="text-foreground-muted text-[12px]">
-                  Thặng dư tháng này
-                </span>
-                <span
-                  className={`text-[14px] font-bold ${surplus >= 0 ? "text-green-500" : "text-red-400"}`}
+            <Tabs.Root defaultValue="income" className="flex h-full flex-col">
+              <Tabs.List className="border-border bg-background/80 sticky top-0 z-10 flex w-full border-b backdrop-blur-md">
+                <Tabs.Tab
+                  value="income"
+                  className="group type-tab-label data-[active]:text-accent data-[active]:bg-accent/5 text-foreground-muted relative flex-1 py-4 text-center font-bold underline-offset-8 transition-all"
                 >
-                  {surplus >= 0 ? "+" : ""}
-                  {formatVND(surplus)}
-                </span>
-              </div>
-              {delta !== null && (
-                <div className="mt-1 flex items-center justify-between">
-                  <span className="text-foreground-muted text-[12px]">
-                    So với TB dự kiến
-                  </span>
-                  <span
-                    className={`text-[14px] font-bold ${delta >= 0 ? "text-green-500" : "text-red-400"}`}
-                  >
-                    {delta >= 0 ? "+" : ""}
-                    {formatVND(delta)}
-                  </span>
-                </div>
-              )}
-            </div>
-
-            {/* Phân bổ thặng dư */}
-            <div className="bg-surface border-border flex flex-col gap-4 border p-4">
-              <div className="border-border/50 flex items-center justify-between border-b pb-3">
-                <span className="text-foreground text-[14px] font-bold tracking-[-0.5px]">
-                  Phân Bổ Thặng Dư
-                </span>
-                <span
-                  className={`text-[13px] font-bold ${unallocated > 0 ? "text-green-500" : unallocated < 0 ? "text-red-400" : "text-[#D4AF37]"}`}
+                  THU NHẬP
+                  <div className="bg-accent absolute bottom-0 left-0 h-1 w-full scale-x-0 transition-transform duration-300 group-data-[active]:scale-x-100" />
+                </Tabs.Tab>
+                <Tabs.Tab
+                  value="expense"
+                  className="group type-tab-label data-[active]:text-accent data-[active]:bg-accent/5 text-foreground-muted border-border relative flex-1 border-x py-4 text-center font-bold underline-offset-8 transition-all"
                 >
-                  {unallocated === 0 && surplus > 0
-                    ? "✓ Hoàn hảo"
-                    : `Còn lại: ${formatVND(unallocated)}`}
-                </span>
+                  CHI TIÊU
+                  <div className="bg-accent absolute bottom-0 left-0 h-1 w-full scale-x-0 transition-transform duration-300 group-data-[active]:scale-x-100" />
+                </Tabs.Tab>
+                <Tabs.Tab
+                  value="allocation"
+                  className="group type-tab-label data-[active]:text-accent data-[active]:bg-accent/5 text-foreground-muted relative flex-1 py-4 text-center font-bold underline-offset-8 transition-all"
+                >
+                  PHÂN BỔ
+                  <div className="bg-accent absolute bottom-0 left-0 h-1 w-full scale-x-0 transition-transform duration-300 group-data-[active]:scale-x-100" />
+                </Tabs.Tab>
+              </Tabs.List>
+
+              <div className="flex-1 overflow-y-auto px-7 py-5">
+                {/* ── TAB 1: THU NHẬP ─────────────────────────── */}
+                <Tabs.Panel
+                  value="income"
+                  className="flex flex-col gap-5 outline-none"
+                >
+                  <div className="bg-accent/5 border-accent/20 mb-1 flex items-center justify-between border p-4">
+                    <div className="flex flex-col">
+                      <span className="type-card-label text-accent">
+                        Tổng thu nhập tháng
+                      </span>
+                      <span className="text-foreground text-[20px] font-bold tracking-[-0.5px]">
+                        {incomeTotalDisplay || "0"} ₫
+                      </span>
+                    </div>
+                    <Info size={20} className="text-accent/40" />
+                  </div>
+
+                  <div className="flex flex-col gap-4">
+                    {incomeFields.map((field, index) => (
+                      <IncomeRow
+                        key={field.id}
+                        index={index}
+                        form={form}
+                        remove={removeIncome}
+                        isPending={isPending}
+                      />
+                    ))}
+
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled={isPending}
+                      onClick={() =>
+                        appendIncome({ type: "", amount: 0, note: "" })
+                      }
+                      className="text-foreground-muted hover:text-foreground mt-2 h-12 w-full border-dashed bg-transparent"
+                    >
+                      <Plus size={16} className="mr-2" />
+                      THÊM KHOẢN THU
+                    </Button>
+                  </div>
+                </Tabs.Panel>
+
+                {/* ── TAB 2: CHI TIÊU ─────────────────────────── */}
+                <Tabs.Panel
+                  value="expense"
+                  className="flex flex-col gap-5 outline-none"
+                >
+                  <div className="bg-accent/5 border-accent/20 mb-1 flex items-center justify-between border p-4">
+                    <div className="flex flex-col">
+                      <span className="type-card-label text-accent">
+                        Tổng chi tiêu tháng
+                      </span>
+                      <span className="text-foreground text-[20px] font-bold tracking-[-0.5px]">
+                        {expenseDisplay || "0"} ₫
+                      </span>
+                    </div>
+                    <Info size={20} className="text-accent/40" />
+                  </div>
+
+                  <div className="flex flex-col gap-4">
+                    {expenseFields.map((field, index) => (
+                      <ExpenseRow
+                        key={field.id}
+                        index={index}
+                        form={form}
+                        remove={removeExpense}
+                        isPending={isPending}
+                      />
+                    ))}
+
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled={isPending}
+                      onClick={() =>
+                        appendExpense({ type: "", amount: 0, note: "" })
+                      }
+                      className="text-foreground-muted hover:text-foreground mt-2 h-12 w-full border-dashed bg-transparent"
+                    >
+                      <Plus size={16} className="mr-2" />
+                      THÊM KHOẢN CHI
+                    </Button>
+                  </div>
+                </Tabs.Panel>
+
+                {/* ── TAB 3: PHÂN BỔ ─────────────────────────── */}
+                <Tabs.Panel
+                  value="allocation"
+                  className="flex flex-col gap-5 outline-none"
+                >
+                  <div className="bg-surface border-border flex flex-col gap-2 border p-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-foreground-muted text-[12px]">
+                        Thặng dư tháng này
+                      </span>
+                      <span
+                        className={`text-[14px] font-bold ${surplus >= 0 ? "text-green-500" : "text-red-400"}`}
+                      >
+                        {surplus >= 0 ? "+" : ""}
+                        {formatVND(surplus)}
+                      </span>
+                    </div>
+                    {delta !== null && (
+                      <div className="mt-1 flex items-center justify-between">
+                        <span className="text-foreground-muted text-[12px]">
+                          So với TB dự kiến
+                        </span>
+                        <span
+                          className={`text-[14px] font-bold ${delta >= 0 ? "text-green-500" : "text-red-400"}`}
+                        >
+                          {delta >= 0 ? "+" : ""}
+                          {formatVND(delta)}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="bg-surface border-border flex flex-col gap-4 border p-4">
+                    <div className="border-border/50 flex items-center justify-between border-b pb-3">
+                      <span className="text-foreground text-[14px] font-bold tracking-[-0.5px]">
+                        Phân Bổ Thặng Dư
+                      </span>
+                      <span
+                        className={`text-[13px] font-bold ${unallocated > 0 ? "text-green-500" : unallocated < 0 ? "text-red-400" : "text-[#D4AF37]"}`}
+                      >
+                        {unallocated === 0 && surplus > 0
+                          ? "✓ Hoàn hảo"
+                          : `Còn lại: ${formatVND(unallocated)}`}
+                      </span>
+                    </div>
+
+                    {allocationFields.map((field, index) => {
+                      const currentAmount = allocations[index]?.amount || 0;
+                      const fieldAvailable = unallocated + currentAmount;
+                      return (
+                        <AllocationRow
+                          key={field.id}
+                          index={index}
+                          form={form}
+                          remove={removeAllocation}
+                          fieldAvailable={fieldAvailable}
+                          isPending={isPending}
+                        />
+                      );
+                    })}
+
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled={isPending || unallocated <= 0}
+                      onClick={() =>
+                        appendAllocation({
+                          type: "gold",
+                          amount: unallocated > 0 ? unallocated : 0,
+                          is_executed: false,
+                        })
+                      }
+                      className="text-foreground-muted hover:text-foreground h-12 w-full border-dashed bg-transparent"
+                    >
+                      + THÊM KHOẢN PHÂN BỔ
+                    </Button>
+                  </div>
+                </Tabs.Panel>
               </div>
 
-              {fields.map((field, index) => {
-                const currentAmount = allocations[index]?.amount || 0;
-                const fieldAvailable = unallocated + currentAmount;
-                return (
-                  <AllocationRow
-                    key={field.id}
-                    index={index}
-                    form={form}
-                    remove={remove}
-                    fieldAvailable={fieldAvailable}
-                    isPending={isPending}
-                  />
-                );
-              })}
-
-              <Button
-                type="button"
-                variant="outline"
-                disabled={isPending || unallocated <= 0}
-                onClick={() =>
-                  append({
-                    type: "gold",
-                    amount: unallocated > 0 ? unallocated : 0,
-                    is_executed: false,
-                  })
-                }
-                className="text-foreground-muted hover:text-foreground h-12 w-full border-dashed bg-transparent"
-              >
-                + THÊM KHOẢN PHÂN BỔ
-              </Button>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <Label>Ghi chú</Label>
-              <div className="bg-background border-border flex min-h-[80px] items-start border px-3.5 py-3">
-                <textarea
-                  {...form.register("note")}
-                  rows={3}
-                  placeholder="Tuỳ chọn..."
+              <div className="border-border bg-background sticky bottom-0 border-t p-7 pt-5">
+                <Button
+                  type="submit"
                   disabled={isPending}
-                  className="text-foreground placeholder:text-foreground-muted w-full resize-none bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
-                />
+                  className="h-14 w-full"
+                >
+                  {isPending ? "ĐANG CẬP NHẬT..." : "CẬP NHẬT THÁNG"}
+                </Button>
               </div>
-            </div>
-
-            <Button
-              type="submit"
-              disabled={isPending}
-              className="mt-2 h-14 w-full"
-            >
-              {isPending ? "ĐANG CẬP NHẬT..." : "CẬP NHẬT"}
-            </Button>
+            </Tabs.Root>
           </form>
         </Drawer.Popup>
       </Drawer.Portal>
@@ -386,29 +421,22 @@ function AllocationRow({
   isPending,
 }: {
   index: number;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  form: any;
+  form: UseFormReturn<MonthlyActualInput>;
   remove: (index: number) => void;
   fieldAvailable: number;
   isPending: boolean;
 }) {
-  const [amountDisplay, setAmountDisplay] = useState("");
   const currentAmount = form.watch(`allocations.${index}.amount` as const);
   const is_executed = form.watch(`allocations.${index}.is_executed` as const);
 
-  useEffect(() => {
-    if (currentAmount) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setAmountDisplay(new Intl.NumberFormat("vi-VN").format(currentAmount));
-    } else {
-      setAmountDisplay("");
-    }
-  }, [currentAmount]);
+  const amountDisplay =
+    currentAmount > 0
+      ? new Intl.NumberFormat("vi-VN").format(currentAmount)
+      : "";
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value.replace(/\D/g, "");
     const num = raw ? parseInt(raw, 10) : 0;
-    setAmountDisplay(raw ? new Intl.NumberFormat("vi-VN").format(num) : "");
     form.setValue(`allocations.${index}.amount` as const, num, {
       shouldValidate: true,
     });
@@ -444,7 +472,7 @@ function AllocationRow({
           onClick={() => remove(index)}
           className="text-foreground-muted -mr-2 px-2 text-[10px] font-bold tracking-[1px] uppercase hover:text-red-400"
         >
-          Xoá
+          <Trash2 size={14} />
         </button>
       </div>
 
@@ -518,14 +546,176 @@ function AllocationRow({
   );
 }
 
+function IncomeRow({
+  index,
+  form,
+  remove,
+  isPending,
+}: {
+  index: number;
+  form: UseFormReturn<MonthlyActualInput>;
+  remove: (index: number) => void;
+  isPending: boolean;
+}) {
+  const watchedAmount = form.watch(`actual_income_details.${index}.amount`);
+  const displayValue =
+    watchedAmount > 0
+      ? new Intl.NumberFormat("vi-VN").format(watchedAmount)
+      : "";
+
+  return (
+    <div className="bg-background border-border flex flex-col gap-3 border p-4 transition-all">
+      <div className="flex items-center justify-between">
+        <Label>Khoản Thu #{index + 1}</Label>
+        <button
+          type="button"
+          onClick={() => remove(index)}
+          className="text-foreground-muted -mr-2 px-2 text-[10px] font-bold tracking-[1px] uppercase hover:text-red-400"
+        >
+          <Trash2 size={14} />
+        </button>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <Controller
+          name={`actual_income_details.${index}.type`}
+          control={form.control}
+          render={({ field }) => (
+            <OptionPicker
+              title="Chọn nguồn thu"
+              options={INCOME_CATEGORIES}
+              value={field.value}
+              onChange={(v) => field.onChange(String(v))}
+              placeholder="Chọn nguồn thu..."
+              disabled={isPending}
+            />
+          )}
+        />
+
+        <div className="flex gap-2">
+          <div className="bg-background border-border flex h-12 flex-1 items-center border px-3.5">
+            <input
+              inputMode="numeric"
+              placeholder="Số tiền"
+              value={displayValue}
+              onChange={(e) => {
+                const raw = e.target.value.replace(/\D/g, "");
+                const num = parseInt(raw, 10) || 0;
+                form.setValue(`actual_income_details.${index}.amount`, num, {
+                  shouldValidate: true,
+                });
+              }}
+              disabled={isPending}
+              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none"
+            />
+            <span className="text-foreground-muted shrink-0 text-[13px]">
+              ₫
+            </span>
+          </div>
+        </div>
+
+        <div className="bg-background border-border flex h-10 items-center border px-3.5">
+          <input
+            {...form.register(`actual_income_details.${index}.note`)}
+            placeholder="Ghi chú (tùy chọn)..."
+            disabled={isPending}
+            className="text-foreground-muted placeholder:text-foreground-muted/50 w-full bg-transparent text-[11px] outline-none"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ExpenseRow({
+  index,
+  form,
+  remove,
+  isPending,
+}: {
+  index: number;
+  form: UseFormReturn<MonthlyActualInput>;
+  remove: (index: number) => void;
+  isPending: boolean;
+}) {
+  const currentAmount = form.watch(
+    `actual_expense_details.${index}.amount` as const
+  );
+  const amountDisplay =
+    currentAmount > 0
+      ? new Intl.NumberFormat("vi-VN").format(currentAmount)
+      : "";
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value.replace(/\D/g, "");
+    const num = raw ? parseInt(raw, 10) : 0;
+    form.setValue(`actual_expense_details.${index}.amount` as const, num, {
+      shouldValidate: true,
+    });
+  };
+
+  return (
+    <div className="bg-background border-border flex flex-col gap-3 border p-4 transition-all">
+      <div className="flex items-center justify-between">
+        <Label>Khoản Chi #{index + 1}</Label>
+        <button
+          type="button"
+          onClick={() => remove(index)}
+          className="text-foreground-muted -mr-2 px-2 text-[10px] font-bold tracking-[1px] uppercase hover:text-red-400"
+        >
+          <Trash2 size={14} />
+        </button>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <Controller
+          name={`actual_expense_details.${index}.type` as const}
+          control={form.control}
+          render={({ field }) => (
+            <OptionPicker
+              title="Loại chi tiêu"
+              options={EXPENSE_CATEGORIES}
+              value={field.value}
+              onChange={(v) => field.onChange(String(v))}
+              placeholder="Chọn loại chi tiêu..."
+              disabled={isPending}
+            />
+          )}
+        />
+
+        <div className="flex gap-2">
+          <div className="bg-background border-border flex h-12 flex-1 items-center border px-3.5">
+            <input
+              inputMode="numeric"
+              placeholder="Số tiền"
+              value={amountDisplay}
+              onChange={onChange}
+              disabled={isPending}
+              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none"
+            />
+            <span className="text-foreground-muted shrink-0 text-[13px]">
+              ₫
+            </span>
+          </div>
+        </div>
+
+        <div className="bg-background border-border flex h-10 items-center border px-3.5">
+          <input
+            {...form.register(`actual_expense_details.${index}.note` as const)}
+            placeholder="Ghi chú (tùy chọn)..."
+            disabled={isPending}
+            className="text-foreground-muted placeholder:text-foreground-muted/50 w-full bg-transparent text-[11px] outline-none"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Label({ children }: { children: ReactNode }) {
   return (
     <span className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px] uppercase">
       {children}
     </span>
   );
-}
-
-function ErrorMsg({ children }: { children: ReactNode }) {
-  return <p className="text-status-negative text-[11px]">{children}</p>;
 }

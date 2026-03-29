@@ -29,27 +29,24 @@ export async function getNotificationsAction(): Promise<NotiItem[]> {
     // 1. Surplus Alert
     const { data: monthlyData } = await supabase
       .from("monthly_actuals")
-      .select("*")
+      .select("actual_income, actual_expense, allocations")
       .eq("user_id", user.id)
       .eq("year", currentYear)
       .eq("month", currentMonth)
       .single();
 
-    if (monthlyData) {
-      const surplus =
-        monthlyData.actual_income_husband +
-        monthlyData.actual_income_wife +
-        monthlyData.actual_income_extra -
-        monthlyData.actual_expense;
-
-      const allocations = monthlyData.allocations || [];
+    if (monthlyData && monthlyData.actual_income > 0) {
+      const surplus = monthlyData.actual_income - monthlyData.actual_expense;
+      const allocations =
+        (monthlyData.allocations as { amount?: number }[]) || [];
       const totalAllocated = allocations.reduce(
         (acc: number, item: { amount?: number }) => acc + (item.amount || 0),
         0
       );
       const unallocated = surplus - totalAllocated;
 
-      if (unallocated > 0) {
+      // Chỉ báo nếu còn dư trên 10.000đ (tránh các khoản lẻ quá nhỏ)
+      if (unallocated >= 10000) {
         notis.push({
           id: `surplus_${currentYear}_${currentMonth}`,
           type: "surplus",
@@ -62,9 +59,10 @@ export async function getNotificationsAction(): Promise<NotiItem[]> {
 
     // 2. Savings Maturity Alert
     const { data: savingsData } = await supabase
-      .from("savings")
+      .from("savings_accounts")
       .select("*")
-      .eq("user_id", user.id);
+      .eq("user_id", user.id)
+      .eq("status", "active");
 
     if (savingsData) {
       const accounts = savingsData as SavingsAccount[];

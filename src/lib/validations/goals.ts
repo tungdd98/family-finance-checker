@@ -35,13 +35,29 @@ export const allocationSchema = z.object({
 
 export type AllocationItem = z.infer<typeof allocationSchema>;
 
+export const expenseDetailSchema = z.object({
+  type: z.string().min(1, "Vui lòng chọn hoặc nhập loại chi tiêu"),
+  amount: z.number().int().min(0, "Số tiền không được âm"),
+  note: z.string().nullable().optional(),
+});
+
+export type ExpenseDetail = z.infer<typeof expenseDetailSchema>;
+
+export const incomeDetailSchema = z.object({
+  type: z.string().min(1, "Vui lòng chọn hoặc nhập nguồn thu nhập"),
+  amount: z.number().int().min(0, "Số tiền không được âm"),
+  note: z.string().nullable().optional(),
+});
+
+export type IncomeDetail = z.infer<typeof incomeDetailSchema>;
+
 export const monthlyActualSchema = z.object({
   year: z.number().int(),
   month: z.number().int().min(1).max(12),
-  actual_income_husband: z.number().int().min(0, "Thu nhập không được âm"),
-  actual_income_wife: z.number().int().min(0, "Thu nhập không được âm"),
-  actual_income_extra: z.number().int().min(0, "Thu nhập không được âm"),
+  actual_income: z.number().int().min(0, "Thu nhập không được âm"),
+  actual_income_details: z.array(incomeDetailSchema),
   actual_expense: z.number().int().min(0, "Chi tiêu không được âm"),
+  actual_expense_details: z.array(expenseDetailSchema),
   allocations: z.array(allocationSchema),
   note: z.string().nullable().optional(),
 });
