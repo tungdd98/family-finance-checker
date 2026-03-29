@@ -578,6 +578,7 @@ function IncomeRow({
   initiallyExpanded?: boolean;
 }) {
   const [isExpanded, setIsExpanded] = useState(initiallyExpanded);
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
   const amountRef = useRef<HTMLInputElement>(null);
 
   const watchedType = form.watch(`actual_income_details.${index}.type`);
@@ -587,12 +588,19 @@ function IncomeRow({
       ? new Intl.NumberFormat("vi-VN").format(watchedAmount)
       : "";
 
+  useEffect(() => {
+    if (!isExpanded) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setIsConfirmingDelete(false);
+    }
+  }, [isExpanded]);
+
   if (!isExpanded) {
     return (
       <div className="bg-background border-border flex items-center gap-3 border p-4">
         <div className="min-w-0 flex-1">
           <div className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px] uppercase">
-            Khoản Thu #{index + 1}
+            Khoան Thu #{index + 1}
           </div>
           <div
             className={`mt-0.5 truncate text-[13px] font-medium ${watchedType ? "text-foreground" : "text-foreground-muted"}`}
@@ -634,14 +642,33 @@ function IncomeRow({
           >
             <ChevronUp size={16} />
           </button>
-          <button
-            type="button"
-            disabled={isPending}
-            onClick={() => remove(index)}
-            className="text-foreground-muted -mr-2 px-2 hover:text-red-400 disabled:opacity-50"
-          >
-            <Trash2 size={14} />
-          </button>
+          {isConfirmingDelete ? (
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={() => remove(index)}
+                className="px-2 py-1 text-[10px] font-bold tracking-[1px] text-red-400 uppercase"
+              >
+                XOÁ?
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsConfirmingDelete(false)}
+                className="text-foreground-muted hover:text-foreground px-2 py-1 text-[10px] font-bold tracking-[1px] uppercase"
+              >
+                HUỶ
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              disabled={isPending}
+              onClick={() => setIsConfirmingDelete(true)}
+              className="text-foreground-muted -mr-2 px-2 hover:text-red-400 disabled:opacity-50"
+            >
+              <Trash2 size={14} />
+            </button>
+          )}
         </div>
       </div>
 
@@ -713,6 +740,7 @@ function ExpenseRow({
   initiallyExpanded?: boolean;
 }) {
   const [isExpanded, setIsExpanded] = useState(initiallyExpanded);
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
   const amountRef = useRef<HTMLInputElement>(null);
 
   const watchedType = form.watch(
@@ -725,6 +753,13 @@ function ExpenseRow({
     currentAmount > 0
       ? new Intl.NumberFormat("vi-VN").format(currentAmount)
       : "";
+
+  useEffect(() => {
+    if (!isExpanded) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setIsConfirmingDelete(false);
+    }
+  }, [isExpanded]);
 
   if (!isExpanded) {
     return (
@@ -773,14 +808,33 @@ function ExpenseRow({
           >
             <ChevronUp size={16} />
           </button>
-          <button
-            type="button"
-            disabled={isPending}
-            onClick={() => remove(index)}
-            className="text-foreground-muted -mr-2 px-2 hover:text-red-400 disabled:opacity-50"
-          >
-            <Trash2 size={14} />
-          </button>
+          {isConfirmingDelete ? (
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={() => remove(index)}
+                className="px-2 py-1 text-[10px] font-bold tracking-[1px] text-red-400 uppercase"
+              >
+                XOÁ?
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsConfirmingDelete(false)}
+                className="text-foreground-muted hover:text-foreground px-2 py-1 text-[10px] font-bold tracking-[1px] uppercase"
+              >
+                HUỶ
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              disabled={isPending}
+              onClick={() => setIsConfirmingDelete(true)}
+              className="text-foreground-muted -mr-2 px-2 hover:text-red-400 disabled:opacity-50"
+            >
+              <Trash2 size={14} />
+            </button>
+          )}
         </div>
       </div>
 
