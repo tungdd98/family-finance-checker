@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { LogOut, Trophy } from "lucide-react";
+import { Trophy } from "lucide-react";
 import { redirect } from "next/navigation";
 
-import { logoutAction } from "@/app/actions/auth";
 import { getNotificationsAction } from "@/app/actions/notifications";
 import { TabBar } from "@/components/common";
 import { NotificationBell } from "@/components/NotificationBell";
+import { NavigationProgress } from "@/components/NavigationProgress";
 import { createClient } from "@/lib/supabase/server";
 import { getSettings } from "@/lib/services/settings";
 
@@ -31,6 +31,7 @@ export default async function ProtectedLayout({
 
   return (
     <div className="bg-background flex h-dvh flex-col overflow-hidden overscroll-none">
+      <NavigationProgress />
       {/* Header Row - Fixed at top */}
       <div className="flex touch-none items-center justify-between px-5 py-4 select-none">
         {/* Left side: Greeting */}

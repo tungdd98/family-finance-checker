@@ -1,15 +1,8 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import {
-  Coins,
-  House,
-  Landmark,
-  Settings,
-  TrendingUp,
-  type LucideIcon,
-} from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { Coins, House, Landmark, Settings, TrendingUp } from "lucide-react";
 
 const TAB_ITEMS = [
   { icon: House, label: "DASHBOARD", href: "/dashboard" },
@@ -20,16 +13,36 @@ const TAB_ITEMS = [
 ];
 
 export function TabBar() {
-  const activeHref = usePathname();
+  const realPathname = usePathname();
+  const router = useRouter();
+
+  // Optimistic active tab: update instantly on tap, sync back when navigation settles
+  const [optimisticHref, setOptimisticHref] = useState(realPathname);
+
+  // Sync when real pathname changes (navigation completed)
+  useEffect(() => {
+    setOptimisticHref(realPathname);
+  }, [realPathname]);
+
+  const handleTabPress = (href: string) => {
+    if (optimisticHref === href) return;
+    // Signal the global progress bar to start immediately
+    window.dispatchEvent(new Event("navigation-start"));
+    // Immediately reflect the tap — no waiting for server
+    setOptimisticHref(href);
+    router.push(href);
+  };
+
   return (
     <nav className="bg-surface rounded-pill border-border flex h-full border p-1">
       {TAB_ITEMS.map((item) => {
         const Icon = item.icon;
-        const isActive = item.href === activeHref;
+        const isActive = item.href === optimisticHref;
         return (
-          <Link
+          <button
             key={item.href}
-            href={item.href}
+            type="button"
+            onClick={() => handleTabPress(item.href)}
             className={
               isActive
                 ? "bg-accent rounded-pill-item flex flex-1 flex-col items-center justify-center gap-1"
@@ -45,7 +58,7 @@ export function TabBar() {
             >
               {item.label}
             </span>
-          </Link>
+          </button>
         );
       })}
     </nav>
