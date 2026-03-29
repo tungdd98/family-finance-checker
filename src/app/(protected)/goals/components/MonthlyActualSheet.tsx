@@ -2,7 +2,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useState, useTransition, useEffect } from "react";
+import { useState, useTransition, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import {
   useForm,
@@ -14,7 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Drawer } from "@base-ui/react/drawer";
 import { Tabs } from "@base-ui/react/tabs";
-import { X, Plus, Trash2, ChevronRight, Info } from "lucide-react";
+import { X, Plus, Trash2, ChevronUp, Info, Pencil } from "lucide-react";
 import {
   monthlyActualSchema,
   type MonthlyActualInput,
@@ -106,6 +106,12 @@ export function MonthlyActualSheet({
     control: form.control,
     name: "actual_expense_details",
   });
+
+  const [newIncomeIndex, setNewIncomeIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (newIncomeIndex !== null) setNewIncomeIndex(null);
+  }, [incomeFields.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const watchedIncomes = form.watch("actual_income_details") || [];
   const watchedExpenses = form.watch("actual_expense_details") || [];
@@ -255,6 +261,7 @@ export function MonthlyActualSheet({
                         form={form}
                         remove={removeIncome}
                         isPending={isPending}
+                        initiallyExpanded={index === newIncomeIndex}
                       />
                     ))}
 
@@ -262,9 +269,11 @@ export function MonthlyActualSheet({
                       type="button"
                       variant="outline"
                       disabled={isPending}
-                      onClick={() =>
-                        appendIncome({ type: "", amount: 0, note: "" })
-                      }
+                      onClick={() => {
+                        const idx = incomeFields.length;
+                        appendIncome({ type: "", amount: 0, note: "" });
+                        setNewIncomeIndex(idx);
+                      }}
                       className="text-foreground-muted hover:text-foreground mt-2 h-12 w-full border-dashed bg-transparent"
                     >
                       <Plus size={16} className="mr-2" />
@@ -551,29 +560,78 @@ function IncomeRow({
   form,
   remove,
   isPending,
+  initiallyExpanded = false,
 }: {
   index: number;
   form: UseFormReturn<MonthlyActualInput>;
   remove: (index: number) => void;
   isPending: boolean;
+  initiallyExpanded?: boolean;
 }) {
+  const [isExpanded, setIsExpanded] = useState(initiallyExpanded);
+  const amountRef = useRef<HTMLInputElement>(null);
+
+  const watchedType = form.watch(`actual_income_details.${index}.type`);
   const watchedAmount = form.watch(`actual_income_details.${index}.amount`);
   const displayValue =
     watchedAmount > 0
       ? new Intl.NumberFormat("vi-VN").format(watchedAmount)
       : "";
 
+  if (!isExpanded) {
+    return (
+      <div className="bg-background border-border flex items-center gap-3 border p-4">
+        <div className="min-w-0 flex-1">
+          <div className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px] uppercase">
+            Khoản Thu #{index + 1}
+          </div>
+          <div
+            className={`mt-0.5 truncate text-[13px] font-medium ${watchedType ? "text-foreground" : "text-foreground-muted"}`}
+          >
+            {watchedType || "Chưa chọn danh mục"}
+          </div>
+        </div>
+        <div className="flex shrink-0 items-center gap-3">
+          <span
+            className={`text-[14px] font-bold ${watchedAmount > 0 ? "text-accent" : "text-foreground-muted"}`}
+          >
+            {watchedAmount > 0
+              ? new Intl.NumberFormat("vi-VN").format(watchedAmount) + " ₫"
+              : "—"}
+          </span>
+          <button
+            type="button"
+            disabled={isPending}
+            onClick={() => setIsExpanded(true)}
+            className="text-foreground-muted hover:text-foreground -mr-1 p-1 disabled:opacity-50"
+          >
+            <Pencil size={14} />
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-background border-border flex flex-col gap-3 border p-4 transition-all">
       <div className="flex items-center justify-between">
         <Label>Khoản Thu #{index + 1}</Label>
-        <button
-          type="button"
-          onClick={() => remove(index)}
-          className="text-foreground-muted -mr-2 px-2 text-[10px] font-bold tracking-[1px] uppercase hover:text-red-400"
-        >
-          <Trash2 size={14} />
-        </button>
+        <div className="flex items-center">
+          <button
+            type="button"
+            onClick={() => setIsExpanded(false)}
+            className="text-foreground-muted hover:text-foreground p-2"
+          >
+            <ChevronUp size={16} />
+          </button>
+          <button
+            type="button"
+            onClick={() => remove(index)}
+            className="text-foreground-muted -mr-2 px-2 hover:text-red-400"
+          >
+            <Trash2 size={14} />
+          </button>
+        </div>
       </div>
 
       <div className="flex flex-col gap-3">
@@ -588,6 +646,8 @@ function IncomeRow({
               onChange={(v) => field.onChange(String(v))}
               placeholder="Chọn nguồn thu..."
               disabled={isPending}
+              autoOpen={initiallyExpanded && watchedType === ""}
+              onAfterSelect={() => amountRef.current?.focus()}
             />
           )}
         />
@@ -595,6 +655,7 @@ function IncomeRow({
         <div className="flex gap-2">
           <div className="bg-background border-border flex h-12 flex-1 items-center border px-3.5">
             <input
+              ref={amountRef}
               inputMode="numeric"
               placeholder="Số tiền"
               value={displayValue}
