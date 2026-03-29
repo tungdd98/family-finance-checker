@@ -113,6 +113,12 @@ export function MonthlyActualSheet({
     if (newIncomeIndex !== null) setNewIncomeIndex(null);
   }, [incomeFields.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const [newExpenseIndex, setNewExpenseIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (newExpenseIndex !== null) setNewExpenseIndex(null);
+  }, [expenseFields.length]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const watchedIncomes = form.watch("actual_income_details") || [];
   const watchedExpenses = form.watch("actual_expense_details") || [];
   const allocations = form.watch("allocations") || [];
@@ -307,6 +313,7 @@ export function MonthlyActualSheet({
                         form={form}
                         remove={removeExpense}
                         isPending={isPending}
+                        initiallyExpanded={index === newExpenseIndex}
                       />
                     ))}
 
@@ -314,9 +321,11 @@ export function MonthlyActualSheet({
                       type="button"
                       variant="outline"
                       disabled={isPending}
-                      onClick={() =>
-                        appendExpense({ type: "", amount: 0, note: "" })
-                      }
+                      onClick={() => {
+                        const idx = expenseFields.length;
+                        appendExpense({ type: "", amount: 0, note: "" });
+                        setNewExpenseIndex(idx);
+                      }}
                       className="text-foreground-muted hover:text-foreground mt-2 h-12 w-full border-dashed bg-transparent"
                     >
                       <Plus size={16} className="mr-2" />
@@ -693,12 +702,20 @@ function ExpenseRow({
   form,
   remove,
   isPending,
+  initiallyExpanded = false,
 }: {
   index: number;
   form: UseFormReturn<MonthlyActualInput>;
   remove: (index: number) => void;
   isPending: boolean;
+  initiallyExpanded?: boolean;
 }) {
+  const [isExpanded, setIsExpanded] = useState(initiallyExpanded);
+  const amountRef = useRef<HTMLInputElement>(null);
+
+  const watchedType = form.watch(
+    `actual_expense_details.${index}.type` as const
+  );
   const currentAmount = form.watch(
     `actual_expense_details.${index}.amount` as const
   );
@@ -707,25 +724,60 @@ function ExpenseRow({
       ? new Intl.NumberFormat("vi-VN").format(currentAmount)
       : "";
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value.replace(/\D/g, "");
-    const num = raw ? parseInt(raw, 10) : 0;
-    form.setValue(`actual_expense_details.${index}.amount` as const, num, {
-      shouldValidate: true,
-    });
-  };
+  if (!isExpanded) {
+    return (
+      <div className="bg-background border-border flex items-center gap-3 border p-4">
+        <div className="min-w-0 flex-1">
+          <div className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px] uppercase">
+            Khoản Chi #{index + 1}
+          </div>
+          <div
+            className={`mt-0.5 truncate text-[13px] font-medium ${watchedType ? "text-foreground" : "text-foreground-muted"}`}
+          >
+            {watchedType || "Chưa chọn danh mục"}
+          </div>
+        </div>
+        <div className="flex shrink-0 items-center gap-3">
+          <span
+            className={`text-[14px] font-bold ${currentAmount > 0 ? "text-accent" : "text-foreground-muted"}`}
+          >
+            {currentAmount > 0
+              ? new Intl.NumberFormat("vi-VN").format(currentAmount) + " ₫"
+              : "—"}
+          </span>
+          <button
+            type="button"
+            disabled={isPending}
+            onClick={() => setIsExpanded(true)}
+            className="text-foreground-muted hover:text-foreground -mr-1 p-1 disabled:opacity-50"
+          >
+            <Pencil size={14} />
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-background border-border flex flex-col gap-3 border p-4 transition-all">
       <div className="flex items-center justify-between">
         <Label>Khoản Chi #{index + 1}</Label>
-        <button
-          type="button"
-          onClick={() => remove(index)}
-          className="text-foreground-muted -mr-2 px-2 text-[10px] font-bold tracking-[1px] uppercase hover:text-red-400"
-        >
-          <Trash2 size={14} />
-        </button>
+        <div className="flex items-center">
+          <button
+            type="button"
+            onClick={() => setIsExpanded(false)}
+            className="text-foreground-muted hover:text-foreground p-2"
+          >
+            <ChevronUp size={16} />
+          </button>
+          <button
+            type="button"
+            onClick={() => remove(index)}
+            className="text-foreground-muted -mr-2 px-2 hover:text-red-400"
+          >
+            <Trash2 size={14} />
+          </button>
+        </div>
       </div>
 
       <div className="flex flex-col gap-3">
@@ -740,6 +792,8 @@ function ExpenseRow({
               onChange={(v) => field.onChange(String(v))}
               placeholder="Chọn loại chi tiêu..."
               disabled={isPending}
+              autoOpen={initiallyExpanded && watchedType === ""}
+              onAfterSelect={() => amountRef.current?.focus()}
             />
           )}
         />
@@ -747,10 +801,19 @@ function ExpenseRow({
         <div className="flex gap-2">
           <div className="bg-background border-border flex h-12 flex-1 items-center border px-3.5">
             <input
+              ref={amountRef}
               inputMode="numeric"
               placeholder="Số tiền"
               value={amountDisplay}
-              onChange={onChange}
+              onChange={(e) => {
+                const raw = e.target.value.replace(/\D/g, "");
+                const num = raw ? parseInt(raw, 10) : 0;
+                form.setValue(
+                  `actual_expense_details.${index}.amount` as const,
+                  num,
+                  { shouldValidate: true }
+                );
+              }}
               disabled={isPending}
               className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none"
             />
