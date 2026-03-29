@@ -100,6 +100,8 @@ export function DashboardClient({
         TỔNG QUAN
       </h1>
 
+      <GoalsDashboardCard goal={goal} projection={goalProjection} />
+
       {/* Portfolio Allocation Chart */}
       {(goldTotalValue > 0 || savingsTotalValue > 0) && (
         <div className="bg-surface border-border border p-5">
@@ -247,8 +249,6 @@ export function DashboardClient({
           </>
         )}
       </div>
-
-      <GoalsDashboardCard goal={goal} projection={goalProjection} />
     </div>
   );
 }
