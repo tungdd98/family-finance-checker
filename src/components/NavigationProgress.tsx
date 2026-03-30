@@ -1,22 +1,24 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 /**
  * Shows a thin animated top progress bar whenever navigation is in-flight.
- * As soon as pathname changes (tap on tab), bar appears immediately.
- * When the new pathname settles, bar completes and fades out.
+ * As soon as pathname or search params change, bar appears immediately.
+ * When the new route settles, bar completes and fades out.
  */
 export function NavigationProgress() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [state, setState] = useState<"idle" | "loading" | "done">("idle");
-  const prevPathname = useRef(pathname);
+  const prevKey = useRef(`${pathname}?${searchParams}`);
   const doneTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (pathname !== prevPathname.current) {
-      prevPathname.current = pathname;
+    const currentKey = `${pathname}?${searchParams}`;
+    if (currentKey !== prevKey.current) {
+      prevKey.current = currentKey;
       // Wrap in setTimeout(0) to avoid setState-in-effect lint rule
       const t = setTimeout(() => {
         setState("done");
@@ -31,7 +33,7 @@ export function NavigationProgress() {
         if (doneTimer.current) clearTimeout(doneTimer.current);
       };
     }
-  }, [pathname]);
+  }, [pathname, searchParams]);
 
   // We expose a trigger so TabBar can call it on tap
   useEffect(() => {
