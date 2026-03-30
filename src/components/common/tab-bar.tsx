@@ -5,14 +5,26 @@ import { useState, useEffect } from "react";
 import {
   ArrowLeftRight,
   House,
-  LayoutGrid,
   Target,
   TrendingUp,
+  Wallet,
 } from "lucide-react";
 
-const TAB_ITEMS = [
+interface TabItem {
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+  label: string;
+  href: string;
+  childRoutes?: string[];
+}
+
+const TAB_ITEMS: TabItem[] = [
   { icon: House, label: "DASHBOARD", href: "/dashboard" },
-  { icon: LayoutGrid, label: "TÀI SẢN", href: "/assets" },
+  {
+    icon: Wallet,
+    label: "TÀI SẢN",
+    href: "/assets",
+    childRoutes: ["/gold", "/savings"],
+  },
   { icon: TrendingUp, label: "THỊ TRƯỜNG", href: "/market" },
   { icon: ArrowLeftRight, label: "THU/CHI", href: "/cashflow" },
   { icon: Target, label: "MỤC TIÊU", href: "/goals" },
@@ -43,7 +55,9 @@ export function TabBar() {
     <nav className="bg-surface rounded-pill border-border flex h-full border p-1">
       {TAB_ITEMS.map((item) => {
         const Icon = item.icon;
-        const isActive = item.href === optimisticHref;
+        const isActive =
+          item.href === optimisticHref ||
+          item.childRoutes?.some((r) => optimisticHref.startsWith(r)) === true;
         return (
           <button
             key={item.href}

@@ -65,6 +65,7 @@ interface Props {
 
 export function CashflowClient({ year, month, existing, cashFlow }: Props) {
   const [isPending, startTransition] = useTransition();
+  const [isNavigating, startNavTransition] = useTransition();
   const router = useRouter();
 
   const form = useForm<MonthlyActualInput>({
@@ -198,7 +199,10 @@ export function CashflowClient({ year, month, existing, cashFlow }: Props) {
       newMonth = 1;
       newYear += 1;
     }
-    router.push(`/cashflow?year=${newYear}&month=${newMonth}`);
+    window.dispatchEvent(new Event("navigation-start"));
+    startNavTransition(() => {
+      router.push(`/cashflow?year=${newYear}&month=${newMonth}`);
+    });
   };
 
   const onSubmit = (data: MonthlyActualInput) => {
@@ -220,264 +224,272 @@ export function CashflowClient({ year, month, existing, cashFlow }: Props) {
         THU / CHI
       </h1>
 
-      {/* ── Month selector ── */}
-      <div className="mt-4 flex items-center justify-between">
-        <button
-          type="button"
-          onClick={() => navigateMonth(-1)}
-          className="text-foreground-muted hover:text-foreground p-2"
-        >
-          <ChevronLeft size={20} />
-        </button>
-        <span className="text-foreground text-[16px] font-bold tracking-[-0.5px]">
-          Tháng {month} · {year}
-        </span>
-        <button
-          type="button"
-          onClick={() => navigateMonth(1)}
-          className="text-foreground-muted hover:text-foreground p-2"
-        >
-          <ChevronRight size={20} />
-        </button>
-      </div>
-
-      {/* ── Summary cards ── */}
-      <div className="mt-4 grid grid-cols-3 gap-3">
-        <div className="border-border border p-3">
-          <div className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px] uppercase">
-            Thu
-          </div>
-          <div className="mt-1 text-[16px] font-bold text-green-500">
-            {totalIncome > 0 ? `+${formatMil(totalIncome)}tr` : "—"}
-          </div>
-        </div>
-        <div className="border-border border p-3">
-          <div className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px] uppercase">
-            Chi
-          </div>
-          <div className="mt-1 text-[16px] font-bold text-red-400">
-            {totalExpense > 0 ? `-${formatMil(totalExpense)}tr` : "—"}
-          </div>
-        </div>
-        <div className="border-border border p-3">
-          <div className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px] uppercase">
-            Thặng dư
-          </div>
-          <div
-            className={`mt-1 text-[16px] font-bold ${surplus > 0 ? "text-[#D4AF37]" : surplus < 0 ? "text-red-400" : "text-foreground-muted"}`}
+      <div
+        className={
+          isNavigating
+            ? "pointer-events-none opacity-50 transition-opacity duration-150"
+            : "transition-opacity duration-150"
+        }
+      >
+        {/* ── Month selector ── */}
+        <div className="mt-4 flex items-center justify-between">
+          <button
+            type="button"
+            onClick={() => navigateMonth(-1)}
+            className="text-foreground-muted hover:text-foreground p-2"
           >
-            {surplus !== 0
-              ? `${surplus > 0 ? "+" : ""}${formatMil(surplus)}tr`
-              : "—"}
+            <ChevronLeft size={20} />
+          </button>
+          <span className="text-foreground text-[16px] font-bold tracking-[-0.5px]">
+            Tháng {month} · {year}
+          </span>
+          <button
+            type="button"
+            onClick={() => navigateMonth(1)}
+            className="text-foreground-muted hover:text-foreground p-2"
+          >
+            <ChevronRight size={20} />
+          </button>
+        </div>
+
+        {/* ── Summary cards ── */}
+        <div className="mt-4 grid grid-cols-3 gap-3">
+          <div className="border-border border p-3">
+            <div className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px] uppercase">
+              Thu
+            </div>
+            <div className="mt-1 text-[16px] font-bold text-green-500">
+              {totalIncome > 0 ? `+${formatMil(totalIncome)}tr` : "—"}
+            </div>
+          </div>
+          <div className="border-border border p-3">
+            <div className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px] uppercase">
+              Chi
+            </div>
+            <div className="mt-1 text-[16px] font-bold text-red-400">
+              {totalExpense > 0 ? `-${formatMil(totalExpense)}tr` : "—"}
+            </div>
+          </div>
+          <div className="border-border border p-3">
+            <div className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px] uppercase">
+              Thặng dư
+            </div>
+            <div
+              className={`mt-1 text-[16px] font-bold ${surplus > 0 ? "text-[#D4AF37]" : surplus < 0 ? "text-red-400" : "text-foreground-muted"}`}
+            >
+              {surplus !== 0
+                ? `${surplus > 0 ? "+" : ""}${formatMil(surplus)}tr`
+                : "—"}
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* ── Form with tabs ── */}
-      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6">
-        <Tabs.Root defaultValue="income">
-          <Tabs.List className="border-border flex w-full border-b">
-            <Tabs.Tab
-              value="income"
-              className="group type-tab-label data-[active]:text-accent data-[active]:bg-accent/5 text-foreground-muted relative flex-1 py-4 text-center font-bold underline-offset-8 transition-all"
-            >
-              THU NHẬP
-              <div className="bg-accent absolute bottom-0 left-0 h-1 w-full scale-x-0 transition-transform duration-300 group-data-[active]:scale-x-100" />
-            </Tabs.Tab>
-            <Tabs.Tab
-              value="expense"
-              className="group type-tab-label data-[active]:text-accent data-[active]:bg-accent/5 text-foreground-muted border-border relative flex-1 border-x py-4 text-center font-bold underline-offset-8 transition-all"
-            >
-              CHI TIÊU
-              <div className="bg-accent absolute bottom-0 left-0 h-1 w-full scale-x-0 transition-transform duration-300 group-data-[active]:scale-x-100" />
-            </Tabs.Tab>
-            <Tabs.Tab
-              value="allocation"
-              className="group type-tab-label data-[active]:text-accent data-[active]:bg-accent/5 text-foreground-muted relative flex-1 py-4 text-center font-bold underline-offset-8 transition-all"
-            >
-              PHÂN BỔ
-              <div className="bg-accent absolute bottom-0 left-0 h-1 w-full scale-x-0 transition-transform duration-300 group-data-[active]:scale-x-100" />
-            </Tabs.Tab>
-          </Tabs.List>
+        {/* ── Form with tabs ── */}
+        <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6">
+          <Tabs.Root defaultValue="income">
+            <Tabs.List className="border-border flex w-full border-b">
+              <Tabs.Tab
+                value="income"
+                className="group type-tab-label data-[active]:text-accent data-[active]:bg-accent/5 text-foreground-muted relative flex-1 py-4 text-center font-bold underline-offset-8 transition-all"
+              >
+                THU NHẬP
+                <div className="bg-accent absolute bottom-0 left-0 h-1 w-full scale-x-0 transition-transform duration-300 group-data-[active]:scale-x-100" />
+              </Tabs.Tab>
+              <Tabs.Tab
+                value="expense"
+                className="group type-tab-label data-[active]:text-accent data-[active]:bg-accent/5 text-foreground-muted border-border relative flex-1 border-x py-4 text-center font-bold underline-offset-8 transition-all"
+              >
+                CHI TIÊU
+                <div className="bg-accent absolute bottom-0 left-0 h-1 w-full scale-x-0 transition-transform duration-300 group-data-[active]:scale-x-100" />
+              </Tabs.Tab>
+              <Tabs.Tab
+                value="allocation"
+                className="group type-tab-label data-[active]:text-accent data-[active]:bg-accent/5 text-foreground-muted relative flex-1 py-4 text-center font-bold underline-offset-8 transition-all"
+              >
+                PHÂN BỔ
+                <div className="bg-accent absolute bottom-0 left-0 h-1 w-full scale-x-0 transition-transform duration-300 group-data-[active]:scale-x-100" />
+              </Tabs.Tab>
+            </Tabs.List>
 
-          <div className="py-5">
-            {/* ── TAB 1: THU NHẬP ─────────────────────────── */}
-            <Tabs.Panel
-              value="income"
-              className="flex flex-col gap-5 outline-none"
-            >
-              <div className="bg-accent/5 border-accent/20 mb-1 flex items-center justify-between border p-4">
-                <div className="flex flex-col">
-                  <span className="type-card-label text-accent">
-                    Tổng thu nhập tháng
-                  </span>
-                  <span className="text-foreground text-[20px] font-bold tracking-[-0.5px]">
-                    {incomeTotalDisplay || "0"} ₫
-                  </span>
-                </div>
-                <Info size={20} className="text-accent/40" />
-              </div>
-
-              <div className="flex flex-col gap-4">
-                {incomeFields.map((field, index) => (
-                  <IncomeRow
-                    key={field.id}
-                    index={index}
-                    form={form}
-                    remove={removeIncome}
-                    isPending={isPending}
-                    initiallyExpanded={index === newIncomeIndex}
-                  />
-                ))}
-
-                <Button
-                  type="button"
-                  variant="outline"
-                  disabled={isPending}
-                  onClick={() => {
-                    const idx = incomeFields.length;
-                    appendIncome({ type: "", amount: 0, note: "" });
-                    setNewIncomeIndex(idx);
-                  }}
-                  className="text-foreground-muted hover:text-foreground mt-2 h-12 w-full border-dashed bg-transparent"
-                >
-                  <Plus size={16} className="mr-2" />
-                  THÊM KHOẢN THU
-                </Button>
-              </div>
-            </Tabs.Panel>
-
-            {/* ── TAB 2: CHI TIÊU ─────────────────────────── */}
-            <Tabs.Panel
-              value="expense"
-              className="flex flex-col gap-5 outline-none"
-            >
-              <div className="bg-accent/5 border-accent/20 mb-1 flex items-center justify-between border p-4">
-                <div className="flex flex-col">
-                  <span className="type-card-label text-accent">
-                    Tổng chi tiêu tháng
-                  </span>
-                  <span className="text-foreground text-[20px] font-bold tracking-[-0.5px]">
-                    {expenseDisplay || "0"} ₫
-                  </span>
-                </div>
-                <Info size={20} className="text-accent/40" />
-              </div>
-
-              <div className="flex flex-col gap-4">
-                {expenseFields.map((field, index) => (
-                  <ExpenseRow
-                    key={field.id}
-                    index={index}
-                    form={form}
-                    remove={removeExpense}
-                    isPending={isPending}
-                    initiallyExpanded={index === newExpenseIndex}
-                  />
-                ))}
-
-                <Button
-                  type="button"
-                  variant="outline"
-                  disabled={isPending}
-                  onClick={() => {
-                    const idx = expenseFields.length;
-                    appendExpense({ type: "", amount: 0, note: "" });
-                    setNewExpenseIndex(idx);
-                  }}
-                  className="text-foreground-muted hover:text-foreground mt-2 h-12 w-full border-dashed bg-transparent"
-                >
-                  <Plus size={16} className="mr-2" />
-                  THÊM KHOẢN CHI
-                </Button>
-              </div>
-            </Tabs.Panel>
-
-            {/* ── TAB 3: PHÂN BỔ ─────────────────────────── */}
-            <Tabs.Panel
-              value="allocation"
-              className="flex flex-col gap-5 outline-none"
-            >
-              <div className="bg-surface border-border flex flex-col gap-2 border p-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-foreground-muted text-[12px]">
-                    Thặng dư tháng này
-                  </span>
-                  <span
-                    className={`text-[14px] font-bold ${surplus >= 0 ? "text-green-500" : "text-red-400"}`}
-                  >
-                    {surplus >= 0 ? "+" : ""}
-                    {formatVND(surplus)}
-                  </span>
-                </div>
-                {delta !== null && (
-                  <div className="mt-1 flex items-center justify-between">
-                    <span className="text-foreground-muted text-[12px]">
-                      So với TB dự kiến
+            <div className="py-5">
+              {/* ── TAB 1: THU NHẬP ─────────────────────────── */}
+              <Tabs.Panel
+                value="income"
+                className="flex flex-col gap-5 outline-none"
+              >
+                <div className="bg-accent/5 border-accent/20 mb-1 flex items-center justify-between border p-4">
+                  <div className="flex flex-col">
+                    <span className="type-card-label text-accent">
+                      Tổng thu nhập tháng
                     </span>
-                    <span
-                      className={`text-[14px] font-bold ${delta >= 0 ? "text-green-500" : "text-red-400"}`}
-                    >
-                      {delta >= 0 ? "+" : ""}
-                      {formatVND(delta)}
+                    <span className="text-foreground text-[20px] font-bold tracking-[-0.5px]">
+                      {incomeTotalDisplay || "0"} ₫
                     </span>
                   </div>
-                )}
-              </div>
-
-              <div className="bg-surface border-border flex flex-col gap-4 border p-4">
-                <div className="border-border/50 flex items-center justify-between border-b pb-3">
-                  <span className="text-foreground text-[14px] font-bold tracking-[-0.5px]">
-                    Phân Bổ Thặng Dư
-                  </span>
-                  <span
-                    className={`text-[13px] font-bold ${unallocated > 0 ? "text-green-500" : unallocated < 0 ? "text-red-400" : "text-[#D4AF37]"}`}
-                  >
-                    {unallocated === 0 && surplus > 0
-                      ? "✓ Hoàn hảo"
-                      : `Còn lại: ${formatVND(unallocated)}`}
-                  </span>
+                  <Info size={20} className="text-accent/40" />
                 </div>
 
-                {allocationFields.map((field, index) => {
-                  const currentAmount = allocations[index]?.amount || 0;
-                  const fieldAvailable = unallocated + currentAmount;
-                  return (
-                    <AllocationRow
+                <div className="flex flex-col gap-4">
+                  {incomeFields.map((field, index) => (
+                    <IncomeRow
                       key={field.id}
                       index={index}
                       form={form}
-                      remove={removeAllocation}
-                      fieldAvailable={fieldAvailable}
+                      remove={removeIncome}
                       isPending={isPending}
+                      initiallyExpanded={index === newIncomeIndex}
                     />
-                  );
-                })}
+                  ))}
 
-                <Button
-                  type="button"
-                  variant="outline"
-                  disabled={isPending || unallocated <= 0}
-                  onClick={() =>
-                    appendAllocation({
-                      type: "gold",
-                      amount: unallocated > 0 ? unallocated : 0,
-                      is_executed: false,
-                    })
-                  }
-                  className="text-foreground-muted hover:text-foreground h-12 w-full border-dashed bg-transparent"
-                >
-                  + THÊM KHOẢN PHÂN BỔ
-                </Button>
-              </div>
-            </Tabs.Panel>
-          </div>
-        </Tabs.Root>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    disabled={isPending}
+                    onClick={() => {
+                      const idx = incomeFields.length;
+                      appendIncome({ type: "", amount: 0, note: "" });
+                      setNewIncomeIndex(idx);
+                    }}
+                    className="text-foreground-muted hover:text-foreground mt-2 h-12 w-full border-dashed bg-transparent"
+                  >
+                    <Plus size={16} className="mr-2" />
+                    THÊM KHOẢN THU
+                  </Button>
+                </div>
+              </Tabs.Panel>
 
-        <Button type="submit" disabled={isPending} className="h-14 w-full">
-          {isPending ? "ĐANG CẬP NHẬT..." : `LƯU THÁNG ${month}/${year}`}
-        </Button>
-      </form>
+              {/* ── TAB 2: CHI TIÊU ─────────────────────────── */}
+              <Tabs.Panel
+                value="expense"
+                className="flex flex-col gap-5 outline-none"
+              >
+                <div className="bg-accent/5 border-accent/20 mb-1 flex items-center justify-between border p-4">
+                  <div className="flex flex-col">
+                    <span className="type-card-label text-accent">
+                      Tổng chi tiêu tháng
+                    </span>
+                    <span className="text-foreground text-[20px] font-bold tracking-[-0.5px]">
+                      {expenseDisplay || "0"} ₫
+                    </span>
+                  </div>
+                  <Info size={20} className="text-accent/40" />
+                </div>
+
+                <div className="flex flex-col gap-4">
+                  {expenseFields.map((field, index) => (
+                    <ExpenseRow
+                      key={field.id}
+                      index={index}
+                      form={form}
+                      remove={removeExpense}
+                      isPending={isPending}
+                      initiallyExpanded={index === newExpenseIndex}
+                    />
+                  ))}
+
+                  <Button
+                    type="button"
+                    variant="outline"
+                    disabled={isPending}
+                    onClick={() => {
+                      const idx = expenseFields.length;
+                      appendExpense({ type: "", amount: 0, note: "" });
+                      setNewExpenseIndex(idx);
+                    }}
+                    className="text-foreground-muted hover:text-foreground mt-2 h-12 w-full border-dashed bg-transparent"
+                  >
+                    <Plus size={16} className="mr-2" />
+                    THÊM KHOẢN CHI
+                  </Button>
+                </div>
+              </Tabs.Panel>
+
+              {/* ── TAB 3: PHÂN BỔ ─────────────────────────── */}
+              <Tabs.Panel
+                value="allocation"
+                className="flex flex-col gap-5 outline-none"
+              >
+                <div className="bg-surface border-border flex flex-col gap-2 border p-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-foreground-muted text-[12px]">
+                      Thặng dư tháng này
+                    </span>
+                    <span
+                      className={`text-[14px] font-bold ${surplus >= 0 ? "text-green-500" : "text-red-400"}`}
+                    >
+                      {surplus >= 0 ? "+" : ""}
+                      {formatVND(surplus)}
+                    </span>
+                  </div>
+                  {delta !== null && (
+                    <div className="mt-1 flex items-center justify-between">
+                      <span className="text-foreground-muted text-[12px]">
+                        So với TB dự kiến
+                      </span>
+                      <span
+                        className={`text-[14px] font-bold ${delta >= 0 ? "text-green-500" : "text-red-400"}`}
+                      >
+                        {delta >= 0 ? "+" : ""}
+                        {formatVND(delta)}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="bg-surface border-border flex flex-col gap-4 border p-4">
+                  <div className="border-border/50 flex items-center justify-between border-b pb-3">
+                    <span className="text-foreground text-[14px] font-bold tracking-[-0.5px]">
+                      Phân Bổ Thặng Dư
+                    </span>
+                    <span
+                      className={`text-[13px] font-bold ${unallocated > 0 ? "text-green-500" : unallocated < 0 ? "text-red-400" : "text-[#D4AF37]"}`}
+                    >
+                      {unallocated === 0 && surplus > 0
+                        ? "✓ Hoàn hảo"
+                        : `Còn lại: ${formatVND(unallocated)}`}
+                    </span>
+                  </div>
+
+                  {allocationFields.map((field, index) => {
+                    const currentAmount = allocations[index]?.amount || 0;
+                    const fieldAvailable = unallocated + currentAmount;
+                    return (
+                      <AllocationRow
+                        key={field.id}
+                        index={index}
+                        form={form}
+                        remove={removeAllocation}
+                        fieldAvailable={fieldAvailable}
+                        isPending={isPending}
+                      />
+                    );
+                  })}
+
+                  <Button
+                    type="button"
+                    variant="outline"
+                    disabled={isPending || unallocated <= 0}
+                    onClick={() =>
+                      appendAllocation({
+                        type: "gold",
+                        amount: unallocated > 0 ? unallocated : 0,
+                        is_executed: false,
+                      })
+                    }
+                    className="text-foreground-muted hover:text-foreground h-12 w-full border-dashed bg-transparent"
+                  >
+                    + THÊM KHOẢN PHÂN BỔ
+                  </Button>
+                </div>
+              </Tabs.Panel>
+            </div>
+          </Tabs.Root>
+
+          <Button type="submit" disabled={isPending} className="h-14 w-full">
+            {isPending ? "ĐANG CẬP NHẬT..." : `LƯU THÁNG ${month}/${year}`}
+          </Button>
+        </form>
+      </div>
     </div>
   );
 }
