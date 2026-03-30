@@ -37,13 +37,13 @@ export default async function GoalsPage() {
     prices,
     settings,
   ] = await Promise.all([
-    getGoal(supabase, user.id),
-    getCashFlow(supabase, user.id),
-    getMonthlyActual(supabase, user.id, currentYear, currentMonth),
-    getSavingsAccounts(supabase, user.id),
-    getActiveGoldAssets(supabase, user.id),
+    getGoal(user.id),
+    getCashFlow(user.id),
+    getMonthlyActual(user.id, currentYear, currentMonth),
+    getSavingsAccounts(user.id),
+    getActiveGoldAssets(user.id),
     getExternalGoldPrices(),
-    getSettings(supabase, user.id),
+    getSettings(user.id),
   ]);
 
   // Compute current total assets

@@ -8,7 +8,7 @@ export default async function SavingsPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const accounts = user ? await getSavingsAccounts(supabase, user.id) : [];
+  const accounts = user ? await getSavingsAccounts(user.id) : [];
 
   return <SavingsClient initialAccounts={accounts} />;
 }

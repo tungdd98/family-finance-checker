@@ -23,7 +23,7 @@ export default async function ProtectedLayout({
     redirect("/login");
   }
 
-  const settings = await getSettings(supabase, user.id);
+  const settings = await getSettings(user.id);
   const displayName =
     settings?.display_name || user?.email?.split("@")[0] || "Bạn";
 

@@ -12,7 +12,7 @@ export default async function GoldPage() {
   } = await supabase.auth.getUser();
 
   const [positions, prices] = await Promise.all([
-    user ? getActiveGoldAssets(supabase, user.id) : [],
+    user ? getActiveGoldAssets(user.id) : [],
     getExternalGoldPrices(),
   ]);
 

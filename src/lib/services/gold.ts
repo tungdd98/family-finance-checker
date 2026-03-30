@@ -1,5 +1,8 @@
 // src/lib/services/gold.ts
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { unstable_cache } from "next/cache";
+
+import { createClient } from "@/lib/supabase/server";
 import type {
   AddAssetInput,
   EditAssetInput,
@@ -31,18 +34,22 @@ export interface GoldPrice {
   update_time: string;
 }
 
-export async function getActiveGoldAssets(
-  supabase: SupabaseClient,
-  userId: string
-): Promise<GoldAsset[]> {
-  const { data, error } = await supabase
-    .from("gold_assets")
-    .select("*")
-    .eq("user_id", userId)
-    .is("sold_at", null)
-    .order("buy_date", { ascending: false });
-  if (error) throw error;
-  return data ?? [];
+export async function getActiveGoldAssets(userId: string): Promise<GoldAsset[]> {
+  return unstable_cache(
+    async () => {
+      const supabase = await createClient();
+      const { data, error } = await supabase
+        .from("gold_assets")
+        .select("*")
+        .eq("user_id", userId)
+        .is("sold_at", null)
+        .order("buy_date", { ascending: false });
+      if (error) throw error;
+      return data ?? [];
+    },
+    [`gold-assets-${userId}`],
+    { tags: [`user-${userId}`], revalidate: 30 }
+  )();
 }
 
 export async function addGoldAsset(

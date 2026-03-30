@@ -21,12 +21,12 @@ export default async function DashboardPage() {
 
   const [goldPositions, prices, savingsAccounts, goal, cashFlow, settings] =
     await Promise.all([
-      getActiveGoldAssets(supabase, user.id),
+      getActiveGoldAssets(user.id),
       getExternalGoldPrices(),
-      getSavingsAccounts(supabase, user.id),
-      getGoal(supabase, user.id),
-      getCashFlow(supabase, user.id),
-      getSettings(supabase, user.id),
+      getSavingsAccounts(user.id),
+      getGoal(user.id),
+      getCashFlow(user.id),
+      getSettings(user.id),
     ]);
 
   // Compute current assets for goal projection

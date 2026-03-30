@@ -19,8 +19,8 @@ export default async function CashflowPage({ searchParams }: Props) {
   const month = parseInt(params.month ?? "") || now.getMonth() + 1;
 
   const [existing, cashFlow] = await Promise.all([
-    getMonthlyActual(supabase, user.id, year, month),
-    getCashFlow(supabase, user.id),
+    getMonthlyActual(user.id, year, month),
+    getCashFlow(user.id),
   ]);
 
   return (

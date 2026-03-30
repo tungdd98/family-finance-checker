@@ -1,7 +1,7 @@
 // src/app/actions/savings.ts
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import {
   addSavingsAccount,
@@ -28,6 +28,7 @@ export async function addSavingsAction(
 
     const { supabase, user } = await getAuthUser();
     await addSavingsAccount(supabase, user.id, parsed.data);
+    revalidateTag(`user-${user.id}`);
     revalidatePath("/savings");
   } catch {
     return { error: "Đã xảy ra lỗi, vui lòng thử lại" };
@@ -44,6 +45,7 @@ export async function updateSavingsAction(
 
     const { supabase, user } = await getAuthUser();
     await updateSavingsAccount(supabase, user.id, id, parsed.data);
+    revalidateTag(`user-${user.id}`);
     revalidatePath("/savings");
   } catch {
     return { error: "Đã xảy ra lỗi, vui lòng thử lại" };
@@ -56,6 +58,7 @@ export async function deleteSavingsAction(
   try {
     const { supabase, user } = await getAuthUser();
     await deleteSavingsAccount(supabase, user.id, id);
+    revalidateTag(`user-${user.id}`);
     revalidatePath("/savings");
   } catch {
     return { error: "Đã xảy ra lỗi, vui lòng thử lại" };

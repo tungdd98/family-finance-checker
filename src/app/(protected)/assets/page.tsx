@@ -18,8 +18,8 @@ export default async function AssetsPage() {
   if (!user) return null;
 
   const [savingsAccounts, goldPositions, prices] = await Promise.all([
-    getSavingsAccounts(supabase, user.id),
-    getActiveGoldAssets(supabase, user.id),
+    getSavingsAccounts(user.id),
+    getActiveGoldAssets(user.id),
     getExternalGoldPrices(),
   ]);
 
