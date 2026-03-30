@@ -1,8 +1,5 @@
 // src/lib/services/savings.ts
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { unstable_cache } from "next/cache";
-
-import { createClient } from "@/lib/supabase/server";
 import type { SavingsInput } from "@/lib/validations/savings";
 
 export interface SavingsAccount {
@@ -106,22 +103,18 @@ export function getSavingsDisplayStatus(
 
 // ── CRUD ─────────────────────────────────────────────────────
 
-export async function getSavingsAccounts(userId: string): Promise<SavingsAccount[]> {
-  return unstable_cache(
-    async () => {
-      const supabase = await createClient();
-      const { data, error } = await supabase
-        .from("savings_accounts")
-        .select("*")
-        .eq("user_id", userId)
-        .neq("status", "closed")
-        .order("start_date", { ascending: false });
-      if (error) throw error;
-      return data ?? [];
-    },
-    [`savings-${userId}`],
-    { tags: [`user-${userId}`], revalidate: 30 }
-  )();
+export async function getSavingsAccounts(
+  supabase: SupabaseClient,
+  userId: string
+): Promise<SavingsAccount[]> {
+  const { data, error } = await supabase
+    .from("savings_accounts")
+    .select("*")
+    .eq("user_id", userId)
+    .neq("status", "closed")
+    .order("start_date", { ascending: false });
+  if (error) throw error;
+  return data ?? [];
 }
 
 export async function addSavingsAccount(

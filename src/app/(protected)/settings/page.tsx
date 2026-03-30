@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
-import { getSettings } from "@/lib/services/settings";
+import { cachedGetSettings } from "@/lib/server-queries";
 import { SettingsForm } from "./SettingsForm";
 
 export default async function SettingsPage() {
@@ -12,7 +12,7 @@ export default async function SettingsPage() {
 
   if (!user) redirect("/login");
 
-  const settings = await getSettings(user.id);
+  const settings = await cachedGetSettings(user.id);
 
   const displayName =
     settings?.display_name || user?.email?.split("@")[0] || "Bạn";

@@ -1,8 +1,5 @@
 // src/lib/services/goals.ts
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { unstable_cache } from "next/cache";
-
-import { createClient } from "@/lib/supabase/server";
 import type {
   GoalInput,
   CashFlowInput,
@@ -115,20 +112,16 @@ export function calcProjection(
 
 // ── DB helpers ────────────────────────────────────────────────
 
-export async function getGoal(userId: string): Promise<Goal | null> {
-  return unstable_cache(
-    async () => {
-      const supabase = await createClient();
-      const { data } = await supabase
-        .from("goals")
-        .select("*")
-        .eq("user_id", userId)
-        .maybeSingle();
-      return data;
-    },
-    [`goal-${userId}`],
-    { tags: [`user-${userId}`], revalidate: 30 }
-  )();
+export async function getGoal(
+  supabase: SupabaseClient,
+  userId: string
+): Promise<Goal | null> {
+  const { data } = await supabase
+    .from("goals")
+    .select("*")
+    .eq("user_id", userId)
+    .maybeSingle();
+  return data;
 }
 
 export async function upsertGoal(
@@ -151,20 +144,16 @@ export async function upsertGoal(
   return error;
 }
 
-export async function getCashFlow(userId: string): Promise<HouseholdCashFlow | null> {
-  return unstable_cache(
-    async () => {
-      const supabase = await createClient();
-      const { data } = await supabase
-        .from("household_cash_flow")
-        .select("*")
-        .eq("user_id", userId)
-        .maybeSingle();
-      return data;
-    },
-    [`cashflow-${userId}`],
-    { tags: [`user-${userId}`], revalidate: 30 }
-  )();
+export async function getCashFlow(
+  supabase: SupabaseClient,
+  userId: string
+): Promise<HouseholdCashFlow | null> {
+  const { data } = await supabase
+    .from("household_cash_flow")
+    .select("*")
+    .eq("user_id", userId)
+    .maybeSingle();
+  return data;
 }
 
 export async function upsertCashFlow(
@@ -186,25 +175,19 @@ export async function upsertCashFlow(
 }
 
 export async function getMonthlyActual(
+  supabase: SupabaseClient,
   userId: string,
   year: number,
   month: number
 ): Promise<MonthlyActual | null> {
-  return unstable_cache(
-    async () => {
-      const supabase = await createClient();
-      const { data } = await supabase
-        .from("monthly_actuals")
-        .select("*")
-        .eq("user_id", userId)
-        .eq("year", year)
-        .eq("month", month)
-        .maybeSingle();
-      return data;
-    },
-    [`monthly-${userId}-${year}-${month}`],
-    { tags: [`user-${userId}`], revalidate: 30 }
-  )();
+  const { data } = await supabase
+    .from("monthly_actuals")
+    .select("*")
+    .eq("user_id", userId)
+    .eq("year", year)
+    .eq("month", month)
+    .maybeSingle();
+  return data;
 }
 
 export async function upsertMonthlyActual(

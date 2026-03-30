@@ -1,12 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
 import {
-  getSavingsAccounts,
-  calcAccruedInterest,
-} from "@/lib/services/savings";
-import {
-  getActiveGoldAssets,
+  cachedGetSavingsAccounts,
+  cachedGetActiveGoldAssets,
   getExternalGoldPrices,
-} from "@/lib/services/gold";
+} from "@/lib/server-queries";
+import { calcAccruedInterest } from "@/lib/services/savings";
 import { calcPnl, CHI_PER_LUONG } from "@/lib/gold-utils";
 import { AssetsClient } from "./AssetsClient";
 
@@ -18,8 +16,8 @@ export default async function AssetsPage() {
   if (!user) return null;
 
   const [savingsAccounts, goldPositions, prices] = await Promise.all([
-    getSavingsAccounts(user.id),
-    getActiveGoldAssets(user.id),
+    cachedGetSavingsAccounts(user.id),
+    cachedGetActiveGoldAssets(user.id),
     getExternalGoldPrices(),
   ]);
 

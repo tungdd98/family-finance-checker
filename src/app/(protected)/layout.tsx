@@ -2,12 +2,14 @@ import Link from "next/link";
 import { Settings } from "lucide-react";
 import { redirect } from "next/navigation";
 
-import { getNotificationsAction } from "@/app/actions/notifications";
 import { TabBar } from "@/components/common";
 import { NotificationBell } from "@/components/NotificationBell";
 import { NavigationProgress } from "@/components/NavigationProgress";
 import { createClient } from "@/lib/supabase/server";
-import { getSettings } from "@/lib/services/settings";
+import {
+  cachedGetSettings,
+  getNotificationsAction,
+} from "@/lib/server-queries";
 
 export default async function ProtectedLayout({
   children,
@@ -23,7 +25,7 @@ export default async function ProtectedLayout({
     redirect("/login");
   }
 
-  const settings = await getSettings(user.id);
+  const settings = await cachedGetSettings(user.id);
   const displayName =
     settings?.display_name || user?.email?.split("@")[0] || "Bạn";
 
