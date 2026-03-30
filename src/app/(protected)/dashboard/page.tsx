@@ -1,14 +1,14 @@
 import { createClient } from "@/lib/supabase/server";
 import {
-  getActiveGoldAssets,
+  cachedGetActiveGoldAssets,
+  cachedGetSavingsAccounts,
+  cachedGetGoal,
+  cachedGetCashFlow,
+  cachedGetSettings,
   getExternalGoldPrices,
-} from "@/lib/services/gold";
-import {
-  getSavingsAccounts,
-  calcAccruedInterest,
-} from "@/lib/services/savings";
-import { getGoal, getCashFlow, calcProjection } from "@/lib/services/goals";
-import { getSettings } from "@/lib/services/settings";
+} from "@/lib/server-queries";
+import { calcAccruedInterest } from "@/lib/services/savings";
+import { calcProjection } from "@/lib/services/goals";
 import { calcPnl, CHI_PER_LUONG } from "@/lib/gold-utils";
 import { DashboardClient } from "./DashboardClient";
 
@@ -21,12 +21,12 @@ export default async function DashboardPage() {
 
   const [goldPositions, prices, savingsAccounts, goal, cashFlow, settings] =
     await Promise.all([
-      getActiveGoldAssets(supabase, user.id),
+      cachedGetActiveGoldAssets(user.id),
       getExternalGoldPrices(),
-      getSavingsAccounts(supabase, user.id),
-      getGoal(supabase, user.id),
-      getCashFlow(supabase, user.id),
-      getSettings(supabase, user.id),
+      cachedGetSavingsAccounts(user.id),
+      cachedGetGoal(user.id),
+      cachedGetCashFlow(user.id),
+      cachedGetSettings(user.id),
     ]);
 
   // Compute current assets for goal projection

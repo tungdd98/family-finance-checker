@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import { getSavingsAccounts } from "@/lib/services/savings";
+import { cachedGetSavingsAccounts } from "@/lib/server-queries";
 import { SavingsClient } from "./SavingsClient";
 
 export default async function SavingsPage() {
@@ -8,7 +8,7 @@ export default async function SavingsPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const accounts = user ? await getSavingsAccounts(supabase, user.id) : [];
+  const accounts = user ? await cachedGetSavingsAccounts(user.id) : [];
 
   return <SavingsClient initialAccounts={accounts} />;
 }

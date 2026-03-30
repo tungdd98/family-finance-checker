@@ -1,5 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
-import { getMonthlyActual, getCashFlow } from "@/lib/services/goals";
+import {
+  cachedGetMonthlyActual,
+  cachedGetCashFlow,
+} from "@/lib/server-queries";
 import { CashflowClient } from "./CashflowClient";
 
 interface Props {
@@ -19,8 +22,8 @@ export default async function CashflowPage({ searchParams }: Props) {
   const month = parseInt(params.month ?? "") || now.getMonth() + 1;
 
   const [existing, cashFlow] = await Promise.all([
-    getMonthlyActual(supabase, user.id, year, month),
-    getCashFlow(supabase, user.id),
+    cachedGetMonthlyActual(user.id, year, month),
+    cachedGetCashFlow(user.id),
   ]);
 
   return (

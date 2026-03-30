@@ -1,19 +1,15 @@
 import { createClient } from "@/lib/supabase/server";
 import {
-  getGoal,
-  getCashFlow,
-  getMonthlyActual,
-  calcProjection,
-} from "@/lib/services/goals";
-import {
-  getSavingsAccounts,
-  calcAccruedInterest,
-} from "@/lib/services/savings";
-import {
-  getActiveGoldAssets,
+  cachedGetGoal,
+  cachedGetCashFlow,
+  cachedGetMonthlyActual,
+  cachedGetSavingsAccounts,
+  cachedGetActiveGoldAssets,
+  cachedGetSettings,
   getExternalGoldPrices,
-} from "@/lib/services/gold";
-import { getSettings } from "@/lib/services/settings";
+} from "@/lib/server-queries";
+import { calcAccruedInterest } from "@/lib/services/savings";
+import { calcProjection } from "@/lib/services/goals";
 import { calcPnl, CHI_PER_LUONG } from "@/lib/gold-utils";
 import { GoalsClient } from "./GoalsClient";
 
@@ -37,13 +33,13 @@ export default async function GoalsPage() {
     prices,
     settings,
   ] = await Promise.all([
-    getGoal(supabase, user.id),
-    getCashFlow(supabase, user.id),
-    getMonthlyActual(supabase, user.id, currentYear, currentMonth),
-    getSavingsAccounts(supabase, user.id),
-    getActiveGoldAssets(supabase, user.id),
+    cachedGetGoal(user.id),
+    cachedGetCashFlow(user.id),
+    cachedGetMonthlyActual(user.id, currentYear, currentMonth),
+    cachedGetSavingsAccounts(user.id),
+    cachedGetActiveGoldAssets(user.id),
     getExternalGoldPrices(),
-    getSettings(supabase, user.id),
+    cachedGetSettings(user.id),
   ]);
 
   // Compute current total assets

@@ -1,8 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import {
-  getActiveGoldAssets,
+  cachedGetActiveGoldAssets,
   getExternalGoldPrices,
-} from "@/lib/services/gold";
+} from "@/lib/server-queries";
 import { GoldClient } from "./GoldClient";
 
 export default async function GoldPage() {
@@ -12,7 +12,7 @@ export default async function GoldPage() {
   } = await supabase.auth.getUser();
 
   const [positions, prices] = await Promise.all([
-    user ? getActiveGoldAssets(supabase, user.id) : [],
+    user ? cachedGetActiveGoldAssets(user.id) : [],
     getExternalGoldPrices(),
   ]);
 
