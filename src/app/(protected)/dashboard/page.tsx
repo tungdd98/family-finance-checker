@@ -1,3 +1,4 @@
+// src/app/(protected)/dashboard/page.tsx
 import { createClient } from "@/lib/supabase/server";
 import {
   cachedGetActiveGoldAssets,
@@ -5,6 +6,7 @@ import {
   cachedGetGoal,
   cachedGetCashFlow,
   cachedGetSettings,
+  cachedGetMonthlyActual,
   getExternalGoldPrices,
 } from "@/lib/server-queries";
 import { calcAccruedInterest } from "@/lib/services/savings";
@@ -19,17 +21,28 @@ export default async function DashboardPage() {
   } = await supabase.auth.getUser();
   if (!user) return null;
 
-  const [goldPositions, prices, savingsAccounts, goal, cashFlow, settings] =
-    await Promise.all([
-      cachedGetActiveGoldAssets(user.id),
-      getExternalGoldPrices(),
-      cachedGetSavingsAccounts(user.id),
-      cachedGetGoal(user.id),
-      cachedGetCashFlow(user.id),
-      cachedGetSettings(user.id),
-    ]);
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1;
 
-  // Compute current assets for goal projection
+  const [
+    goldPositions,
+    prices,
+    savingsAccounts,
+    goal,
+    cashFlow,
+    settings,
+    monthlyActual,
+  ] = await Promise.all([
+    cachedGetActiveGoldAssets(user.id),
+    getExternalGoldPrices(),
+    cachedGetSavingsAccounts(user.id),
+    cachedGetGoal(user.id),
+    cachedGetCashFlow(user.id),
+    cachedGetSettings(user.id),
+    cachedGetMonthlyActual(user.id, year, month),
+  ]);
+
   const priceMap = new Map((prices ?? []).map((p) => [p.type_code, p]));
   const savingsTotal = savingsAccounts.reduce(
     (s, a) => s + a.principal + calcAccruedInterest(a),
@@ -63,6 +76,8 @@ export default async function DashboardPage() {
       savingsAccounts={savingsAccounts}
       goal={goal}
       goalProjection={goalProjection}
+      monthlyActual={monthlyActual}
+      currentAssets={currentAssets}
     />
   );
 }
