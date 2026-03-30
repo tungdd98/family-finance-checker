@@ -2,48 +2,37 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function ScreenSkeleton() {
   return (
-    <div className="flex flex-col gap-5 pt-2">
-      {/* Page Title Skeleton */}
-      <Skeleton className="h-9 w-40" />
+    <div className="flex flex-col gap-4 pt-2">
+      {/* Page title */}
+      <Skeleton className="h-9 w-36" />
 
-      {/* Goal/Summary Card Skeleton */}
+      {/* Hero card */}
       <div className="bg-surface/50 border-border border p-4">
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center gap-3">
-            <Skeleton className="bg-accent h-3.5 w-0.75 shrink-0" />
-            <Skeleton className="h-3 w-32" />
-          </div>
+        <div className="flex items-start justify-between">
           <div className="flex flex-col gap-2">
-            <Skeleton className="h-8 w-48" />
-            <Skeleton className="h-4 w-64" />
+            <Skeleton className="h-2.5 w-24" />
+            <Skeleton className="h-8 w-32" />
           </div>
-          <Skeleton className="mt-2 h-1.5 w-full rounded-full" />
+          <div className="flex flex-col items-end gap-2">
+            <Skeleton className="h-2.5 w-16" />
+            <Skeleton className="h-8 w-16" />
+          </div>
+        </div>
+        <Skeleton className="mt-3 h-1.5 w-full" />
+        <div className="mt-2 flex justify-between">
+          <Skeleton className="h-3 w-44" />
+          <Skeleton className="h-3 w-20" />
         </div>
       </div>
 
-      {/* Portfolio Chart Skeleton */}
-      <div className="bg-surface/50 border-border border p-5">
-        <Skeleton className="mb-4 h-3 w-32" />
-        <div className="flex items-center justify-center py-6">
-          <Skeleton className="h-48 w-48 rounded-full" />
-        </div>
-      </div>
-
-      {/* Asset List Skeletons */}
-      <div className="flex flex-col gap-5">
-        {[1, 2].map((i) => (
-          <div key={i} className="bg-surface/50 border-border border p-4">
-            <div className="mb-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Skeleton className="bg-accent h-3.5 w-0.75 shrink-0" />
-                <Skeleton className="h-3 w-36" />
-              </div>
-              <Skeleton className="h-4 w-4" />
-            </div>
+      {/* 2×2 tile grid */}
+      <div className="grid grid-cols-2 gap-3">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="bg-surface/50 border-border border p-3">
             <div className="flex flex-col gap-2">
-              <Skeleton className="h-7 w-40" />
-              <Skeleton className="h-3 w-32" />
-              <Skeleton className="h-3 w-56" />
+              <Skeleton className="h-2 w-14" />
+              <Skeleton className="h-5 w-20" />
+              <Skeleton className="h-3 w-12" />
             </div>
           </div>
         ))}
