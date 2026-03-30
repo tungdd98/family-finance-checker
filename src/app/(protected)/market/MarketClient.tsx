@@ -29,17 +29,21 @@ export function MarketClient({ initialPrices = [] }: Props) {
   const worldGold = prices.find((p) => p.type_code === "XAUUSD");
   const localPrices = prices.filter((p) => p.type_code !== "XAUUSD");
 
-  const formatChange = (val: number) => {
+  const formatChange = (val: number, currency: "VND" | "USD" = "VND") => {
     if (val === 0) return null;
     const isUp = val > 0;
     const Icon = isUp ? TrendingUp : TrendingDown;
     const color = isUp ? "text-status-positive" : "text-status-negative";
+    const formatted =
+      currency === "USD"
+        ? `$${Math.abs(val).toLocaleString("en-US", { minimumFractionDigits: 2 })}`
+        : formatVND(Math.abs(val));
     return (
       <div
         className={`flex items-center justify-end gap-1 text-[10px] ${color} mt-0.5 font-medium`}
       >
         <Icon size={10} strokeWidth={3} />
-        <span>{formatVND(Math.abs(val))}</span>
+        <span>{formatted}</span>
       </div>
     );
   };
@@ -70,7 +74,7 @@ export function MarketClient({ initialPrices = [] }: Props) {
                   minimumFractionDigits: 2,
                 })}
               </span>
-              <div className="h-4">{formatChange(worldGold.change_buy)}</div>
+              <div className="h-4">{formatChange(worldGold.change_buy, "USD")}</div>
             </div>
           </div>
         </div>
