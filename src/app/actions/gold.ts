@@ -1,7 +1,7 @@
 // src/app/actions/gold.ts
 "use server";
 
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import {
   addAssetSchema,
@@ -41,7 +41,6 @@ export async function addAssetAction(
 
   try {
     await addGoldAsset(supabase, user.id, parsed.data);
-    revalidateTag(`user-${user.id}`);
     revalidatePath("/gold");
     revalidatePath("/dashboard");
   } catch {
@@ -63,7 +62,6 @@ export async function editAssetAction(
 
   try {
     await editGoldAsset(supabase, user.id, id, parsed.data);
-    revalidateTag(`user-${user.id}`);
     revalidatePath("/gold");
     revalidatePath("/dashboard");
   } catch {
@@ -85,7 +83,6 @@ export async function sellAssetAction(
 
   try {
     await sellGoldAsset(supabase, user.id, id, parsed.data);
-    revalidateTag(`user-${user.id}`);
     revalidatePath("/gold");
     revalidatePath("/dashboard");
   } catch (err) {
@@ -103,7 +100,6 @@ export async function deleteAssetAction(id: string): Promise<ActionResult> {
 
   try {
     await deleteGoldAsset(supabase, user.id, id);
-    revalidateTag(`user-${user.id}`);
     revalidatePath("/gold");
     revalidatePath("/dashboard");
   } catch {

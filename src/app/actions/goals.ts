@@ -1,7 +1,7 @@
 // src/app/actions/goals.ts
 "use server";
 
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import {
   goalSchema,
@@ -34,7 +34,6 @@ export async function saveGoalAction(
   const error = await upsertGoal(supabase, user.id, parsed.data);
   if (error) return { error: "Không thể lưu mục tiêu" };
 
-  revalidateTag(`user-${user.id}`);
   revalidatePath("/goals");
   revalidatePath("/dashboard");
 }
@@ -56,7 +55,6 @@ export async function saveCashFlowAction(
   const error = await upsertCashFlow(supabase, user.id, parsed.data);
   if (error) return { error: "Không thể lưu thu chi" };
 
-  revalidateTag(`user-${user.id}`);
   revalidatePath("/goals");
   revalidatePath("/dashboard");
 }
@@ -78,6 +76,5 @@ export async function saveMonthlyActualAction(
   const error = await upsertMonthlyActual(supabase, user.id, parsed.data);
   if (error) return { error: "Không thể lưu số liệu tháng này" };
 
-  revalidateTag(`user-${user.id}`);
   revalidatePath("/goals");
 }
