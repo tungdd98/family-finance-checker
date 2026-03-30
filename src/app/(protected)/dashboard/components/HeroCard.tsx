@@ -21,6 +21,8 @@ export function HeroCard({ netWorth, goal }: HeroCardProps) {
     maximumSignificantDigits: 3,
   }).format(netWorth);
 
+  const clampedPct = goal ? Math.min(100, Math.max(0, goal.progressPct)) : 0;
+
   return (
     <div className="bg-surface border-border border p-4">
       {/* Top row: net worth (left) + goal % (right) */}
@@ -59,7 +61,7 @@ export function HeroCard({ netWorth, goal }: HeroCardProps) {
           <div className="mt-3 h-1.5 overflow-hidden bg-[#2a2a2a]">
             <div
               className="h-full bg-gradient-to-r from-[#D4AF37] to-[#f0d060]"
-              style={{ width: `${goal.progressPct}%` }}
+              style={{ width: `${clampedPct}%` }}
             />
           </div>
 
