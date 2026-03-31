@@ -45,6 +45,19 @@ export async function getActiveGoldAssets(
   return data ?? [];
 }
 
+export async function getAllGoldAssets(
+  supabase: SupabaseClient,
+  userId: string
+): Promise<GoldAsset[]> {
+  const { data, error } = await supabase
+    .from("gold_assets")
+    .select("*")
+    .eq("user_id", userId)
+    .order("buy_date", { ascending: false });
+  if (error) throw error;
+  return data ?? [];
+}
+
 export async function addGoldAsset(
   supabase: SupabaseClient,
   userId: string,
