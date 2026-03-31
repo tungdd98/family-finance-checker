@@ -65,10 +65,12 @@ export function DashboardClient({
   // Gold computations
   let goldTotalValue = 0;
   let goldTotalCapital = 0;
+  let goldTotalChi = 0;
   for (const pos of goldPositions) {
     const remaining = pos.quantity - pos.sold_quantity;
     const livePrice = priceMap.get(pos.brand_code);
     goldTotalCapital += remaining * pos.buy_price_per_chi;
+    goldTotalChi += remaining;
     if (livePrice) {
       goldTotalValue += calcPnl(
         remaining,
@@ -85,10 +87,12 @@ export function DashboardClient({
       : null;
 
   // Savings computations
-  const savingsTotalValue = savingsAccounts.reduce(
-    (s, a) => s + a.principal + calcAccruedInterest(a),
+  const savingsTotalAccrued = savingsAccounts.reduce(
+    (s, a) => s + calcAccruedInterest(a),
     0
   );
+  const savingsTotalValue =
+    savingsAccounts.reduce((s, a) => s + a.principal, 0) + savingsTotalAccrued;
 
   // Hero card goal data
   const heroGoal =
@@ -108,9 +112,11 @@ export function DashboardClient({
         }
       : null;
 
-  // Market tile: prefer SJC, fall back to first available
+  // Market tile: Bảo Tín Mạnh Hải SJC as reference
   const marketPrice =
-    prices.find((p) => p.type_code === "SJC") ?? prices[0] ?? null;
+    prices.find((p) => p.type_code === "BTSJC") ??
+    prices.find((p) => p.type_code.includes("SJC") && p.sell > 0) ??
+    null;
 
   // Cashflow tile
   const currentMonth = new Date().getMonth() + 1;
@@ -128,36 +134,50 @@ export function DashboardClient({
 
       <div className="grid grid-cols-2 gap-3">
         {/* Vàng tile */}
-        <StatTile label="Vàng" href="/assets" accentColor="gold">
+        <StatTile label="Vàng" href="/gold" accentColor="gold">
           <span className="text-foreground text-[15px] leading-tight font-bold tracking-[-0.5px]">
             {fmtTile(goldDisplayValue)} đ
           </span>
-          {goldPnlPct !== null ? (
-            <span
-              className={`text-[11px] font-semibold ${goldPnlPct >= 0 ? "text-status-positive" : "text-status-negative"}`}
-            >
-              {goldPnlPct >= 0 ? "+" : ""}
-              {goldPnlPct.toFixed(2)}%
-            </span>
-          ) : (
-            goldPositions.length === 0 && (
-              <span className="text-foreground-muted text-[11px]">
-                Chưa có tài sản
+          <div className="flex items-center justify-between gap-2">
+            {goldTotalChi > 0 && (
+              <span className="text-foreground-muted text-[11px] font-semibold">
+                {goldTotalChi} chỉ
               </span>
-            )
-          )}
+            )}
+            {goldPnlPct !== null ? (
+              <span
+                className={`text-[11px] font-semibold ${goldPnlPct >= 0 ? "text-status-positive" : "text-status-negative"}`}
+              >
+                {goldPnlPct >= 0 ? "+" : ""}
+                {goldPnlPct.toFixed(2)}%
+              </span>
+            ) : (
+              goldPositions.length === 0 && (
+                <span className="text-foreground-muted text-[11px]">
+                  Chưa có tài sản
+                </span>
+              )
+            )}
+          </div>
         </StatTile>
 
         {/* Tiết Kiệm tile */}
-        <StatTile label="Tiết kiệm" href="/assets" accentColor="blue">
+        <StatTile label="Tiết kiệm" href="/savings" accentColor="blue">
           <span className="text-foreground text-[15px] leading-tight font-bold tracking-[-0.5px]">
             {fmtTile(savingsTotalValue)} đ
           </span>
-          <span className="text-[11px] font-semibold text-[#6B7FD7]">
-            {savingsAccounts.length > 0
-              ? `${savingsAccounts.length} khoản`
-              : "Chưa có tài sản"}
-          </span>
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-[11px] font-semibold text-[#6B7FD7]">
+              {savingsAccounts.length > 0
+                ? `${savingsAccounts.length} khoản`
+                : "Chưa có tài sản"}
+            </span>
+            {savingsTotalAccrued > 0 && (
+              <span className="text-status-positive text-[11px] font-semibold">
+                +{fmtTile(savingsTotalAccrued)} đ
+              </span>
+            )}
+          </div>
         </StatTile>
 
         {/* Thu/Chi tile */}
@@ -190,24 +210,54 @@ export function DashboardClient({
         </StatTile>
 
         {/* Giá Vàng tile */}
-        <StatTile label="Giá vàng" href="/market">
+        <StatTile label="Giá vàng BTMH" href="/market">
           {marketPrice ? (
-            <>
-              <span className="text-foreground text-[15px] leading-tight font-bold tracking-[-0.5px]">
-                {fmtTile(marketPrice.sell)} đ
-              </span>
-              <span className="text-foreground-muted text-[9px]">
-                mỗi lượng (bán ra)
-              </span>
-              {marketPrice.change_sell !== 0 && (
-                <span
-                  className={`text-[11px] font-semibold ${marketPrice.change_sell > 0 ? "text-status-positive" : "text-status-negative"}`}
-                >
-                  {marketPrice.change_sell > 0 ? "+" : ""}
-                  {fmtTile(marketPrice.change_sell)} đ
+            <div className="grid grid-cols-2 gap-2">
+              {/* Mua */}
+              <div className="flex flex-col gap-0.5">
+                <span className="text-foreground-muted text-[9px] font-semibold tracking-[0.5px] uppercase">
+                  Mua
                 </span>
-              )}
-            </>
+                <span className="text-foreground text-[13px] leading-tight font-bold tracking-[-0.5px]">
+                  {fmtTile(marketPrice.buy)} đ
+                </span>
+                {marketPrice.change_buy !== 0 && (
+                  <span
+                    className={`text-[10px] font-semibold ${marketPrice.change_buy > 0 ? "text-status-positive" : "text-status-negative"}`}
+                  >
+                    {marketPrice.change_buy > 0 ? "+" : ""}
+                    {(
+                      (marketPrice.change_buy /
+                        (marketPrice.buy - marketPrice.change_buy)) *
+                      100
+                    ).toFixed(2)}
+                    %
+                  </span>
+                )}
+              </div>
+              {/* Bán */}
+              <div className="flex flex-col gap-0.5">
+                <span className="text-foreground-muted text-[9px] font-semibold tracking-[0.5px] uppercase">
+                  Bán
+                </span>
+                <span className="text-foreground text-[13px] leading-tight font-bold tracking-[-0.5px]">
+                  {fmtTile(marketPrice.sell)} đ
+                </span>
+                {marketPrice.change_sell !== 0 && (
+                  <span
+                    className={`text-[10px] font-semibold ${marketPrice.change_sell > 0 ? "text-status-positive" : "text-status-negative"}`}
+                  >
+                    {marketPrice.change_sell > 0 ? "+" : ""}
+                    {(
+                      (marketPrice.change_sell /
+                        (marketPrice.sell - marketPrice.change_sell)) *
+                      100
+                    ).toFixed(2)}
+                    %
+                  </span>
+                )}
+              </div>
+            </div>
           ) : (
             <span className="text-foreground-muted text-[11px]">
               Đang tải...
