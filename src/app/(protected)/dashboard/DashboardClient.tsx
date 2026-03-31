@@ -9,8 +9,10 @@ import {
   calcAccruedInterest,
 } from "@/lib/services/savings";
 import type { Goal, GoalProjection, MonthlyActual } from "@/lib/services/goals";
+import type { RecentTx } from "@/types/transactions";
 import { HeroCard } from "./components/HeroCard";
 import { StatTile } from "./components/StatTile";
+import { RecentTransactions } from "./components/RecentTransactions";
 
 interface Props {
   goldPositions: GoldAsset[];
@@ -20,6 +22,7 @@ interface Props {
   goalProjection: GoalProjection | null;
   monthlyActual: MonthlyActual | null;
   currentAssets: number;
+  recentTxs: RecentTx[];
 }
 
 function formatEstimatedDate(date: Date): string {
@@ -42,6 +45,7 @@ export function DashboardClient({
   goalProjection,
   monthlyActual,
   currentAssets,
+  recentTxs,
 }: Props) {
   const [prices, setPrices] = useState<GoldPrice[]>(initialPrices);
 
@@ -265,6 +269,9 @@ export function DashboardClient({
           )}
         </StatTile>
       </div>
+
+      {/* Recent Transactions Section */}
+      <RecentTransactions transactions={recentTxs} />
     </div>
   );
 }
