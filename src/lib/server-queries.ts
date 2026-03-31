@@ -5,14 +5,11 @@ import { unstable_cache } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import {
   getActiveGoldAssets,
+  getAllGoldAssets,
   getExternalGoldPrices,
 } from "@/lib/services/gold";
 import { getSavingsAccounts } from "@/lib/services/savings";
-import {
-  getGoal,
-  getCashFlow,
-  getMonthlyActual,
-} from "@/lib/services/goals";
+import { getGoal, getCashFlow, getMonthlyActual } from "@/lib/services/goals";
 import { getSettings } from "@/lib/services/settings";
 import { getNotificationsAction } from "@/app/actions/notifications";
 
@@ -25,6 +22,17 @@ export function cachedGetActiveGoldAssets(userId: string) {
       return getActiveGoldAssets(supabase, userId);
     },
     [`gold-assets-${userId}`],
+    { tags: [`user-${userId}`], revalidate: 30 }
+  )();
+}
+
+export function cachedGetAllGoldAssets(userId: string) {
+  return unstable_cache(
+    async () => {
+      const supabase = await createClient();
+      return getAllGoldAssets(supabase, userId);
+    },
+    [`gold-assets-all-${userId}`],
     { tags: [`user-${userId}`], revalidate: 30 }
   )();
 }
