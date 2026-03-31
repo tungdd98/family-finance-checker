@@ -118,7 +118,7 @@ export default async function DashboardPage() {
   // Current month income/expense
   if (currentMonthActual) {
     const currentMonthDate = `${year}-${String(month).padStart(2, "0")}-01`;
-    for (const detail of currentMonthActual.income_details) {
+    for (const detail of currentMonthActual.actual_income_details) {
       recentTxs.push({
         kind: "income",
         label: detail.type,
@@ -126,7 +126,7 @@ export default async function DashboardPage() {
         date: currentMonthDate,
       });
     }
-    for (const detail of currentMonthActual.expense_details) {
+    for (const detail of currentMonthActual.actual_expense_details) {
       recentTxs.push({
         kind: "expense",
         label: detail.type,
@@ -139,7 +139,7 @@ export default async function DashboardPage() {
   // Previous month income/expense
   if (prevMonthActual) {
     const prevMonthDate = `${prevYear}-${String(prevMonth).padStart(2, "0")}-01`;
-    for (const detail of prevMonthActual.income_details) {
+    for (const detail of prevMonthActual.actual_income_details) {
       recentTxs.push({
         kind: "income",
         label: detail.type,
@@ -147,7 +147,7 @@ export default async function DashboardPage() {
         date: prevMonthDate,
       });
     }
-    for (const detail of prevMonthActual.expense_details) {
+    for (const detail of prevMonthActual.actual_expense_details) {
       recentTxs.push({
         kind: "expense",
         label: detail.type,
