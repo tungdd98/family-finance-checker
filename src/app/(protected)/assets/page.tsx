@@ -38,5 +38,19 @@ export default async function AssetsPage() {
     );
   }, 0);
 
-  return <AssetsClient savingsTotal={savingsTotal} goldTotal={goldTotal} />;
+  const goldCost = goldPositions.reduce((s, pos) => {
+    const remaining = pos.quantity - pos.sold_quantity;
+    return s + pos.buy_price_per_chi * remaining;
+  }, 0);
+
+  const savingsPrincipal = savingsAccounts.reduce((s, a) => s + a.principal, 0);
+
+  return (
+    <AssetsClient
+      savingsTotal={savingsTotal}
+      goldTotal={goldTotal}
+      goldCost={goldCost}
+      savingsPrincipal={savingsPrincipal}
+    />
+  );
 }
