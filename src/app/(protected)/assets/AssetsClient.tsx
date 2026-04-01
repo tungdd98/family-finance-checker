@@ -68,7 +68,7 @@ export function AssetsClient({
             stroke="none"
           >
             {chartData.map((_, i) => (
-              <Cell key={i} fill={chartColors[i]} />
+              <Cell key={chartColors[i]} fill={chartColors[i]} />
             ))}
           </Pie>
         </PieChart>
