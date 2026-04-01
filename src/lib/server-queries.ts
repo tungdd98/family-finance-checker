@@ -22,7 +22,7 @@ export function cachedGetActiveGoldAssets(userId: string) {
       return getActiveGoldAssets(supabase, userId);
     },
     [`gold-assets-${userId}`],
-    { tags: [`user-${userId}`], revalidate: 30 }
+    { tags: [`user-${userId}`], revalidate: 60 }
   )();
 }
 
@@ -33,7 +33,7 @@ export function cachedGetAllGoldAssets(userId: string) {
       return getAllGoldAssets(supabase, userId);
     },
     [`gold-assets-all-${userId}`],
-    { tags: [`user-${userId}`], revalidate: 30 }
+    { tags: [`user-${userId}`], revalidate: 60 }
   )();
 }
 
@@ -44,7 +44,7 @@ export function cachedGetSavingsAccounts(userId: string) {
       return getSavingsAccounts(supabase, userId);
     },
     [`savings-${userId}`],
-    { tags: [`user-${userId}`], revalidate: 30 }
+    { tags: [`user-${userId}`], revalidate: 60 }
   )();
 }
 
@@ -55,7 +55,7 @@ export function cachedGetGoal(userId: string) {
       return getGoal(supabase, userId);
     },
     [`goal-${userId}`],
-    { tags: [`user-${userId}`], revalidate: 30 }
+    { tags: [`user-${userId}`], revalidate: 60 }
   )();
 }
 
@@ -66,7 +66,7 @@ export function cachedGetCashFlow(userId: string) {
       return getCashFlow(supabase, userId);
     },
     [`cashflow-${userId}`],
-    { tags: [`user-${userId}`], revalidate: 30 }
+    { tags: [`user-${userId}`], revalidate: 60 }
   )();
 }
 
@@ -81,7 +81,7 @@ export function cachedGetMonthlyActual(
       return getMonthlyActual(supabase, userId, year, month);
     },
     [`monthly-${userId}-${year}-${month}`],
-    { tags: [`user-${userId}`], revalidate: 30 }
+    { tags: [`user-${userId}`], revalidate: 60 }
   )();
 }
 
@@ -92,7 +92,7 @@ export function cachedGetSettings(userId: string) {
       return getSettings(supabase, userId);
     },
     [`settings-${userId}`],
-    { tags: [`user-${userId}`], revalidate: 30 }
+    { tags: [`user-${userId}`], revalidate: 60 }
   )();
 }
 
