@@ -76,5 +76,7 @@ export async function saveMonthlyActualAction(
   const error = await upsertMonthlyActual(supabase, user.id, parsed.data);
   if (error) return { error: "Không thể lưu số liệu tháng này" };
 
+  revalidatePath("/cashflow");
   revalidatePath("/goals");
+  revalidatePath("/dashboard");
 }
