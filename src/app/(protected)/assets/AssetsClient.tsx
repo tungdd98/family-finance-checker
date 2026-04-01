@@ -53,11 +53,11 @@ export function AssetsClient({
 
       {/* Net worth banner */}
       <div className="bg-surface border-border flex items-center gap-[18px] border p-5">
-        <PieChart width={76} height={76}>
+        <PieChart width={80} height={80}>
           <Pie
             data={chartData}
-            cx={38}
-            cy={38}
+            cx={40}
+            cy={40}
             innerRadius={28}
             outerRadius={38}
             paddingAngle={netWorth > 0 ? 2 : 0}
