@@ -67,6 +67,7 @@ export function CashflowClient({ year, month, existing, cashFlow }: Props) {
   const [isPending, startTransition] = useTransition();
   const [isNavigating, startNavTransition] = useTransition();
   const router = useRouter();
+  const skipReset = useRef(false);
 
   const form = useForm<MonthlyActualInput>({
     resolver: zodResolver(monthlyActualSchema),
@@ -137,11 +138,11 @@ export function CashflowClient({ year, month, existing, cashFlow }: Props) {
 
   useEffect(() => {
     form.setValue("actual_income", totalIncome);
-  }, [totalIncome, form]);
+  }, [totalIncome]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     form.setValue("actual_expense", totalExpense);
-  }, [totalExpense, form]);
+  }, [totalExpense]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const incomeTotalDisplay =
     totalIncome > 0 ? new Intl.NumberFormat("vi-VN").format(totalIncome) : "";
@@ -150,6 +151,10 @@ export function CashflowClient({ year, month, existing, cashFlow }: Props) {
 
   // Reset form when year/month changes (replaces the Drawer open-based reset)
   useEffect(() => {
+    if (skipReset.current) {
+      skipReset.current = false;
+      return;
+    }
     if (existing) {
       form.reset({
         year: existing.year,
@@ -176,7 +181,7 @@ export function CashflowClient({ year, month, existing, cashFlow }: Props) {
         note: null,
       });
     }
-  }, [year, month, existing, form]);
+  }, [year, month, existing]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const totalAllocated = allocations.reduce(
     (sum, item) => sum + (Number(item.amount) || 0),
@@ -212,6 +217,7 @@ export function CashflowClient({ year, month, existing, cashFlow }: Props) {
         toast.error(result.error);
       } else {
         toast.success(`Đã cập nhật tháng ${month}/${year}`);
+        skipReset.current = true;
         router.refresh();
       }
     });
