@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { PieChart, Pie, Cell } from "recharts";
 import { formatVND, formatPct } from "@/lib/gold-utils";
 
 interface Props {
@@ -35,12 +34,11 @@ export function AssetsClient({
   const goldPct = netWorth > 0 ? Math.round((goldTotal / netWorth) * 100) : 0;
   const savingsPct = netWorth > 0 ? 100 - goldPct : 0;
 
-  // Recharts data — if netWorth is 0, show an empty ring
-  const chartData =
-    netWorth > 0
-      ? [{ value: goldTotal }, { value: savingsTotal }]
-      : [{ value: 1 }];
-  const chartColors = netWorth > 0 ? [GOLD_COLOR, SAVINGS_COLOR] : ["#1e1e1e"];
+  // Donut chart geometry
+  const RING_R = 33;
+  const RING_SW = 10;
+  const circ = 2 * Math.PI * RING_R;
+  const goldArc = (goldPct / 100) * circ;
 
   return (
     <div className="flex flex-col gap-5 pb-20">
@@ -53,25 +51,46 @@ export function AssetsClient({
 
       {/* Net worth banner */}
       <div className="bg-surface border-border flex items-center gap-[18px] border p-5">
-        <PieChart width={80} height={80}>
-          <Pie
-            data={chartData}
-            cx={40}
-            cy={40}
-            innerRadius={28}
-            outerRadius={38}
-            paddingAngle={netWorth > 0 ? 2 : 0}
-            dataKey="value"
-            startAngle={90}
-            endAngle={-270}
-            isAnimationActive
-            stroke="none"
-          >
-            {chartData.map((_, i) => (
-              <Cell key={chartColors[i]} fill={chartColors[i]} />
-            ))}
-          </Pie>
-        </PieChart>
+        <svg
+          width="80"
+          height="80"
+          viewBox="0 0 80 80"
+          style={{ display: "block" }}
+        >
+          {netWorth === 0 ? (
+            <circle
+              cx="40"
+              cy="40"
+              r={RING_R}
+              fill="none"
+              stroke="#1e1e1e"
+              strokeWidth={RING_SW}
+            />
+          ) : (
+            <>
+              {/* Savings full ring (background) */}
+              <circle
+                cx="40"
+                cy="40"
+                r={RING_R}
+                fill="none"
+                stroke={SAVINGS_COLOR}
+                strokeWidth={RING_SW}
+              />
+              {/* Gold arc overlay, starts at 12 o'clock */}
+              <circle
+                cx="40"
+                cy="40"
+                r={RING_R}
+                fill="none"
+                stroke={GOLD_COLOR}
+                strokeWidth={RING_SW}
+                strokeDasharray={`${goldArc} ${circ}`}
+                transform="rotate(-90 40 40)"
+              />
+            </>
+          )}
+        </svg>
 
         <div className="flex flex-col gap-1">
           <span className="text-foreground-muted text-[9px] font-semibold tracking-[1.5px] uppercase">
@@ -84,7 +103,7 @@ export function AssetsClient({
             <div className="mt-1 flex gap-2.5">
               <div className="flex items-center gap-1.5">
                 <div
-                  className="h-[7px] w-[7px] rounded-full"
+                  className="h-1.75 w-1.75 rounded-full"
                   style={{ background: GOLD_COLOR }}
                 />
                 <span className="text-foreground-muted text-[9px]">
@@ -93,7 +112,7 @@ export function AssetsClient({
               </div>
               <div className="flex items-center gap-1.5">
                 <div
-                  className="h-[7px] w-[7px] rounded-full"
+                  className="h-1.75 w-1.75 rounded-full"
                   style={{ background: SAVINGS_COLOR }}
                 />
                 <span className="text-foreground-muted text-[9px]">
@@ -115,7 +134,7 @@ export function AssetsClient({
         {/* Gold */}
         <button
           onClick={() => router.push("/gold")}
-          className="bg-surface border-border flex items-center justify-between border border-l-[3px] px-4 py-[14px] text-left"
+          className="bg-surface border-border flex items-center justify-between border border-l-[3px] px-4 py-3.5 text-left"
           style={{ borderLeftColor: GOLD_COLOR }}
         >
           <div className="flex flex-col gap-0.5">
@@ -149,7 +168,7 @@ export function AssetsClient({
         {/* Savings */}
         <button
           onClick={() => router.push("/savings")}
-          className="bg-surface border-border flex items-center justify-between border border-l-[3px] px-4 py-[14px] text-left"
+          className="bg-surface border-border flex items-center justify-between border border-l-[3px] px-4 py-3.5 text-left"
           style={{ borderLeftColor: SAVINGS_COLOR }}
         >
           <div className="flex flex-col gap-0.5">
