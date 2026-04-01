@@ -124,21 +124,43 @@ export async function deleteGoldAsset(
   if (error) throw error;
 }
 
+const UA_HEADERS = {
+  "User-Agent":
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+};
+
 export async function getExternalGoldPrices(): Promise<GoldPrice[]> {
   try {
-    const res = await fetch("https://www.vang.today/api/prices", {
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-      },
-      next: { revalidate: 300 }, // 5 minutes
-    });
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = yesterday.toISOString().slice(0, 10);
 
-    if (!res.ok) return [];
+    const [todayRes, yesterdayRes] = await Promise.all([
+      fetch("https://www.vang.today/api/prices", {
+        headers: UA_HEADERS,
+        next: { revalidate: 300 },
+      }),
+      fetch(`https://www.vang.today/api/prices?date=${yesterdayStr}`, {
+        headers: UA_HEADERS,
+        next: { revalidate: 300 },
+      }),
+    ]);
 
-    const rawData = await res.json();
+    if (!todayRes.ok) return [];
+
+    const rawData = await todayRes.json();
+    const yesterdayData = yesterdayRes.ok ? await yesterdayRes.json() : null;
+
+    // Build yesterday price map for day-over-day delta
+    const yp: Record<string, { buy: number; sell: number }> = {};
+    if (yesterdayData?.prices && typeof yesterdayData.prices === "object") {
+      for (const [code, infoRaw] of Object.entries(yesterdayData.prices)) {
+        const info = infoRaw as { buy?: number; sell?: number };
+        yp[code] = { buy: info.buy ?? 0, sell: info.sell ?? 0 };
+      }
+    }
+
     const pricesArray: GoldPrice[] = [];
-
     if (rawData.prices && typeof rawData.prices === "object") {
       const updateTime = `${rawData.date} ${rawData.time}`;
       for (const [code, infoRaw] of Object.entries(rawData.prices)) {
@@ -149,13 +171,17 @@ export async function getExternalGoldPrices(): Promise<GoldPrice[]> {
           change_buy?: number;
           change_sell?: number;
         };
+        const buy = info.buy ?? 0;
+        const sell = info.sell ?? 0;
+        const prev = yp[code];
         pricesArray.push({
           type_code: code,
           name: info.name ?? code,
-          buy: info.buy ?? 0,
-          sell: info.sell ?? 0,
-          change_buy: info.change_buy ?? 0,
-          change_sell: info.change_sell ?? 0,
+          buy,
+          sell,
+          // Use day-over-day delta; fall back to API value if yesterday unavailable
+          change_buy: prev ? buy - prev.buy : (info.change_buy ?? 0),
+          change_sell: prev ? sell - prev.sell : (info.change_sell ?? 0),
           update_time: updateTime,
         });
       }
