@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import {
   TrendingDown,
   TrendingUp,
@@ -33,20 +33,6 @@ export function MarketClient({ initialPrices = [] }: Props) {
       // silent failure — existing prices remain
     } finally {
       setIsRefreshing(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (prices.length === 0) {
-      fetch("/api/gold/prices")
-        .then((r) => r.json())
-        .then((json) => {
-          if (json.success && Array.isArray(json.data)) {
-            setPrices(json.data);
-            setLastUpdated(new Date());
-          }
-        })
-        .catch(() => {});
     }
   }, []);
 
@@ -87,19 +73,26 @@ export function MarketClient({ initialPrices = [] }: Props) {
         <button
           onClick={refresh}
           disabled={isRefreshing}
-          className="flex items-center gap-1.5 pt-1 disabled:cursor-not-allowed"
+          className="flex flex-col items-end gap-0.5 disabled:cursor-not-allowed"
           aria-label="Làm mới giá vàng"
         >
-          <RefreshCw
-            size={14}
-            className={`text-foreground-muted ${isRefreshing ? "animate-spin" : ""}`}
-          />
+          <div className="flex items-center gap-1.5">
+            <RefreshCw
+              size={14}
+              className={`text-foreground-muted ${isRefreshing ? "animate-spin" : ""}`}
+            />
+            {lastUpdated && (
+              <span className="text-foreground-muted text-[10px]">
+                {lastUpdated.toLocaleTimeString("vi-VN", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </span>
+            )}
+          </div>
           {lastUpdated && (
-            <span className="text-foreground-muted text-[10px]">
-              {lastUpdated.toLocaleTimeString("vi-VN", {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
+            <span className="text-foreground-muted text-[10px] opacity-60">
+              Cập nhật lúc
             </span>
           )}
         </button>
