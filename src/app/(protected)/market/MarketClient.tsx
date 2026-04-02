@@ -59,43 +59,36 @@ export function MarketClient({ initialPrices = [] }: Props) {
   };
 
   return (
-    <div className="flex flex-col gap-6 px-1">
+    <div className="flex flex-col gap-6">
       {/* Page Header */}
-      <div className="flex items-start justify-between">
-        <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1">
+        <div className="flex items-center justify-between">
           <h1 className="text-foreground text-[28px] font-bold tracking-[-1px] uppercase">
             THỊ TRƯỜNG VÀNG
           </h1>
-          <p className="text-foreground-muted text-[13px]">
-            Giá vàng trực tuyến từ các thương hiệu hàng đầu
-          </p>
-        </div>
-        <button
-          onClick={refresh}
-          disabled={isRefreshing}
-          className="flex flex-col items-end gap-0.5 disabled:cursor-not-allowed"
-          aria-label="Làm mới giá vàng"
-        >
-          <div className="flex items-center gap-1.5">
+          <button
+            onClick={refresh}
+            disabled={isRefreshing}
+            className="shrink-0 disabled:cursor-not-allowed"
+            aria-label="Làm mới giá vàng"
+          >
             <RefreshCw
               size={14}
               className={`text-foreground-muted ${isRefreshing ? "animate-spin" : ""}`}
             />
-            {lastUpdated && (
-              <span className="text-foreground-muted text-[10px]">
-                {lastUpdated.toLocaleTimeString("vi-VN", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </span>
-            )}
-          </div>
-          {lastUpdated && (
-            <span className="text-foreground-muted text-[10px] opacity-60">
-              Cập nhật lúc
-            </span>
-          )}
-        </button>
+          </button>
+        </div>
+        <p className="text-foreground-muted text-[13px]">
+          Giá vàng trực tuyến từ các thương hiệu hàng đầu
+        </p>
+        {lastUpdated && (
+          <span className="text-foreground-muted text-[10px] opacity-60">
+            {`Cập nhật lúc ${lastUpdated.toLocaleTimeString("vi-VN", {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}`}
+          </span>
+        )}
       </div>
 
       {/* Data sections — dimmed while refreshing */}
