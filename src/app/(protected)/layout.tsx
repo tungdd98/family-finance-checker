@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { TabBar } from "@/components/common";
 import { NotificationBell } from "@/components/NotificationBell";
 import { NavigationProgress } from "@/components/NavigationProgress";
+import { Sidebar } from "@/components/pc/Sidebar";
 import { createClient } from "@/lib/supabase/server";
 import {
   cachedGetSettings,
@@ -32,39 +33,48 @@ export default async function ProtectedLayout({
   const notis = await getNotificationsAction();
 
   return (
-    <div className="bg-background flex h-dvh flex-col overflow-hidden overscroll-none">
+    <div className="bg-background flex h-dvh flex-col overflow-hidden overscroll-none lg:flex-row">
       <NavigationProgress />
-      {/* Header Row - Fixed at top */}
-      <div className="flex touch-none items-center justify-between px-5 py-4 select-none">
-        {/* Left side: Greeting */}
-        <div className="flex flex-col gap-0.5">
-          <span className="text-foreground-muted text-[10px] font-semibold tracking-[1px] uppercase">
-            XIN CHÀO,
-          </span>
-          <span className="text-foreground text-[14px] font-bold">
-            {displayName} 👋
-          </span>
-        </div>
 
-        {/* Right side: Actions */}
-        <div className="flex items-center justify-end gap-2">
-          <NotificationBell allNotis={notis} />
-          <Link href="/settings">
-            <div className="bg-surface/50 border-border flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border">
-              <Settings size={20} className="text-accent" />
-            </div>
-          </Link>
-        </div>
+      {/* Sidebar — PC only */}
+      <div className="hidden lg:flex">
+        <Sidebar />
       </div>
 
-      {/* Content Area - Scrollable */}
-      <div className="flex flex-1 flex-col gap-5 overflow-y-auto overscroll-contain px-5 pb-5">
-        {children}
-      </div>
+      {/* Main column */}
+      <div className="flex flex-1 flex-col overflow-hidden">
+        {/* Header Row - Fixed at top */}
+        <div className="flex touch-none items-center justify-between px-5 py-4 select-none lg:px-7">
+          {/* Left side: Greeting */}
+          <div className="flex flex-col gap-0.5">
+            <span className="text-foreground-muted text-[10px] font-semibold tracking-[1px] uppercase">
+              XIN CHÀO,
+            </span>
+            <span className="text-foreground text-[14px] font-bold">
+              {displayName} 👋
+            </span>
+          </div>
 
-      {/* Bottom Tab Bar */}
-      <div className="bg-background border-border h-[95px] touch-none border-t px-5 pt-3 pb-[21px] select-none">
-        <TabBar />
+          {/* Right side: Actions */}
+          <div className="flex items-center justify-end gap-2">
+            <NotificationBell allNotis={notis} />
+            <Link href="/settings" className="lg:hidden">
+              <div className="bg-surface/50 border-border flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border">
+                <Settings size={20} className="text-accent" />
+              </div>
+            </Link>
+          </div>
+        </div>
+
+        {/* Content Area - Scrollable */}
+        <div className="flex flex-1 flex-col gap-5 overflow-y-auto overscroll-contain px-5 pb-5 lg:px-7">
+          {children}
+        </div>
+
+        {/* Bottom Tab Bar — mobile only */}
+        <div className="bg-background border-border h-[95px] touch-none border-t px-5 pt-3 pb-[21px] select-none lg:hidden">
+          <TabBar />
+        </div>
       </div>
     </div>
   );
