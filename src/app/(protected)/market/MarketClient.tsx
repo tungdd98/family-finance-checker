@@ -40,7 +40,7 @@ export function MarketClient({ initialPrices = [] }: Props) {
   const handleTabChange = useCallback(
     async (tab: "gold" | "coin") => {
       setActiveTab(tab);
-      if (tab === "coin" && !coinLoaded) {
+      if (tab === "coin" && !coinLoaded && !isRefreshing) {
         setIsRefreshing(true);
         try {
           await fetchCoinPrices();
@@ -51,7 +51,7 @@ export function MarketClient({ initialPrices = [] }: Props) {
         }
       }
     },
-    [coinLoaded, fetchCoinPrices]
+    [coinLoaded, fetchCoinPrices, isRefreshing]
   );
 
   const refresh = useCallback(async () => {
