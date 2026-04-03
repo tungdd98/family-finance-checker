@@ -18,17 +18,17 @@ export function CoinList({
   const filtered = filterCoins(coins, searchQuery);
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex h-full flex-col gap-3">
       <input
         type="text"
         value={searchQuery}
         onChange={(e) => onSearchChange(e.target.value)}
         placeholder="Tìm theo tên hoặc ký hiệu..."
-        className="border-border bg-surface text-foreground placeholder:text-foreground-muted w-full border px-4 py-2.5 text-[13px] outline-none"
+        className="border-border bg-surface text-foreground placeholder:text-foreground-muted w-full shrink-0 border px-4 py-2.5 text-[13px] outline-none"
       />
-      <div className="border-border bg-surface border">
+      <div className="border-border bg-surface flex flex-1 flex-col overflow-hidden border">
         {isLoading ? (
-          <div className="divide-border flex flex-col divide-y">
+          <div className="divide-border flex flex-col divide-y overflow-y-auto">
             {Array.from({ length: 3 }).map((_, i) => (
               <div
                 key={i}
@@ -49,19 +49,19 @@ export function CoinList({
             ))}
           </div>
         ) : filtered.length > 0 ? (
-          <div className="divide-border flex flex-col divide-y">
+          <div className="divide-border flex flex-1 flex-col divide-y overflow-y-auto">
             {filtered.map((coin) => (
               <CoinRow key={coin.id} coin={coin} />
             ))}
           </div>
         ) : coins.length > 0 ? (
-          <div className="flex h-32 items-center justify-center">
+          <div className="flex h-full items-center justify-center">
             <span className="text-foreground-muted text-[13px] font-medium">
               Không tìm thấy coin
             </span>
           </div>
         ) : (
-          <div className="flex h-32 items-center justify-center">
+          <div className="flex h-full items-center justify-center">
             <span className="text-foreground-muted text-[13px] font-medium">
               Không có dữ liệu
             </span>
