@@ -67,7 +67,7 @@ export default async function ProtectedLayout({
         </div>
 
         {/* Content Area - Scrollable */}
-        <div className="flex flex-1 flex-col gap-5 overflow-y-auto overscroll-contain px-5 pb-5 lg:px-7">
+        <div className="scrollbar-thin flex flex-1 flex-col gap-5 overflow-y-auto overscroll-contain px-5 pb-5 lg:px-7">
           {children}
         </div>
 

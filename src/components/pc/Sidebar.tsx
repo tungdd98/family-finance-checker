@@ -59,6 +59,8 @@ export function Sidebar() {
     return childRoutes?.some((r) => pathname.startsWith(r)) ?? false;
   };
 
+  const settingsActive = pathname === "/settings";
+
   return (
     <aside
       className={`bg-surface border-border flex h-full flex-col border-r transition-all duration-200 ${
@@ -75,7 +77,7 @@ export function Sidebar() {
         <button
           type="button"
           onClick={toggle}
-          className="bg-background border-border flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border"
+          className="bg-background border-border flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center border"
           aria-label={collapsed ? "Mở sidebar" : "Thu sidebar"}
         >
           {collapsed ? (
@@ -87,7 +89,7 @@ export function Sidebar() {
       </div>
 
       {/* Nav items */}
-      <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-2">
+      <nav className="scrollbar-thin flex flex-1 flex-col gap-1 overflow-y-auto p-2">
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;
           const active = isActive(item.href, item.childRoutes);
@@ -97,7 +99,7 @@ export function Sidebar() {
               type="button"
               onClick={() => router.push(item.href)}
               title={collapsed ? item.label : undefined}
-              className={`flex items-center rounded-xl px-2 py-2.5 transition-colors ${
+              className={`flex cursor-pointer items-center px-2 py-2.5 transition-colors ${
                 collapsed ? "justify-center" : "gap-3"
               } ${
                 active
@@ -121,8 +123,12 @@ export function Sidebar() {
         <Link
           href="/settings"
           title={collapsed ? "Cài đặt" : undefined}
-          className={`text-foreground-muted hover:bg-surface-elevated flex items-center rounded-xl px-2 py-2.5 transition-colors ${
+          className={`flex cursor-pointer items-center px-2 py-2.5 transition-colors ${
             collapsed ? "justify-center" : "gap-3"
+          } ${
+            settingsActive
+              ? "bg-accent text-[#111111]"
+              : "text-foreground-muted hover:bg-surface-elevated"
           }`}
         >
           <Settings size={18} className="shrink-0" />
@@ -136,7 +142,7 @@ export function Sidebar() {
           <button
             type="submit"
             title={collapsed ? "Đăng xuất" : undefined}
-            className={`text-foreground-muted hover:bg-surface-elevated flex w-full items-center rounded-xl px-2 py-2.5 transition-colors ${
+            className={`text-foreground-muted hover:bg-surface-elevated flex w-full cursor-pointer items-center px-2 py-2.5 transition-colors ${
               collapsed ? "justify-center" : "gap-3"
             }`}
           >
