@@ -41,3 +41,7 @@ yarn-error.log*
 next-env.d.ts
 .superpowers/
 .worktrees/
+
+# Supabase CLI
+supabase/.branches
+supabase/.temp

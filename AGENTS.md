@@ -29,3 +29,16 @@ Common canonical equivalents (Npx → scale):
 - `8px` → `2` · `10px` → `2.5` · `12px` → `3` · `14px` → `3.5`
 - `16px` → `4` · `18px` → `4.5` · `20px` → `5` · `24px` → `6`
 - `28px` → `7` · `32px` → `8` · `36px` → `9` · `40px` → `10`
+
+# Database Migrations
+
+When a database migration is needed:
+
+1. Create migration file: `supabase migration new <descriptive_name>` (run from project root)
+2. Write the SQL into the generated file at `supabase/migrations/YYYYMMDDHHMMSS_<name>.sql`
+3. Push immediately: read `SUPABASE_ACCESS_TOKEN` from `.env.local`, then run `supabase db push --linked`
+4. Report the result to the user
+
+**Auto-push rule:** After creating any new migration file in `supabase/migrations/`, always run `supabase db push --linked` immediately without waiting to be asked. Report success or failure.
+
+**Credentials:** Read `SUPABASE_ACCESS_TOKEN` from `.env.local` using `export $(grep SUPABASE_ACCESS_TOKEN .env.local | xargs)`. Never commit this value.
