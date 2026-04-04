@@ -58,14 +58,14 @@ export function GoalCard({
     other: "Khác",
   };
   const TYPE_COLORS: Record<string, string> = {
-    gold: "bg-[#D4AF37]",
+    gold: "bg-accent",
     savings: "bg-blue-500",
     etf: "bg-purple-500",
     coin: "bg-orange-400",
     other: "bg-zinc-500",
   };
   const TYPE_TEXT_COLORS: Record<string, string> = {
-    gold: "text-[#D4AF37]",
+    gold: "text-accent",
     savings: "text-blue-500",
     etf: "text-purple-500",
     coin: "text-orange-400",
@@ -86,7 +86,7 @@ export function GoalCard({
           </p>
         </div>
         <div className="shrink-0 text-right">
-          <p className="text-[30px] leading-none font-black tracking-[-1px] text-[#D4AF37]">
+          <p className="text-accent text-[30px] leading-none font-black tracking-[-1px]">
             {progressPct}%
           </p>
           <p className="text-foreground-muted mt-0.5 text-[10px]">hoàn thành</p>
@@ -97,14 +97,14 @@ export function GoalCard({
         {/* Progress bar */}
         <div className="h-2 overflow-hidden bg-[#2a2a2a]">
           <div
-            className="h-full bg-gradient-to-r from-[#D4AF37] to-[#f0d060] transition-all duration-500"
+            className="from-accent h-full bg-gradient-to-r to-[#f0d060] transition-all duration-500"
             style={{ width: `${progressPct}%` }}
           />
         </div>
 
         {/* Amounts */}
         <div className="flex items-baseline justify-between">
-          <span className="text-[15px] font-bold text-[#D4AF37]">
+          <span className="text-accent text-[15px] font-bold">
             {formatVND(currentAssets)}
           </span>
           {remaining > 0 && (
@@ -119,7 +119,7 @@ export function GoalCard({
           <div className="inline-flex items-center gap-1.5 self-start border border-[#2a2a2a] bg-[#1a1a1a] px-3 py-1.5">
             <span className="text-foreground-muted text-[12px]">
               ⏱ Dự kiến đạt{" "}
-              <span className="font-semibold text-[#D4AF37]">
+              <span className="text-accent font-semibold">
                 {formatEstimatedDate(estimatedDate)}
               </span>{" "}
               (~{monthsToGoal} tháng)
@@ -202,7 +202,7 @@ export function GoalCard({
                       <span
                         className={`text-[10px] font-bold tracking-[0.5px] uppercase ${
                           unallocated === 0
-                            ? "text-[#D4AF37]"
+                            ? "text-accent"
                             : unallocated < 0
                               ? "text-red-400"
                               : "text-green-500"
@@ -266,7 +266,7 @@ export function GoalCard({
 
               <button
                 onClick={onLogMonth}
-                className="mt-1 text-right text-[12px] font-semibold text-[#D4AF37]"
+                className="text-accent mt-1 text-right text-[12px] font-semibold"
               >
                 Chỉnh sửa →
               </button>
@@ -277,7 +277,7 @@ export function GoalCard({
               className="text-foreground-muted flex w-full items-center gap-2 text-[13px]"
             >
               <span>Chưa cập nhật tháng này</span>
-              <span className="ml-auto font-semibold text-[#D4AF37]">
+              <span className="text-accent ml-auto font-semibold">
                 + Cập nhật
               </span>
             </button>

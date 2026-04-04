@@ -41,7 +41,7 @@ export function NotificationBell({ allNotis }: { allNotis: NotiItem[] }) {
 
   const getIcon = (type: string) => {
     if (type === "surplus")
-      return <AlertCircle size={20} className="text-[#D4AF37]" />;
+      return <AlertCircle size={20} className="text-accent" />;
     if (type === "savings")
       return <Banknote size={20} className="text-accent" />;
     return <AlertCircle size={20} className="text-foreground" />;
@@ -100,7 +100,7 @@ export function NotificationBell({ allNotis }: { allNotis: NotiItem[] }) {
                     <div className="border-border mt-1 flex justify-end border-t pt-2">
                       <button
                         onClick={() => handleAction(noti.actionUrl)}
-                        className="text-[11px] font-bold tracking-[1px] text-[#D4AF37] uppercase hover:underline"
+                        className="text-accent text-[11px] font-bold tracking-[1px] uppercase hover:underline"
                       >
                         Xử lý ngay →
                       </button>

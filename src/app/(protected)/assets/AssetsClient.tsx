@@ -96,7 +96,7 @@ export function AssetsClient({
           <span className="text-foreground-muted text-[9px] font-semibold tracking-[1.5px] uppercase">
             Tổng tài sản
           </span>
-          <span className="text-[22px] font-black tracking-[-1px] text-[#D4AF37]">
+          <span className="text-accent text-[22px] font-black tracking-[-1px]">
             {formatVND(netWorth)}
           </span>
           {netWorth > 0 && (

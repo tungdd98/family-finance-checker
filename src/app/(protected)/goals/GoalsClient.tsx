@@ -51,7 +51,7 @@ export function GoalsClient({
         {goal && (
           <button
             onClick={() => setOpenSheet("goal")}
-            className="border border-[#D4AF37] px-4 py-2 text-[13px] font-semibold text-[#D4AF37]"
+            className="border-accent text-accent border px-4 py-2 text-[13px] font-semibold"
           >
             Chỉnh sửa
           </button>

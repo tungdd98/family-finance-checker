@@ -8,7 +8,7 @@ interface Props {
 export function BannerCard({ currentAssets, avgMonthlySurplus }: Props) {
   return (
     <div className="border border-[#3a3010] bg-gradient-to-br from-[#1c1800] to-[#1a1a1a] p-4">
-      <p className="mb-3 text-[10px] font-semibold tracking-[1.5px] text-[#D4AF37] uppercase">
+      <p className="text-accent mb-3 text-[10px] font-semibold tracking-[1.5px] uppercase">
         Tổng quan tài chính
       </p>
       <div className="flex gap-0">

@@ -281,7 +281,7 @@ export function CashflowClient({ year, month, existing, cashFlow }: Props) {
               Thặng dư
             </div>
             <div
-              className={`mt-1 text-[16px] font-bold ${surplus > 0 ? "text-[#D4AF37]" : surplus < 0 ? "text-red-400" : "text-foreground-muted"}`}
+              className={`mt-1 text-[16px] font-bold ${surplus > 0 ? "text-accent" : surplus < 0 ? "text-red-400" : "text-foreground-muted"}`}
             >
               {surplus !== 0
                 ? `${surplus > 0 ? "+" : ""}${formatMil(surplus)}tr`
@@ -448,7 +448,7 @@ export function CashflowClient({ year, month, existing, cashFlow }: Props) {
                       Phân Bổ Thặng Dư
                     </span>
                     <span
-                      className={`text-[13px] font-bold ${unallocated > 0 ? "text-green-500" : unallocated < 0 ? "text-red-400" : "text-[#D4AF37]"}`}
+                      className={`text-[13px] font-bold ${unallocated > 0 ? "text-green-500" : unallocated < 0 ? "text-red-400" : "text-accent"}`}
                     >
                       {unallocated === 0 && surplus > 0
                         ? "✓ Hoàn hảo"

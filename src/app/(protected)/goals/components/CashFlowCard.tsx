@@ -51,7 +51,7 @@ export function CashFlowCard({ cashFlow, onEdit }: Props) {
       )}
       <button
         onClick={onEdit}
-        className="mt-3 w-full text-right text-[12px] font-semibold text-[#D4AF37]"
+        className="text-accent mt-3 w-full text-right text-[12px] font-semibold"
       >
         {cashFlow ? "Chỉnh sửa →" : "Cài đặt ngay →"}
       </button>

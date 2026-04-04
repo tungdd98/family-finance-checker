@@ -60,7 +60,7 @@ export function HeroCard({ netWorth, goal }: HeroCardProps) {
           {/* Progress bar */}
           <div className="mt-3 h-1.5 overflow-hidden bg-[#2a2a2a]">
             <div
-              className="h-full bg-gradient-to-r from-[#D4AF37] to-[#f0d060]"
+              className="from-accent h-full bg-gradient-to-r to-[#f0d060]"
               style={{ width: `${clampedPct}%` }}
             />
           </div>
