@@ -1,8 +1,8 @@
-export { DeleteConfirmDialog } from "./delete-confirm-dialog";
-export { Badge } from "./badge";
-export { MetricCard } from "./metric-card";
-export { TabBar } from "./tab-bar";
-export { ResponsiveModal } from "./responsive-modal";
-export { ResponsiveActionMenu } from "./responsive-action-menu";
-export { ResponsiveDatePicker } from "./responsive-date-picker";
-export { OptionPicker, type OptionItem } from "./option-picker";
+export { DeleteConfirmDialog } from "./DeleteConfirmDialog";
+export { Badge } from "./Badge";
+export { MetricCard } from "./MetricCard";
+export { TabBar } from "./TabBar";
+export { ResponsiveModal } from "./ResponsiveModal";
+export { ResponsiveActionMenu } from "./ResponsiveActionMenu";
+export { ResponsiveDatePicker } from "./ResponsiveDatePicker";
+export { OptionPicker, type OptionItem } from "./OptionPicker";
