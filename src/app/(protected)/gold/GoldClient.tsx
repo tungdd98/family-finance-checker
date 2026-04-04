@@ -106,10 +106,10 @@ export function GoldClient({ initialPositions, initialPrices = [] }: Props) {
       {/* Position list */}
       {filteredPositions.length === 0 ? (
         <div className="flex flex-col items-center gap-3 py-12">
-          <p className="text-foreground-muted text-[14px]">
+          <p className="text-foreground-muted text-sm">
             Chưa có tài sản vàng nào
           </p>
-          <p className="text-foreground-muted text-[12px]">
+          <p className="text-foreground-muted text-xs">
             Nhấn + để thêm tài sản đầu tiên
           </p>
         </div>

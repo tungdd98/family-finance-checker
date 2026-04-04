@@ -53,7 +53,7 @@ export function PositionCard({ position, livePrice, onTap }: Props) {
       {/* Header row */}
       <div className="flex w-full items-center justify-between">
         <div className="flex flex-col gap-0.5">
-          <span className="text-foreground text-[14px] font-semibold">
+          <span className="text-foreground text-sm font-semibold">
             {position.brand_name}
           </span>
           <span className="text-foreground-muted text-[11px]">
@@ -61,7 +61,7 @@ export function PositionCard({ position, livePrice, onTap }: Props) {
           </span>
         </div>
         <div className="text-right">
-          <span className="text-accent text-[16px] font-bold">
+          <span className="text-accent text-base font-bold">
             {remaining} chỉ
           </span>
         </div>
@@ -102,7 +102,7 @@ function DetailRow({
 }) {
   return (
     <div className="flex items-center justify-between">
-      <span className="text-foreground-muted text-[12px]">{label}</span>
+      <span className="text-foreground-muted text-xs">{label}</span>
       <span className={`text-[13px] ${valueClass}`}>{value}</span>
     </div>
   );

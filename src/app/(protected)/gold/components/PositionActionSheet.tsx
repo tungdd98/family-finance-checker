@@ -61,7 +61,7 @@ export function PositionActionSheet({
         <button
           type="button"
           onClick={() => onOpenChange(false)}
-          className="bg-surface-elevated text-foreground w-full py-3.5 text-[11px] font-bold tracking-[2px]"
+          className="bg-surface-elevated text-foreground w-full py-3.5 text-[11px] font-bold"
         >
           ĐÓNG
         </button>
@@ -89,7 +89,7 @@ function ActionItem({
       }`}
     >
       {icon}
-      <span className="text-[14px] font-medium">{label}</span>
+      <span className="text-sm font-medium">{label}</span>
     </button>
   );
 }

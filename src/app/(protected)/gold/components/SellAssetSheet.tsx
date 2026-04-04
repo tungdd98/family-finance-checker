@@ -68,7 +68,7 @@ export function SellAssetSheet({ position, open, onOpenChange }: Props) {
       >
         {/* Sell quantity */}
         <div className="flex flex-col gap-2">
-          <span className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px]">
+          <span className="text-foreground-muted text-[10px] font-semibold">
             SỐ LƯỢNG BÁN (CHỈ)
           </span>
           <div className="bg-background border-border flex h-12 items-center border px-3.5">
@@ -92,7 +92,7 @@ export function SellAssetSheet({ position, open, onOpenChange }: Props) {
 
         {/* Sell price */}
         <div className="flex flex-col gap-2">
-          <span className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px]">
+          <span className="text-foreground-muted text-[10px] font-semibold">
             GIÁ BÁN MỖI CHỈ (VND)
           </span>
           <div className="bg-background border-border flex h-12 items-center border px-3.5">
@@ -126,7 +126,7 @@ export function SellAssetSheet({ position, open, onOpenChange }: Props) {
 
         {/* Sell date */}
         <div className="flex flex-col gap-2">
-          <span className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px]">
+          <span className="text-foreground-muted text-[10px] font-semibold">
             NGÀY BÁN
           </span>
           <Controller

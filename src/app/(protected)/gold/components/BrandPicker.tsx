@@ -66,7 +66,7 @@ export function BrandPicker({
           >
             {/* Header */}
             <div className="flex items-center justify-between px-7 pt-5 pb-4">
-              <Dialog.Title className="text-foreground text-[16px] font-bold tracking-[-0.5px]">
+              <Dialog.Title className="text-foreground text-base font-bold">
                 Chọn Vàng
               </Dialog.Title>
               <Dialog.Close className="text-foreground-muted">
@@ -117,7 +117,7 @@ export function BrandPicker({
                     }`}
                   />
                   <div className="flex flex-col items-start gap-1">
-                    <span className="text-[14px] font-medium">
+                    <span className="text-sm font-medium">
                       {p.name || p.type_code}
                     </span>
                     <span className="text-foreground-muted text-[11px]">

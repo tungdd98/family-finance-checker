@@ -181,7 +181,7 @@ export function AddEditAssetSheet({
               <button
                 type="button"
                 onClick={() => setUnit("chi")}
-                className={`h-full px-3 py-2 text-[11px] font-bold tracking-[1px] transition-colors ${
+                className={`h-full px-3 py-2 text-[11px] font-bold transition-colors ${
                   unit === "chi"
                     ? "bg-accent text-background"
                     : "text-foreground-muted"
@@ -192,7 +192,7 @@ export function AddEditAssetSheet({
               <button
                 type="button"
                 onClick={() => setUnit("luong")}
-                className={`h-full px-3 py-2 text-[11px] font-bold tracking-[1px] transition-colors ${
+                className={`h-full px-3 py-2 text-[11px] font-bold transition-colors ${
                   unit === "luong"
                     ? "bg-accent text-background"
                     : "text-foreground-muted"
@@ -233,7 +233,7 @@ export function AddEditAssetSheet({
             </span>
           </div>
           {totalVnd > 0 && (
-            <p className="text-foreground-muted text-right text-[12px]">
+            <p className="text-foreground-muted text-right text-xs">
               Tổng: {formatVND(totalVnd)}
             </p>
           )}
@@ -291,7 +291,7 @@ export function AddEditAssetSheet({
 
 function Label({ children }: { children: ReactNode }) {
   return (
-    <span className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px]">
+    <span className="text-foreground-muted text-[10px] font-semibold">
       {children}
     </span>
   );
