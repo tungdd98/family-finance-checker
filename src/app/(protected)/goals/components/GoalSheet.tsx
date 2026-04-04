@@ -12,15 +12,12 @@ import type { Goal } from "@/lib/services/goals";
 import { saveGoalAction } from "@/app/actions/goals";
 import { Button } from "@/components/ui/button";
 import { ResponsiveModal, ResponsiveDatePicker } from "@/components/common";
+import { formatVND } from "@/lib/utils";
 
 interface Props {
   goal: Goal | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-}
-
-function formatVND(n: number) {
-  return n > 0 ? new Intl.NumberFormat("vi-VN").format(n) : "";
 }
 
 export function GoalSheet({ goal, open, onOpenChange }: Props) {
