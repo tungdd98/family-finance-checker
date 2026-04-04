@@ -1,13 +1,16 @@
 // src/app/(protected)/gold/GoldClient.tsx
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import type { GoldAsset, GoldPrice } from "@/lib/services/gold";
 import { calcPnl, CHI_PER_LUONG } from "@/lib/gold-utils";
+import { deleteAssetAction } from "@/app/actions/gold";
 import { GoldSummaryHeader } from "./components/GoldSummaryHeader";
 import { PositionCard } from "./components/PositionCard";
 import { PositionActionSheet } from "./components/PositionActionSheet";
-import { DeleteConfirmDialog } from "./components/DeleteConfirmDialog";
+import { DeleteConfirmDialog } from "@/components/common";
 import { AddEditAssetSheet } from "./components/AddEditAssetSheet";
 import { SellAssetSheet } from "./components/SellAssetSheet";
 
@@ -19,6 +22,8 @@ interface Props {
 export function GoldClient({ initialPositions, initialPrices = [] }: Props) {
   const positions = initialPositions;
   const [prices, setPrices] = useState<GoldPrice[]>(initialPrices);
+  const [isDeleting, startDeleteTransition] = useTransition();
+  const router = useRouter();
 
   useEffect(() => {
     // Fallback in case server-side fetch failed or returned empty
@@ -69,6 +74,20 @@ export function GoldClient({ initialPositions, initialPrices = [] }: Props) {
   const openAction = (position: GoldAsset) => {
     setSelectedPosition(position);
     setActiveSheet("action");
+  };
+
+  const handleDeleteConfirm = () => {
+    if (!selectedPosition) return;
+    startDeleteTransition(async () => {
+      const result = await deleteAssetAction(selectedPosition.id);
+      if (result?.error) {
+        toast.error(result.error);
+      } else {
+        toast.success("Đã xóa tài sản");
+        router.refresh();
+        setActiveSheet(null);
+      }
+    });
   };
 
   return (
@@ -140,9 +159,16 @@ export function GoldClient({ initialPositions, initialPrices = [] }: Props) {
       />
 
       <DeleteConfirmDialog
-        position={selectedPosition}
         open={activeSheet === "delete"}
         onOpenChange={(open) => !open && setActiveSheet(null)}
+        title="Xóa tài sản"
+        description={
+          selectedPosition
+            ? `Bạn có chắc muốn xóa tài sản mua ${selectedPosition.quantity - selectedPosition.sold_quantity} chỉ ${selectedPosition.brand_name}?`
+            : ""
+        }
+        onConfirm={handleDeleteConfirm}
+        isPending={isDeleting}
       />
     </div>
   );
