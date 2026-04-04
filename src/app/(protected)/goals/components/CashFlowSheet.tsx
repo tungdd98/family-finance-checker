@@ -7,8 +7,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { Drawer } from "@base-ui/react/drawer";
-import { X } from "lucide-react";
+import { ResponsiveModal } from "@/components/common";
 import { cashFlowSchema, type CashFlowInput } from "@/lib/validations/goals";
 import type { HouseholdCashFlow } from "@/lib/services/goals";
 import { saveCashFlowAction } from "@/app/actions/goals";
@@ -101,122 +100,108 @@ export function CashFlowSheet({ cashFlow, open, onOpenChange }: Props) {
   };
 
   return (
-    <Drawer.Root open={open} onOpenChange={onOpenChange}>
-      <Drawer.Portal>
-        <Drawer.Backdrop className="fixed inset-0 z-40 bg-black/60 opacity-100 transition-opacity duration-300 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
-        <Drawer.Popup className="bg-background fixed inset-x-0 bottom-0 z-50 flex max-h-[92dvh] flex-col overflow-y-auto transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-[ending-style]:translate-y-full data-[starting-style]:translate-y-full">
-          <div className="bg-background border-border sticky top-0 flex items-center justify-between border-b px-7 pt-5 pb-4">
-            <span className="text-foreground text-[16px] font-bold tracking-[-0.5px]">
-              Thu chi trung bình / tháng
-            </span>
-            <Drawer.Close className="text-foreground-muted">
-              <X size={20} />
-            </Drawer.Close>
-          </div>
-
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-5 px-7 py-5 pb-10"
-          >
-            <div className="flex flex-col gap-2">
-              <Label>Thu nhập chồng (TB/tháng) *</Label>
-              <div className="bg-background border-border flex h-12 items-center border px-3.5">
-                <input
-                  value={incomeHusbandDisplay}
-                  onChange={makeChangeHandler(
-                    "avg_monthly_income_husband",
-                    setIncomeHusbandDisplay
-                  )}
-                  inputMode="numeric"
-                  placeholder="VD: 25.000.000"
-                  disabled={isPending}
-                  className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
-                />
-                <span className="text-foreground-muted shrink-0 text-[13px]">
-                  ₫
-                </span>
-              </div>
-              {form.formState.errors.avg_monthly_income_husband && (
-                <ErrorMsg>
-                  {form.formState.errors.avg_monthly_income_husband.message}
-                </ErrorMsg>
+    <ResponsiveModal
+      open={open}
+      onOpenChange={onOpenChange}
+      title="Thu chi trung bình / tháng"
+    >
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-5 px-7 py-5 pb-10"
+      >
+        <div className="flex flex-col gap-2">
+          <Label>Thu nhập chồng (TB/tháng) *</Label>
+          <div className="bg-background border-border flex h-12 items-center border px-3.5">
+            <input
+              value={incomeHusbandDisplay}
+              onChange={makeChangeHandler(
+                "avg_monthly_income_husband",
+                setIncomeHusbandDisplay
               )}
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <Label>Thu nhập vợ (TB/tháng) *</Label>
-              <div className="bg-background border-border flex h-12 items-center border px-3.5">
-                <input
-                  value={incomeWifeDisplay}
-                  onChange={makeChangeHandler(
-                    "avg_monthly_income_wife",
-                    setIncomeWifeDisplay
-                  )}
-                  inputMode="numeric"
-                  placeholder="VD: 20.000.000"
-                  disabled={isPending}
-                  className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
-                />
-                <span className="text-foreground-muted shrink-0 text-[13px]">
-                  ₫
-                </span>
-              </div>
-              {form.formState.errors.avg_monthly_income_wife && (
-                <ErrorMsg>
-                  {form.formState.errors.avg_monthly_income_wife.message}
-                </ErrorMsg>
-              )}
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <Label>Chi tiêu TB / tháng *</Label>
-              <div className="bg-background border-border flex h-12 items-center border px-3.5">
-                <input
-                  value={expenseDisplay}
-                  onChange={makeChangeHandler(
-                    "avg_monthly_expense",
-                    setExpenseDisplay
-                  )}
-                  inputMode="numeric"
-                  placeholder="VD: 28.000.000"
-                  disabled={isPending}
-                  className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
-                />
-                <span className="text-foreground-muted shrink-0 text-[13px]">
-                  ₫
-                </span>
-              </div>
-              {form.formState.errors.avg_monthly_expense && (
-                <ErrorMsg>
-                  {form.formState.errors.avg_monthly_expense.message}
-                </ErrorMsg>
-              )}
-            </div>
-
-            {/* Live preview */}
-            <div className="bg-surface border-border border p-4">
-              <p className="text-foreground-muted mb-2 text-[11px] font-semibold tracking-[1px] uppercase">
-                Thặng dư dự kiến
-              </p>
-              <p
-                className={`text-[20px] font-bold tracking-[-0.5px] ${surplus >= 0 ? "text-green-500" : "text-red-400"}`}
-              >
-                {surplus >= 0 ? "+" : ""}
-                {formatVND(surplus)}
-              </p>
-            </div>
-
-            <Button
-              type="submit"
+              inputMode="numeric"
+              placeholder="VD: 25.000.000"
               disabled={isPending}
-              className="mt-2 h-14 w-full"
-            >
-              {isPending ? "ĐANG LƯU..." : "LƯU CÀI ĐẶT"}
-            </Button>
-          </form>
-        </Drawer.Popup>
-      </Drawer.Portal>
-    </Drawer.Root>
+              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+            />
+            <span className="text-foreground-muted shrink-0 text-[13px]">
+              ₫
+            </span>
+          </div>
+          {form.formState.errors.avg_monthly_income_husband && (
+            <ErrorMsg>
+              {form.formState.errors.avg_monthly_income_husband.message}
+            </ErrorMsg>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <Label>Thu nhập vợ (TB/tháng) *</Label>
+          <div className="bg-background border-border flex h-12 items-center border px-3.5">
+            <input
+              value={incomeWifeDisplay}
+              onChange={makeChangeHandler(
+                "avg_monthly_income_wife",
+                setIncomeWifeDisplay
+              )}
+              inputMode="numeric"
+              placeholder="VD: 20.000.000"
+              disabled={isPending}
+              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+            />
+            <span className="text-foreground-muted shrink-0 text-[13px]">
+              ₫
+            </span>
+          </div>
+          {form.formState.errors.avg_monthly_income_wife && (
+            <ErrorMsg>
+              {form.formState.errors.avg_monthly_income_wife.message}
+            </ErrorMsg>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <Label>Chi tiêu TB / tháng *</Label>
+          <div className="bg-background border-border flex h-12 items-center border px-3.5">
+            <input
+              value={expenseDisplay}
+              onChange={makeChangeHandler(
+                "avg_monthly_expense",
+                setExpenseDisplay
+              )}
+              inputMode="numeric"
+              placeholder="VD: 28.000.000"
+              disabled={isPending}
+              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+            />
+            <span className="text-foreground-muted shrink-0 text-[13px]">
+              ₫
+            </span>
+          </div>
+          {form.formState.errors.avg_monthly_expense && (
+            <ErrorMsg>
+              {form.formState.errors.avg_monthly_expense.message}
+            </ErrorMsg>
+          )}
+        </div>
+
+        {/* Live preview */}
+        <div className="bg-surface border-border border p-4">
+          <p className="text-foreground-muted mb-2 text-[11px] font-semibold tracking-[1px] uppercase">
+            Thặng dư dự kiến
+          </p>
+          <p
+            className={`text-[20px] font-bold tracking-[-0.5px] ${surplus >= 0 ? "text-green-500" : "text-red-400"}`}
+          >
+            {surplus >= 0 ? "+" : ""}
+            {formatVND(surplus)}
+          </p>
+        </div>
+
+        <Button type="submit" disabled={isPending} className="mt-2 h-14 w-full">
+          {isPending ? "ĐANG LƯU..." : "LƯU CÀI ĐẶT"}
+        </Button>
+      </form>
+    </ResponsiveModal>
   );
 }
 
