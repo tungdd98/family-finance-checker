@@ -12,14 +12,11 @@ import { logoutAction } from "@/app/actions/auth";
 import { settingsSchema, type SettingsInput } from "@/lib/validations/settings";
 import { Button } from "@/components/ui/button";
 import { ResetDataSection } from "./ResetDataSection";
+import { formatVND } from "@/lib/utils";
 
 interface Props {
   initialData: SettingsInput;
   displayName: string;
-}
-
-function formatVND(n: number): string {
-  return n > 0 ? new Intl.NumberFormat("vi-VN").format(n) : "";
 }
 
 export function SettingsForm({ initialData, displayName }: Props) {
