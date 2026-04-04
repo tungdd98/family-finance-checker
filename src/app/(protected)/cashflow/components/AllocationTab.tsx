@@ -45,11 +45,11 @@ export function AllocationTab({
     <div className="flex flex-col gap-5">
       <div className="bg-surface border-border flex flex-col gap-2 border p-4">
         <div className="flex items-center justify-between">
-          <span className="text-foreground-muted text-[12px]">
+          <span className="text-foreground-muted text-xs">
             Thặng dư tháng này
           </span>
           <span
-            className={`text-[14px] font-bold ${surplus >= 0 ? "text-green-500" : "text-red-400"}`}
+            className={`text-sm font-bold ${surplus >= 0 ? "text-green-500" : "text-red-400"}`}
           >
             {surplus >= 0 ? "+" : ""}
             {formatVND(surplus)}
@@ -57,11 +57,11 @@ export function AllocationTab({
         </div>
         {delta !== null && (
           <div className="mt-1 flex items-center justify-between">
-            <span className="text-foreground-muted text-[12px]">
+            <span className="text-foreground-muted text-xs">
               So với TB dự kiến
             </span>
             <span
-              className={`text-[14px] font-bold ${delta >= 0 ? "text-green-500" : "text-red-400"}`}
+              className={`text-sm font-bold ${delta >= 0 ? "text-green-500" : "text-red-400"}`}
             >
               {delta >= 0 ? "+" : ""}
               {formatVND(delta)}
@@ -72,7 +72,7 @@ export function AllocationTab({
 
       <div className="bg-surface border-border flex flex-col gap-4 border p-4">
         <div className="border-border/50 flex items-center justify-between border-b pb-3">
-          <span className="text-foreground text-[14px] font-bold tracking-[-0.5px]">
+          <span className="text-foreground text-sm font-bold">
             Phân Bổ Thặng Dư
           </span>
           <span
@@ -164,7 +164,7 @@ function AllocationRow({
                 { shouldValidate: true }
               )
             }
-            className={`border px-1.5 py-0.5 text-[9px] font-bold tracking-[1px] uppercase transition-colors ${
+            className={`border px-1.5 py-0.5 text-[9px] font-bold uppercase transition-colors ${
               is_executed
                 ? "border-green-500/30 bg-green-500/10 text-green-500"
                 : "border-border text-foreground-muted hover:text-foreground"
@@ -176,7 +176,7 @@ function AllocationRow({
         <button
           type="button"
           onClick={() => remove(index)}
-          className="text-foreground-muted -mr-2 px-2 text-[10px] font-bold tracking-[1px] uppercase hover:text-red-400"
+          className="text-foreground-muted -mr-2 px-2 text-[10px] font-bold uppercase hover:text-red-400"
         >
           <Trash2 size={14} />
         </button>
@@ -241,7 +241,7 @@ function AllocationRow({
                   );
                 }
               }}
-              className="bg-background border-border text-foreground-muted hover:text-foreground hover:border-foreground/30 disabled:hover:text-foreground-muted disabled:hover:border-border flex-1 border px-2 py-2 text-[10px] font-bold tracking-[0.5px] transition-colors disabled:opacity-30"
+              className="bg-background border-border text-foreground-muted hover:text-foreground hover:border-foreground/30 disabled:hover:text-foreground-muted disabled:hover:border-border flex-1 border px-2 py-2 text-[10px] font-bold transition-colors disabled:opacity-30"
             >
               {pct * 100}%
             </button>

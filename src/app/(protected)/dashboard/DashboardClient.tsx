@@ -130,16 +130,14 @@ export function DashboardClient({
 
   return (
     <div className="flex flex-col gap-4 pb-20">
-      <h1 className="text-foreground pt-2 text-[28px] font-bold tracking-[-1px]">
-        TỔNG QUAN
-      </h1>
+      <h1 className="text-foreground pt-2 text-[28px] font-bold">TỔNG QUAN</h1>
 
       <HeroCard netWorth={currentAssets} goal={heroGoal} />
 
       <div className="grid grid-cols-2 gap-3">
         {/* Vàng tile */}
         <StatTile label="Vàng" href="/gold" accentColor="gold">
-          <span className="text-foreground text-[15px] leading-tight font-bold tracking-[-0.5px]">
+          <span className="text-foreground text-[15px] leading-tight font-bold">
             {fmtTile(goldDisplayValue)} đ
           </span>
           <div className="flex items-center justify-between gap-2">
@@ -167,7 +165,7 @@ export function DashboardClient({
 
         {/* Tiết Kiệm tile */}
         <StatTile label="Tiết kiệm" href="/savings" accentColor="blue">
-          <span className="text-foreground text-[15px] leading-tight font-bold tracking-[-0.5px]">
+          <span className="text-foreground text-[15px] leading-tight font-bold">
             {fmtTile(savingsTotalValue)} đ
           </span>
           <div className="flex items-center justify-between gap-2">
@@ -206,7 +204,7 @@ export function DashboardClient({
               <span className="text-foreground-muted text-[11px]">
                 Chưa có dữ liệu
               </span>
-              <span className="text-accent text-[10px] font-semibold tracking-[0.5px]">
+              <span className="text-accent text-[10px] font-semibold">
                 Bắt đầu nhập →
               </span>
             </>
@@ -219,10 +217,10 @@ export function DashboardClient({
             <div className="grid grid-cols-2 gap-2">
               {/* Mua */}
               <div className="flex flex-col gap-0.5">
-                <span className="text-foreground-muted text-[9px] font-semibold tracking-[0.5px] uppercase">
+                <span className="text-foreground-muted text-[9px] font-semibold uppercase">
                   Mua
                 </span>
-                <span className="text-foreground text-[13px] leading-tight font-bold tracking-[-0.5px]">
+                <span className="text-foreground text-[13px] leading-tight font-bold">
                   {fmtTile(marketPrice.buy)} đ
                 </span>
                 {marketPrice.change_buy !== 0 && (
@@ -241,10 +239,10 @@ export function DashboardClient({
               </div>
               {/* Bán */}
               <div className="flex flex-col gap-0.5">
-                <span className="text-foreground-muted text-[9px] font-semibold tracking-[0.5px] uppercase">
+                <span className="text-foreground-muted text-[9px] font-semibold uppercase">
                   Bán
                 </span>
-                <span className="text-foreground text-[13px] leading-tight font-bold tracking-[-0.5px]">
+                <span className="text-foreground text-[13px] leading-tight font-bold">
                   {fmtTile(marketPrice.sell)} đ
                 </span>
                 {marketPrice.change_sell !== 0 && (

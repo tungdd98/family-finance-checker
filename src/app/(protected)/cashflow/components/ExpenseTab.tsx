@@ -35,7 +35,7 @@ export function ExpenseTab({
           <span className="type-card-label text-accent">
             Tổng chi tiêu tháng
           </span>
-          <span className="text-foreground text-[20px] font-bold tracking-[-0.5px]">
+          <span className="text-foreground text-[20px] font-bold">
             {expenseDisplay || "0"} ₫
           </span>
         </div>
@@ -130,7 +130,7 @@ function ExpenseRow({
         <div className="flex shrink-0 items-center gap-2">
           {!isExpanded && (
             <span
-              className={`text-[14px] font-bold ${currentAmount > 0 ? "text-accent" : "text-foreground-muted"}`}
+              className={`text-sm font-bold ${currentAmount > 0 ? "text-accent" : "text-foreground-muted"}`}
             >
               {currentAmount > 0
                 ? new Intl.NumberFormat("vi-VN").format(currentAmount) + " ₫"
@@ -144,14 +144,14 @@ function ExpenseRow({
                   <button
                     type="button"
                     onClick={() => remove(index)}
-                    className="px-2 py-1 text-[10px] font-bold tracking-[1px] text-red-400 uppercase"
+                    className="px-2 py-1 text-[10px] font-bold text-red-400 uppercase"
                   >
                     XOÁ?
                   </button>
                   <button
                     type="button"
                     onClick={() => setIsConfirmingDelete(false)}
-                    className="text-foreground-muted hover:text-foreground px-2 py-1 text-[10px] font-bold tracking-[1px] uppercase"
+                    className="text-foreground-muted hover:text-foreground px-2 py-1 text-[10px] font-bold uppercase"
                   >
                     HUỶ
                   </button>

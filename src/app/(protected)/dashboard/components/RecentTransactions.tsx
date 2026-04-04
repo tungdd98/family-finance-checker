@@ -66,7 +66,7 @@ export function RecentTransactions({ transactions }: Props) {
   if (!transactions || transactions.length === 0) {
     return (
       <div className="mt-2">
-        <h2 className="text-foreground mb-2 text-[13px] font-bold tracking-[0.5px] uppercase">
+        <h2 className="text-foreground mb-2 text-[13px] font-bold uppercase">
           GIAO DỊCH GẦN ĐÂY
         </h2>
         <p className="text-foreground-muted text-[13px]">
@@ -78,7 +78,7 @@ export function RecentTransactions({ transactions }: Props) {
 
   return (
     <div className="mt-2">
-      <h2 className="text-foreground mb-2 text-[13px] font-bold tracking-[0.5px] uppercase">
+      <h2 className="text-foreground mb-2 text-[13px] font-bold uppercase">
         GIAO DỊCH GẦN ĐÂY
       </h2>
       <div className="divide-border flex flex-col divide-y">

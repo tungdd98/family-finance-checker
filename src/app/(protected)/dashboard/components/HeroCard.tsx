@@ -28,28 +28,25 @@ export function HeroCard({ netWorth, goal }: HeroCardProps) {
       {/* Top row: net worth (left) + goal % (right) */}
       <div className="flex items-start justify-between">
         <div className="flex flex-col gap-0.5">
-          <span className="text-foreground-secondary text-[9px] font-bold tracking-[1.5px] uppercase">
+          <span className="text-foreground-secondary text-[9px] font-bold uppercase">
             Tổng tài sản
           </span>
-          <span className="text-foreground text-[26px] leading-none font-black tracking-[-1px]">
+          <span className="text-foreground text-[26px] leading-none font-black">
             {compactNetWorth}
           </span>
         </div>
 
         {goal ? (
           <div className="flex flex-col items-end gap-0.5">
-            <span className="text-foreground-secondary text-[9px] font-bold tracking-[1.5px] uppercase">
+            <span className="text-foreground-secondary text-[9px] font-bold uppercase">
               Mục tiêu
             </span>
-            <span className="text-accent text-[26px] leading-none font-black tracking-[-1px]">
+            <span className="text-accent text-[26px] leading-none font-black">
               {goal.progressPct}%
             </span>
           </div>
         ) : (
-          <Link
-            href="/goals"
-            className="text-accent text-[11px] font-bold tracking-[0.5px]"
-          >
+          <Link href="/goals" className="text-accent text-[11px] font-bold">
             Đặt mục tiêu →
           </Link>
         )}

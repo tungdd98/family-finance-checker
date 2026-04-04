@@ -202,7 +202,7 @@ export function CashflowClient({ year, month, existing, cashFlow }: Props) {
           >
             <ChevronLeft size={20} />
           </button>
-          <span className="text-foreground text-[16px] font-bold tracking-[-0.5px]">
+          <span className="text-foreground text-base font-bold">
             Tháng {month} · {year}
           </span>
           <button
@@ -218,20 +218,20 @@ export function CashflowClient({ year, month, existing, cashFlow }: Props) {
         <div className="mt-4 grid grid-cols-3 gap-3">
           <div className="border-border border p-3">
             <div className="type-card-label">Thu</div>
-            <div className="mt-1 text-[16px] font-bold text-green-500">
+            <div className="mt-1 text-base font-bold text-green-500">
               {totalIncome > 0 ? `+${formatMil(totalIncome)}tr` : "—"}
             </div>
           </div>
           <div className="border-border border p-3">
             <div className="type-card-label">Chi</div>
-            <div className="mt-1 text-[16px] font-bold text-red-400">
+            <div className="mt-1 text-base font-bold text-red-400">
               {totalExpense > 0 ? `-${formatMil(totalExpense)}tr` : "—"}
             </div>
           </div>
           <div className="border-border border p-3">
             <div className="type-card-label">Thặng dư</div>
             <div
-              className={`mt-1 text-[16px] font-bold ${surplus > 0 ? "text-accent" : surplus < 0 ? "text-red-400" : "text-foreground-muted"}`}
+              className={`mt-1 text-base font-bold ${surplus > 0 ? "text-accent" : surplus < 0 ? "text-red-400" : "text-foreground-muted"}`}
             >
               {surplus !== 0
                 ? `${surplus > 0 ? "+" : ""}${formatMil(surplus)}tr`
