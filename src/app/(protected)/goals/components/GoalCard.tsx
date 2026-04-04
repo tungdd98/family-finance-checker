@@ -95,7 +95,7 @@ export function GoalCard({
 
       <div className="flex flex-col gap-3 px-4 pb-4">
         {/* Progress bar */}
-        <div className="h-2 overflow-hidden bg-[#2a2a2a]">
+        <div className="bg-border h-2 overflow-hidden">
           <div
             className="from-accent h-full bg-gradient-to-r to-[#f0d060] transition-all duration-500"
             style={{ width: `${progressPct}%` }}
@@ -116,7 +116,7 @@ export function GoalCard({
 
         {/* Projection pill */}
         {monthsToGoal !== null && monthsToGoal > 0 && estimatedDate && (
-          <div className="inline-flex items-center gap-1.5 self-start border border-[#2a2a2a] bg-[#1a1a1a] px-3 py-1.5">
+          <div className="border-border inline-flex items-center gap-1.5 self-start border bg-[#1a1a1a] px-3 py-1.5">
             <span className="text-foreground-muted text-[12px]">
               ⏱ Dự kiến đạt{" "}
               <span className="text-accent font-semibold">
@@ -217,7 +217,7 @@ export function GoalCard({
                     </div>
 
                     {/* Thanh Segments */}
-                    <div className="flex h-1 w-full overflow-hidden rounded-none bg-[#2a2a2a] opacity-90">
+                    <div className="bg-border flex h-1 w-full overflow-hidden rounded-none opacity-90">
                       {monthlyActual.allocations.map((a, i) => {
                         const wPct = Math.min(
                           100,

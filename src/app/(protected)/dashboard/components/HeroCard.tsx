@@ -58,7 +58,7 @@ export function HeroCard({ netWorth, goal }: HeroCardProps) {
       {goal && (
         <>
           {/* Progress bar */}
-          <div className="mt-3 h-1.5 overflow-hidden bg-[#2a2a2a]">
+          <div className="bg-border mt-3 h-1.5 overflow-hidden">
             <div
               className="from-accent h-full bg-gradient-to-r to-[#f0d060]"
               style={{ width: `${clampedPct}%` }}
