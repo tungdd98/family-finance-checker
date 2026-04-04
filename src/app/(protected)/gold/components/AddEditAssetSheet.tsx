@@ -173,7 +173,7 @@ export function AddEditAssetSheet({
                 min="0.1"
                 placeholder={unit === "chi" ? "VD: 5" : "VD: 0.5"}
                 disabled={isPending}
-                className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+                className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-sm font-medium outline-none disabled:opacity-50"
                 {...form.register("quantity", { valueAsNumber: true })}
               />
             </div>
@@ -181,7 +181,7 @@ export function AddEditAssetSheet({
               <button
                 type="button"
                 onClick={() => setUnit("chi")}
-                className={`h-full px-3 py-2 text-[11px] font-bold transition-colors ${
+                className={`h-full px-3 py-2 text-xs font-bold transition-colors ${
                   unit === "chi"
                     ? "bg-accent text-background"
                     : "text-foreground-muted"
@@ -192,7 +192,7 @@ export function AddEditAssetSheet({
               <button
                 type="button"
                 onClick={() => setUnit("luong")}
-                className={`h-full px-3 py-2 text-[11px] font-bold transition-colors ${
+                className={`h-full px-3 py-2 text-xs font-bold transition-colors ${
                   unit === "luong"
                     ? "bg-accent text-background"
                     : "text-foreground-muted"
@@ -226,11 +226,9 @@ export function AddEditAssetSheet({
                   shouldValidate: true,
                 });
               }}
-              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-sm font-medium outline-none disabled:opacity-50"
             />
-            <span className="text-foreground-muted shrink-0 text-[13px]">
-              ₫
-            </span>
+            <span className="text-foreground-muted shrink-0 text-sm">₫</span>
           </div>
           {totalVnd > 0 && (
             <p className="text-foreground-muted text-right text-xs">
@@ -271,7 +269,7 @@ export function AddEditAssetSheet({
               placeholder="Mua tại SJC Lý Thường Kiệt..."
               disabled={isPending}
               rows={3}
-              className="text-foreground placeholder:text-foreground-muted w-full resize-none bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+              className="text-foreground placeholder:text-foreground-muted w-full resize-none bg-transparent text-sm font-medium outline-none disabled:opacity-50"
               {...form.register("note")}
             />
           </div>
@@ -291,12 +289,12 @@ export function AddEditAssetSheet({
 
 function Label({ children }: { children: ReactNode }) {
   return (
-    <span className="text-foreground-muted text-[10px] font-semibold">
+    <span className="text-foreground-muted text-xs font-semibold">
       {children}
     </span>
   );
 }
 
 function ErrorMsg({ children }: { children: ReactNode }) {
-  return <p className="text-status-negative text-[11px]">{children}</p>;
+  return <p className="text-status-negative text-xs">{children}</p>;
 }

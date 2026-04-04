@@ -94,7 +94,7 @@ export function MarketClient({ initialPrices = [] }: Props) {
         : formatVND(Math.abs(val));
     return (
       <div
-        className={`flex items-center justify-end gap-1 text-[10px] ${color} mt-0.5 font-medium`}
+        className={`flex items-center justify-end gap-1 text-xs ${color} mt-0.5 font-medium`}
       >
         <Icon size={10} strokeWidth={3} />
         <span>{formatted}</span>
@@ -120,11 +120,11 @@ export function MarketClient({ initialPrices = [] }: Props) {
             />
           </button>
         </div>
-        <p className="text-foreground-muted text-[13px]">
+        <p className="text-foreground-muted text-sm">
           Giá vàng & tiền điện tử trực tuyến
         </p>
         {isMounted && lastUpdated && (
-          <span className="text-foreground-muted text-[10px] opacity-60">
+          <span className="text-foreground-muted text-xs opacity-60">
             {`Cập nhật lúc ${lastUpdated.toLocaleTimeString("vi-VN", {
               hour: "2-digit",
               minute: "2-digit",
@@ -153,16 +153,16 @@ export function MarketClient({ initialPrices = [] }: Props) {
                       <Globe size={20} className="text-accent" />
                     </div>
                     <div className="flex min-w-0 flex-col">
-                      <span className="text-foreground truncate text-[15px] font-bold">
+                      <span className="text-foreground truncate text-base font-bold">
                         {worldGold.name}
                       </span>
-                      <span className="text-foreground-muted text-[11px] font-semibold uppercase">
+                      <span className="text-foreground-muted text-xs font-semibold uppercase">
                         {worldGold.type_code}
                       </span>
                     </div>
                   </div>
                   <div className="flex shrink-0 flex-col items-end">
-                    <span className="text-foreground text-[22px] font-bold">
+                    <span className="text-foreground text-2xl font-bold">
                       $
                       {worldGold.buy.toLocaleString("en-US", {
                         minimumFractionDigits: 2,
@@ -179,14 +179,14 @@ export function MarketClient({ initialPrices = [] }: Props) {
             {/* Local Markets Table — scrollable */}
             <div className="border-border bg-surface flex flex-1 flex-col overflow-hidden border">
               <div className="border-border flex shrink-0 items-center justify-between border-b px-5 py-3">
-                <span className="text-foreground-muted text-[10px] font-bold uppercase">
+                <span className="text-foreground-muted text-xs font-bold uppercase">
                   LOẠI VÀNG
                 </span>
                 <div className="flex items-center">
-                  <span className="text-foreground-muted w-[100px] text-right text-[10px] font-bold uppercase">
+                  <span className="text-foreground-muted w-[100px] text-right text-xs font-bold uppercase">
                     MUA VÀO
                   </span>
-                  <span className="text-foreground-muted w-[100px] text-right text-[10px] font-bold uppercase">
+                  <span className="text-foreground-muted w-[100px] text-right text-xs font-bold uppercase">
                     BÁN RA
                   </span>
                 </div>
@@ -204,14 +204,14 @@ export function MarketClient({ initialPrices = [] }: Props) {
                         </span>
                         <div className="mt-1 flex items-center gap-1.5">
                           <Clock size={10} className="text-foreground-muted" />
-                          <span className="text-foreground-muted text-[10px]">
+                          <span className="text-foreground-muted text-xs">
                             {p.update_time}
                           </span>
                         </div>
                       </div>
                       <div className="flex items-start">
                         <div className="flex w-[100px] flex-col items-end">
-                          <span className="text-foreground text-[13px] font-bold">
+                          <span className="text-foreground text-sm font-bold">
                             {p.buy > 0 ? formatVND(p.buy) : "—"}
                           </span>
                           <div className="h-4">
@@ -219,7 +219,7 @@ export function MarketClient({ initialPrices = [] }: Props) {
                           </div>
                         </div>
                         <div className="flex w-[100px] flex-col items-end">
-                          <span className="text-foreground text-[13px] font-bold">
+                          <span className="text-foreground text-sm font-bold">
                             {p.sell > 0 ? formatVND(p.sell) : "—"}
                           </span>
                           <div className="h-4">
@@ -231,7 +231,7 @@ export function MarketClient({ initialPrices = [] }: Props) {
                   ))
                 ) : (
                   <div className="flex h-32 items-center justify-center">
-                    <span className="text-foreground-muted animate-pulse text-[13px] font-medium">
+                    <span className="text-foreground-muted animate-pulse text-sm font-medium">
                       Đang tải dữ liệu...
                     </span>
                   </div>

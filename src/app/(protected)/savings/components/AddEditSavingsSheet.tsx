@@ -179,7 +179,7 @@ export function AddEditSavingsSheet({
             <input
               placeholder="VD: Sổ học phí, Quỹ du lịch..."
               disabled={isPending}
-              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-sm font-medium outline-none disabled:opacity-50"
               {...form.register("account_name")}
             />
           </div>
@@ -195,11 +195,9 @@ export function AddEditSavingsSheet({
               value={principalDisplay}
               onChange={handlePrincipalChange}
               disabled={isPending}
-              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-sm font-medium outline-none disabled:opacity-50"
             />
-            <span className="text-foreground-muted shrink-0 text-[13px]">
-              ₫
-            </span>
+            <span className="text-foreground-muted shrink-0 text-sm">₫</span>
           </div>
           {form.formState.errors.principal && (
             <ErrorMsg>{form.formState.errors.principal.message}</ErrorMsg>
@@ -216,7 +214,7 @@ export function AddEditSavingsSheet({
               value={interestRateDisplay}
               onChange={handleInterestRateChange}
               disabled={isPending}
-              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-sm font-medium outline-none disabled:opacity-50"
             />
             <span className="text-foreground-muted shrink-0 text-xs">
               %/năm
@@ -293,7 +291,7 @@ export function AddEditSavingsSheet({
               rows={3}
               placeholder="Ghi chú thêm..."
               disabled={isPending}
-              className="text-foreground placeholder:text-foreground-muted w-full resize-none bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+              className="text-foreground placeholder:text-foreground-muted w-full resize-none bg-transparent text-sm font-medium outline-none disabled:opacity-50"
               {...form.register("note")}
             />
           </div>
@@ -315,12 +313,12 @@ export function AddEditSavingsSheet({
 
 function Label({ children }: { children: ReactNode }) {
   return (
-    <span className="text-foreground-muted text-[10px] font-semibold">
+    <span className="text-foreground-muted text-xs font-semibold">
       {children}
     </span>
   );
 }
 
 function ErrorMsg({ children }: { children: ReactNode }) {
-  return <p className="text-status-negative text-[11px]">{children}</p>;
+  return <p className="text-status-negative text-xs">{children}</p>;
 }

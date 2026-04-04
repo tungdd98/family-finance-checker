@@ -38,7 +38,7 @@ export function BrandPicker({
         className="bg-background border-border flex h-12 w-full items-center justify-between border px-3.5"
       >
         <span
-          className={`text-[13px] font-medium ${selectedName ? "text-foreground" : "text-foreground-muted"}`}
+          className={`text-sm font-medium ${selectedName ? "text-foreground" : "text-foreground-muted"}`}
         >
           {selectedName || "Chọn thương hiệu vàng"}
         </span>
@@ -82,7 +82,7 @@ export function BrandPicker({
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Tìm kiếm..."
-                  className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] outline-none"
+                  className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-sm outline-none"
                 />
               </div>
             </div>
@@ -90,7 +90,7 @@ export function BrandPicker({
             {/* Brand list */}
             <div className="flex-1 overflow-y-auto px-7 pb-8">
               {filtered.length === 0 && (
-                <p className="text-foreground-muted py-4 text-center text-[13px]">
+                <p className="text-foreground-muted py-4 text-center text-sm">
                   Không tìm thấy thương hiệu
                 </p>
               )}
@@ -120,7 +120,7 @@ export function BrandPicker({
                     <span className="text-sm font-medium">
                       {p.name || p.type_code}
                     </span>
-                    <span className="text-foreground-muted text-[11px]">
+                    <span className="text-foreground-muted text-xs">
                       {p.type_code}
                     </span>
                   </div>

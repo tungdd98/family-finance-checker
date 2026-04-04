@@ -109,7 +109,7 @@ export function Sidebar() {
             >
               <Icon size={18} className="shrink-0" />
               {!collapsed && (
-                <span className="text-[11px] font-semibold tracking-wide uppercase">
+                <span className="text-xs font-semibold uppercase">
                   {item.label}
                 </span>
               )}
@@ -133,9 +133,7 @@ export function Sidebar() {
         >
           <Settings size={18} className="shrink-0" />
           {!collapsed && (
-            <span className="text-[11px] font-semibold tracking-wide uppercase">
-              Cài đặt
-            </span>
+            <span className="text-xs font-semibold uppercase">Cài đặt</span>
           )}
         </Link>
         <form action={logoutAction}>
@@ -148,9 +146,7 @@ export function Sidebar() {
           >
             <LogOut size={18} className="shrink-0" />
             {!collapsed && (
-              <span className="text-[11px] font-semibold tracking-wide uppercase">
-                Đăng xuất
-              </span>
+              <span className="text-xs font-semibold uppercase">Đăng xuất</span>
             )}
           </button>
         </form>

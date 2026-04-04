@@ -91,10 +91,10 @@ export function AssetsClient({
         </svg>
 
         <div className="flex flex-col gap-1">
-          <span className="text-foreground-muted text-[9px] font-semibold uppercase">
+          <span className="text-foreground-muted text-xs font-semibold uppercase">
             Tổng tài sản
           </span>
-          <span className="text-accent text-[22px] font-black">
+          <span className="text-accent text-2xl font-black">
             {formatVND(netWorth)}
           </span>
           {netWorth > 0 && (
@@ -104,7 +104,7 @@ export function AssetsClient({
                   className="h-1.75 w-1.75 rounded-full"
                   style={{ background: GOLD_COLOR }}
                 />
-                <span className="text-foreground-muted text-[9px]">
+                <span className="text-foreground-muted text-xs">
                   Vàng {goldPct}%
                 </span>
               </div>
@@ -113,7 +113,7 @@ export function AssetsClient({
                   className="h-1.75 w-1.75 rounded-full"
                   style={{ background: SAVINGS_COLOR }}
                 />
-                <span className="text-foreground-muted text-[9px]">
+                <span className="text-foreground-muted text-xs">
                   Tiết kiệm {savingsPct}%
                 </span>
               </div>
@@ -123,7 +123,7 @@ export function AssetsClient({
       </div>
 
       {/* Section label */}
-      <span className="text-foreground-muted text-[9px] font-semibold uppercase">
+      <span className="text-foreground-muted text-xs font-semibold uppercase">
         Danh mục tài sản
       </span>
 
@@ -136,10 +136,10 @@ export function AssetsClient({
           style={{ borderLeftColor: GOLD_COLOR }}
         >
           <div className="flex flex-col gap-0.5">
-            <span className="text-foreground-muted text-[9px] font-semibold uppercase">
+            <span className="text-foreground-muted text-xs font-semibold uppercase">
               Vàng
             </span>
-            <span className="text-foreground text-[18px] font-extrabold">
+            <span className="text-foreground text-lg font-extrabold">
               {formatVND(goldTotal)}
             </span>
           </div>
@@ -153,7 +153,7 @@ export function AssetsClient({
                   {formatVND(goldPnl)}
                 </span>
                 <span
-                  className={`text-[11px] ${goldPnl >= 0 ? "text-green-500" : "text-red-500"}`}
+                  className={`text-xs ${goldPnl >= 0 ? "text-green-500" : "text-red-500"}`}
                 >
                   {formatPct(goldPnlPct)}
                 </span>
@@ -170,10 +170,10 @@ export function AssetsClient({
           style={{ borderLeftColor: SAVINGS_COLOR }}
         >
           <div className="flex flex-col gap-0.5">
-            <span className="text-foreground-muted text-[9px] font-semibold uppercase">
+            <span className="text-foreground-muted text-xs font-semibold uppercase">
               Tiết Kiệm
             </span>
-            <span className="text-foreground text-[18px] font-extrabold">
+            <span className="text-foreground text-lg font-extrabold">
               {formatVND(savingsTotal)}
             </span>
           </div>
@@ -187,7 +187,7 @@ export function AssetsClient({
                   {formatVND(savingsPnl)}
                 </span>
                 <span
-                  className={`text-[11px] ${savingsPnl >= 0 ? "text-green-500" : "text-red-500"}`}
+                  className={`text-xs ${savingsPnl >= 0 ? "text-green-500" : "text-red-500"}`}
                 >
                   {formatPct(savingsPnlPct)}
                 </span>
@@ -200,25 +200,21 @@ export function AssetsClient({
 
       {/* Coming soon */}
       <div className="flex flex-col gap-2">
-        <span className="text-[9px] font-semibold uppercase opacity-40">
+        <span className="text-xs font-semibold uppercase opacity-40">
           Sắp ra mắt
         </span>
         <div className="grid grid-cols-2 gap-1.5 opacity-35">
           <div className="bg-surface border-border flex flex-col gap-1 border border-dashed p-3">
-            <span className="text-foreground-muted text-[8px] font-semibold uppercase">
+            <span className="text-foreground-muted text-xs font-semibold uppercase">
               Coin
             </span>
-            <span className="text-foreground-muted text-[10px]">
-              Sắp ra mắt
-            </span>
+            <span className="text-foreground-muted text-xs">Sắp ra mắt</span>
           </div>
           <div className="bg-surface border-border flex flex-col gap-1 border border-dashed p-3">
-            <span className="text-foreground-muted text-[8px] font-semibold uppercase">
+            <span className="text-foreground-muted text-xs font-semibold uppercase">
               Chứng Khoán
             </span>
-            <span className="text-foreground-muted text-[10px]">
-              Sắp ra mắt
-            </span>
+            <span className="text-foreground-muted text-xs">Sắp ra mắt</span>
           </div>
         </div>
       </div>

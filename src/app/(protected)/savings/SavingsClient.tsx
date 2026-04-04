@@ -74,7 +74,7 @@ export function SavingsClient({ initialAccounts }: Props) {
         {initialAccounts.length > 0 && (
           <div className="bg-surface mt-4 flex flex-col gap-1 p-4">
             <p className="type-section-label">TỔNG TIẾT KIỆM GỐC</p>
-            <p className="text-foreground text-[28px] font-bold">
+            <p className="text-foreground text-3xl font-bold">
               {totalPrincipal > 0 ? formatVND(totalPrincipal) : "—"}
             </p>
             <p className="text-foreground-secondary text-xs">
@@ -89,10 +89,10 @@ export function SavingsClient({ initialAccounts }: Props) {
         <div className="flex flex-col items-center justify-center gap-4 py-20">
           <PiggyBank size={32} className="text-foreground-muted" />
           <div className="text-center">
-            <p className="text-foreground text-[15px] font-bold">
+            <p className="text-foreground text-base font-bold">
               Chưa có khoản tiết kiệm nào
             </p>
-            <p className="text-foreground-muted mt-1 text-[13px]">
+            <p className="text-foreground-muted mt-1 text-sm">
               Nhấn nút + để thêm khoản tiết kiệm đầu tiên
             </p>
           </div>

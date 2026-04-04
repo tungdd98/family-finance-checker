@@ -53,15 +53,13 @@ export function SettingsForm({ initialData, displayName }: Props) {
       <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
         {/* Top section: title + cash balance */}
         <div className="flex flex-col gap-6 pb-6">
-          <h1 className="text-foreground pt-4 text-[28px] font-bold">
-            CÀI ĐẶT
-          </h1>
+          <h1 className="text-foreground pt-4 text-3xl font-bold">CÀI ĐẶT</h1>
 
           {/* TIỀN MẶT */}
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
               <div className="bg-accent h-3.5 w-0.75 shrink-0" />
-              <span className="text-foreground-secondary text-[11px] font-semibold">
+              <span className="text-foreground-secondary text-xs font-semibold">
                 TIỀN MẶT
               </span>
             </div>
@@ -76,11 +74,11 @@ export function SettingsForm({ initialData, displayName }: Props) {
                   value={amountDisplay}
                   onChange={handleAmountChange}
                   disabled={isPending}
-                  className="placeholder:text-foreground-muted text-foreground w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+                  className="placeholder:text-foreground-muted text-foreground w-full bg-transparent text-sm font-medium outline-none disabled:opacity-50"
                 />
               </div>
               {form.formState.errors.initial_cash_balance && (
-                <p className="text-status-negative text-[11px]">
+                <p className="text-status-negative text-xs">
                   {form.formState.errors.initial_cash_balance.message}
                 </p>
               )}
@@ -94,14 +92,14 @@ export function SettingsForm({ initialData, displayName }: Props) {
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
               <div className="bg-accent h-3.5 w-0.75 shrink-0" />
-              <span className="text-foreground-secondary text-[11px] font-semibold">
+              <span className="text-foreground-secondary text-xs font-semibold">
                 THÔNG TIN CÁ NHÂN
               </span>
             </div>
             <div className="bg-surface border-border-strong flex flex-col gap-2 border px-4 py-3.5">
               <label
                 htmlFor="display_name"
-                className="text-foreground-muted text-[10px] font-medium"
+                className="text-foreground-muted text-xs font-medium"
               >
                 TÊN HIỂN THỊ
               </label>
@@ -109,11 +107,11 @@ export function SettingsForm({ initialData, displayName }: Props) {
                 id="display_name"
                 placeholder="Nhập tên của bạn..."
                 disabled={isPending}
-                className="placeholder:text-border-strong text-foreground bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+                className="placeholder:text-border-strong text-foreground bg-transparent text-sm font-medium outline-none disabled:opacity-50"
                 {...form.register("display_name")}
               />
               {form.formState.errors.display_name && (
-                <p className="text-status-negative text-[11px]">
+                <p className="text-status-negative text-xs">
                   {form.formState.errors.display_name.message}
                 </p>
               )}
@@ -130,7 +128,7 @@ export function SettingsForm({ initialData, displayName }: Props) {
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-3">
           <div className="bg-status-negative/40 h-3.5 w-0.75 shrink-0" />
-          <span className="text-foreground-secondary text-[11px] font-semibold">
+          <span className="text-foreground-secondary text-xs font-semibold">
             HÀNH ĐỘNG
           </span>
         </div>
@@ -138,7 +136,7 @@ export function SettingsForm({ initialData, displayName }: Props) {
           <Button
             type="submit"
             variant="outline"
-            className="border-status-negative/20 text-status-negative hover:bg-status-negative/10 flex h-14 w-full items-center justify-center gap-2 text-[13px] font-bold"
+            className="border-status-negative/20 text-status-negative hover:bg-status-negative/10 flex h-14 w-full items-center justify-center gap-2 text-sm font-bold"
           >
             <LogOut size={18} />
             ĐĂNG XUẤT TÀI KHOẢN

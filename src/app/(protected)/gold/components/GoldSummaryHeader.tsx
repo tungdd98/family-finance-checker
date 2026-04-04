@@ -38,9 +38,7 @@ export function GoldSummaryHeader({
           >
             <ChevronLeft size={24} />
           </Link>
-          <h1 className="text-foreground text-[28px] font-bold">
-            TÀI SẢN VÀNG
-          </h1>
+          <h1 className="text-foreground text-3xl font-bold">TÀI SẢN VÀNG</h1>
         </div>
         <button
           onClick={onAdd}
@@ -54,7 +52,7 @@ export function GoldSummaryHeader({
       {/* Summary card */}
       <div className="bg-surface flex flex-col gap-1 p-4">
         <p className="type-section-label">TỔNG GIÁ TRỊ ƯỚC TÍNH</p>
-        <p className="text-foreground text-[28px] font-bold">
+        <p className="text-foreground text-3xl font-bold">
           {totalValue > 0 ? formatVND(totalValue) : "—"}
         </p>
         <p className="text-foreground-secondary text-xs">
@@ -67,7 +65,7 @@ export function GoldSummaryHeader({
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => onFilterChange(null)}
-            className={`border px-3 py-1.5 text-[11px] font-semibold transition-colors ${
+            className={`border px-3 py-1.5 text-xs font-semibold transition-colors ${
               filterBrand === null
                 ? "bg-accent text-background border-accent"
                 : "bg-surface border-border text-foreground-secondary"
@@ -79,7 +77,7 @@ export function GoldSummaryHeader({
             <button
               key={b.code}
               onClick={() => onFilterChange(b.code)}
-              className={`border px-3 py-1.5 text-[11px] font-semibold transition-colors ${
+              className={`border px-3 py-1.5 text-xs font-semibold transition-colors ${
                 filterBrand === b.code
                   ? "bg-accent text-background border-accent"
                   : "bg-surface border-border text-foreground-secondary"

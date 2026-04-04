@@ -21,7 +21,7 @@ export function CoinRow({ coin }: Props) {
       <div className="flex items-center gap-3">
         <div className="bg-surface border-border relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border">
           {imgError ? (
-            <span className="text-foreground-muted text-[10px] font-bold uppercase">
+            <span className="text-foreground-muted text-xs font-bold uppercase">
               {coin.symbol.slice(0, 2)}
             </span>
           ) : (
@@ -37,17 +37,17 @@ export function CoinRow({ coin }: Props) {
         </div>
         <div className="flex flex-col">
           <span className="text-foreground text-sm font-bold">{coin.name}</span>
-          <span className="text-foreground-muted text-[11px] font-semibold uppercase">
+          <span className="text-foreground-muted text-xs font-semibold uppercase">
             {coin.symbol}
           </span>
         </div>
       </div>
       <div className="flex flex-col items-end">
-        <span className="text-foreground text-[15px] font-bold">
+        <span className="text-foreground text-base font-bold">
           {formatCoinPrice(coin.current_price)}
         </span>
         <div
-          className={`mt-0.5 flex items-center gap-1 text-[11px] font-medium ${changeColor}`}
+          className={`mt-0.5 flex items-center gap-1 text-xs font-medium ${changeColor}`}
         >
           <ChangeIcon size={10} strokeWidth={3} />
           <span>{Math.abs(coin.price_change_percentage_24h).toFixed(2)}%</span>

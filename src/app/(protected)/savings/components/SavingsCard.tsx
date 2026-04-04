@@ -52,7 +52,7 @@ function DetailRow({
   return (
     <div className="flex items-center justify-between">
       <span className="text-foreground-muted text-xs">{label}</span>
-      <span className={`text-[13px] font-medium ${valueClass}`}>{value}</span>
+      <span className={`text-sm font-medium ${valueClass}`}>{value}</span>
     </div>
   );
 }
@@ -76,7 +76,7 @@ export function SavingsCard({ account, onTap }: Props) {
             {account.account_name || account.bank_name}
           </span>
           {account.account_name && (
-            <span className="text-foreground-muted text-[11px]">
+            <span className="text-foreground-muted text-xs">
               {account.bank_name}
             </span>
           )}
@@ -85,7 +85,7 @@ export function SavingsCard({ account, onTap }: Props) {
         {/* Status badge */}
         <div className="flex shrink-0 items-center gap-1.5">
           <div className={`h-1.5 w-1.5 rounded-full ${statusCfg.dot}`} />
-          <span className={`text-[10px] font-semibold ${statusCfg.text}`}>
+          <span className={`text-xs font-semibold ${statusCfg.text}`}>
             {statusCfg.label}
           </span>
         </div>

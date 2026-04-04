@@ -46,7 +46,7 @@ export function SavingsActionSheet({
         <button
           type="button"
           onClick={() => onOpenChange(false)}
-          className="bg-surface-elevated text-foreground w-full py-3.5 text-[11px] font-bold uppercase"
+          className="bg-surface-elevated text-foreground w-full py-3.5 text-xs font-bold uppercase"
         >
           ĐÓNG
         </button>

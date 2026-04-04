@@ -61,7 +61,7 @@ export function PositionActionSheet({
         <button
           type="button"
           onClick={() => onOpenChange(false)}
-          className="bg-surface-elevated text-foreground w-full py-3.5 text-[11px] font-bold"
+          className="bg-surface-elevated text-foreground w-full py-3.5 text-xs font-bold"
         >
           ĐÓNG
         </button>

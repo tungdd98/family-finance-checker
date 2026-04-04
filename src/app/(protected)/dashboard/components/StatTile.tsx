@@ -23,7 +23,7 @@ export function StatTile({
         accentColor === "blue" && "border-l-2 border-l-[#6B7FD7]"
       )}
     >
-      <span className="text-foreground-secondary text-[9px] font-bold uppercase">
+      <span className="text-foreground-secondary text-xs font-bold uppercase">
         {label}
       </span>
       {children}

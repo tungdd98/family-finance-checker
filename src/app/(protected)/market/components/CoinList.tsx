@@ -24,7 +24,7 @@ export function CoinList({
         value={searchQuery}
         onChange={(e) => onSearchChange(e.target.value)}
         placeholder="Tìm theo tên hoặc ký hiệu..."
-        className="border-border bg-surface text-foreground placeholder:text-foreground-muted w-full shrink-0 border px-4 py-2.5 text-[13px] outline-none"
+        className="border-border bg-surface text-foreground placeholder:text-foreground-muted w-full shrink-0 border px-4 py-2.5 text-sm outline-none"
       />
       <div className="border-border bg-surface flex flex-1 flex-col overflow-hidden border">
         {isLoading ? (

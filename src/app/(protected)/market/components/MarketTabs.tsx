@@ -10,7 +10,7 @@ export function MarketTabs({ activeTab, onTabChange }: Props) {
         <button
           key={tab}
           onClick={() => onTabChange(tab)}
-          className={`px-4 py-2.5 text-[13px] font-bold uppercase transition-colors ${
+          className={`px-4 py-2.5 text-sm font-bold uppercase transition-colors ${
             activeTab === tab
               ? "border-accent text-foreground border-b-2"
               : "text-foreground-muted"

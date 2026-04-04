@@ -17,27 +17,27 @@ export function CashFlowCard({ cashFlow, onEdit }: Props) {
       {cashFlow ? (
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
-            <span className="text-foreground-secondary text-[13px]">
+            <span className="text-foreground-secondary text-sm">
               Thu nhập TB/tháng
             </span>
-            <span className="text-foreground text-[13px] font-semibold">
+            <span className="text-foreground text-sm font-semibold">
               {formatVND(cashFlow.avg_monthly_income)}
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-foreground-secondary text-[13px]">
+            <span className="text-foreground-secondary text-sm">
               Chi tiêu TB/tháng
             </span>
-            <span className="text-foreground text-[13px] font-semibold">
+            <span className="text-foreground text-sm font-semibold">
               {formatVND(cashFlow.avg_monthly_expense)}
             </span>
           </div>
           <div className="border-border mt-1 flex items-center justify-between border-t pt-1">
-            <span className="text-foreground-secondary text-[13px]">
+            <span className="text-foreground-secondary text-sm">
               Thặng dư dự kiến
             </span>
             <span
-              className={`text-[13px] font-bold ${surplus! >= 0 ? "text-green-500" : "text-red-400"}`}
+              className={`text-sm font-bold ${surplus! >= 0 ? "text-green-500" : "text-red-400"}`}
             >
               {surplus! >= 0 ? "+" : ""}
               {formatVND(surplus!)}
@@ -45,7 +45,7 @@ export function CashFlowCard({ cashFlow, onEdit }: Props) {
           </div>
         </div>
       ) : (
-        <p className="text-foreground-muted text-[13px]">Chưa cài đặt</p>
+        <p className="text-foreground-muted text-sm">Chưa cài đặt</p>
       )}
       <button
         onClick={onEdit}

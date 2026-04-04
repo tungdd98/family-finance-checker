@@ -70,6 +70,7 @@ button,
 
   /* Typography */
   --font-sans: "Space Grotesk", sans-serif;
+  --text-2xs: 0.625rem;
 
   /* Border radius */
   --radius-pill: 36px;
@@ -150,46 +151,5 @@ button,
   select:-webkit-autofill:focus {
     -webkit-text-fill-color: var(--foreground) !important;
     transition: background-color 5000s ease-in-out 0s !important;
-  }
-}
-
-@layer components {
-  /* ── Typography Scale ─────────────────────────────── */
-
-  /* 42px · Bold 700 · tracking -1 */
-  .type-large-title {
-    @apply text-foreground text-[42px] leading-tight font-bold tracking-[-0.01em];
-  }
-  /* 36px · Bold 700 · tracking -2 */
-  .type-metric-value {
-    @apply text-foreground text-[36px] leading-tight font-bold tracking-[-0.02em];
-  }
-  /* 28px · Bold 700 */
-  .type-featured-stat {
-    @apply text-foreground text-[28px] leading-tight font-bold;
-  }
-  /* 18px · Bold 700 · uppercase */
-  .type-card-title {
-    @apply text-foreground text-[18px] font-bold uppercase;
-  }
-  /* 13px · Medium 500 */
-  .type-body {
-    @apply text-foreground text-[13px] font-medium;
-  }
-  /* 12px · Normal 400 */
-  .type-callout {
-    @apply text-foreground text-[12px] font-normal;
-  }
-  /* 11px · Semibold 600 · tracking +2 */
-  .type-section-label {
-    @apply text-foreground-muted text-[11px] font-semibold tracking-[0.02em] uppercase;
-  }
-  /* 10px · Medium 500 · tracking +1.5 */
-  .type-card-label {
-    @apply text-foreground-muted text-[10px] font-medium tracking-[0.015em] uppercase;
-  }
-  /* 9px · Medium 500 · tracking +0.5 */
-  .type-tab-label {
-    @apply text-[9px] font-medium tracking-[0.005em] uppercase;
   }
 }

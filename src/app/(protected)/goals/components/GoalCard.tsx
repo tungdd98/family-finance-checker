@@ -76,18 +76,18 @@ export function GoalCard({
     <div className="bg-surface border-border overflow-hidden border">
       {/* Header row */}
       <div className="flex items-center gap-3 p-4 pb-3">
-        <span className="shrink-0 text-[28px] leading-none">{goal.emoji}</span>
+        <span className="shrink-0 text-3xl leading-none">{goal.emoji}</span>
         <div className="min-w-0 flex-1">
-          <p className="text-foreground text-[15px] font-bold">{goal.name}</p>
+          <p className="text-foreground text-base font-bold">{goal.name}</p>
           <p className="text-foreground-muted mt-0.5 text-xs">
             Mục tiêu: {formatVND(goal.target_amount)}
           </p>
         </div>
         <div className="shrink-0 text-right">
-          <p className="text-accent text-[30px] leading-none font-black">
+          <p className="text-accent text-3xl leading-none font-black">
             {progressPct}%
           </p>
-          <p className="text-foreground-muted mt-0.5 text-[10px]">hoàn thành</p>
+          <p className="text-foreground-muted mt-0.5 text-xs">hoàn thành</p>
         </div>
       </div>
 
@@ -102,7 +102,7 @@ export function GoalCard({
 
         {/* Amounts */}
         <div className="flex items-baseline justify-between">
-          <span className="text-accent text-[15px] font-bold">
+          <span className="text-accent text-base font-bold">
             {formatVND(currentAssets)}
           </span>
           {remaining > 0 && (
@@ -194,11 +194,11 @@ export function GoalCard({
                 monthlyActual.allocations.length > 0 && (
                   <div className="border-border/50 mt-1.5 flex flex-col gap-2 border bg-[#141414] p-2.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-foreground-muted text-[10px] font-bold uppercase">
+                      <span className="text-foreground-muted text-xs font-bold uppercase">
                         Zero-Based Budget
                       </span>
                       <span
-                        className={`text-[10px] font-bold uppercase ${
+                        className={`text-xs font-bold uppercase ${
                           unallocated === 0
                             ? "text-accent"
                             : unallocated < 0
@@ -238,9 +238,9 @@ export function GoalCard({
                         return (
                           <div
                             key={i}
-                            className={`flex items-center gap-1 text-[10px] font-medium ${TYPE_TEXT_COLORS[a.type] || "text-gray-500"} ${isExec ? "opacity-50" : ""}`}
+                            className={`flex items-center gap-1 text-xs font-medium ${TYPE_TEXT_COLORS[a.type] || "text-gray-500"} ${isExec ? "opacity-50" : ""}`}
                           >
-                            <span className="text-[7px]">■</span>
+                            <span className="text-xs">■</span>
                             <span className={isExec ? "line-through" : ""}>
                               {TYPE_LABELS[a.type] || a.type}
                             </span>
@@ -251,7 +251,7 @@ export function GoalCard({
                               tr
                             </span>
                             {isExec && (
-                              <span className="ml-0.5 text-[9px] font-black text-green-500">
+                              <span className="ml-0.5 text-xs font-black text-green-500">
                                 ✓
                               </span>
                             )}
@@ -272,7 +272,7 @@ export function GoalCard({
           ) : (
             <button
               onClick={onLogMonth}
-              className="text-foreground-muted flex w-full items-center gap-2 text-[13px]"
+              className="text-foreground-muted flex w-full items-center gap-2 text-sm"
             >
               <span>Chưa cập nhật tháng này</span>
               <span className="text-accent ml-auto font-semibold">

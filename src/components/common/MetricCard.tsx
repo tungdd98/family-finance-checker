@@ -22,13 +22,11 @@ export function MetricCard({
     >
       <span className="bg-accent block h-3.5 w-0.75" />
       <p className="type-card-label">{label}</p>
-      <p className="text-foreground text-[28px] leading-tight font-bold">
+      <p className="text-foreground text-3xl leading-tight font-bold">
         {value}
       </p>
       {sub && (
-        <p className="text-foreground-secondary text-[10px] font-medium tracking-[0.01em]">
-          {sub}
-        </p>
+        <p className="text-foreground-secondary text-xs font-medium">{sub}</p>
       )}
     </div>
   );

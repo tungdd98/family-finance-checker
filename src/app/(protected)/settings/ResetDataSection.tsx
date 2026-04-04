@@ -129,7 +129,7 @@ export function ResetDataSection({ displayName }: Props) {
         id="reset-data-btn"
         type="button"
         onClick={handleOpen}
-        className="border-status-negative/20 text-status-negative hover:bg-status-negative/10 flex h-14 w-full items-center justify-center gap-2 border text-[13px] font-bold transition-colors"
+        className="border-status-negative/20 text-status-negative hover:bg-status-negative/10 flex h-14 w-full items-center justify-center gap-2 border text-sm font-bold transition-colors"
       >
         <Trash2 size={16} />
         XÓA DỮ LIỆU
@@ -189,7 +189,7 @@ export function ResetDataSection({ displayName }: Props) {
                   {allSelected ? "Bỏ chọn tất cả" : "Chọn tất cả"}
                 </button>
                 {selectedCount > 0 && (
-                  <span className="text-status-negative text-[11px] font-semibold">
+                  <span className="text-status-negative text-xs font-semibold">
                     {selectedCount}/{DATA_CATEGORIES.length} mục được chọn
                   </span>
                 )}
@@ -240,7 +240,7 @@ export function ResetDataSection({ displayName }: Props) {
                       {/* Label */}
                       <div className="flex min-w-0 flex-col gap-0.5">
                         <span
-                          className={`text-[13px] font-semibold transition-colors ${
+                          className={`text-sm font-semibold transition-colors ${
                             isChecked
                               ? "text-status-negative"
                               : "text-foreground"
@@ -248,7 +248,7 @@ export function ResetDataSection({ displayName }: Props) {
                         >
                           {cat.label}
                         </span>
-                        <span className="text-foreground-muted text-[11px]">
+                        <span className="text-foreground-muted text-xs">
                           {cat.description}
                         </span>
                       </div>
@@ -258,7 +258,7 @@ export function ResetDataSection({ displayName }: Props) {
               </div>
 
               {/* Warning note */}
-              <p className="text-status-negative text-[11px] font-semibold">
+              <p className="text-status-negative text-xs font-semibold">
                 Không thể hoàn tác sau khi xóa.
               </p>
 
@@ -267,7 +267,7 @@ export function ResetDataSection({ displayName }: Props) {
                 <button
                   type="button"
                   onClick={handleClose}
-                  className="border-border text-foreground h-12 flex-1 border text-[13px] font-bold transition-colors hover:bg-white/5"
+                  className="border-border text-foreground h-12 flex-1 border text-sm font-bold transition-colors hover:bg-white/5"
                 >
                   HỦY
                 </button>
@@ -275,7 +275,7 @@ export function ResetDataSection({ displayName }: Props) {
                   type="button"
                   onClick={handleContinue}
                   disabled={selectedCount === 0}
-                  className={`h-12 flex-1 border text-[13px] font-bold transition-colors ${
+                  className={`h-12 flex-1 border text-sm font-bold transition-colors ${
                     selectedCount > 0
                       ? "border-status-negative/30 bg-status-negative/10 text-status-negative hover:bg-status-negative/20"
                       : "border-border text-foreground-muted cursor-not-allowed opacity-40"
@@ -312,10 +312,10 @@ export function ResetDataSection({ displayName }: Props) {
               {/* Header */}
               <div className="flex items-start justify-between gap-3">
                 <div className="flex flex-col gap-1">
-                  <span className="text-status-negative text-[13px] font-semibold">
+                  <span className="text-status-negative text-sm font-semibold">
                     XÁC NHẬN LẦN CUỐI
                   </span>
-                  <Dialog.Title className="text-foreground text-[15px] font-bold">
+                  <Dialog.Title className="text-foreground text-base font-bold">
                     Gõ{" "}
                     <span className="text-status-negative">
                       &ldquo;RESET&rdquo;
@@ -330,7 +330,7 @@ export function ResetDataSection({ displayName }: Props) {
 
               {/* Selected summary */}
               <div className="bg-status-negative/8 border-status-negative/20 flex flex-col gap-1.5 border p-3.5">
-                <span className="text-foreground-secondary text-[11px] font-semibold">
+                <span className="text-foreground-secondary text-xs font-semibold">
                   SẼ XÓA:
                 </span>
                 {DATA_CATEGORIES.filter((c) => selected.has(c.key)).map((c) => (
@@ -369,7 +369,7 @@ export function ResetDataSection({ displayName }: Props) {
                 type="button"
                 disabled={!isUnlocked || isPending}
                 onClick={handleReset}
-                className={`h-14 w-full text-[13px] font-bold transition-all duration-200 ${
+                className={`h-14 w-full text-sm font-bold transition-all duration-200 ${
                   isUnlocked && !isPending
                     ? "bg-status-negative text-white opacity-100 active:scale-[0.98]"
                     : "bg-status-negative/20 text-status-negative/40 cursor-not-allowed opacity-60"

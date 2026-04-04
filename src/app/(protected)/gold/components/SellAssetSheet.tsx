@@ -57,7 +57,7 @@ export function SellAssetSheet({ position, open, onOpenChange }: Props) {
     >
       {/* Asset info */}
       <div className="border-border border-b px-7 py-4">
-        <p className="text-foreground-secondary text-[13px]">
+        <p className="text-foreground-secondary text-sm">
           {remaining} chỉ {position?.brand_name}
         </p>
       </div>
@@ -68,7 +68,7 @@ export function SellAssetSheet({ position, open, onOpenChange }: Props) {
       >
         {/* Sell quantity */}
         <div className="flex flex-col gap-2">
-          <span className="text-foreground-muted text-[10px] font-semibold">
+          <span className="text-foreground-muted text-xs font-semibold">
             SỐ LƯỢNG BÁN (CHỈ)
           </span>
           <div className="bg-background border-border flex h-12 items-center border px-3.5">
@@ -79,12 +79,12 @@ export function SellAssetSheet({ position, open, onOpenChange }: Props) {
               max={remaining}
               placeholder={`Tối đa ${remaining} chỉ`}
               disabled={isPending}
-              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-sm font-medium outline-none disabled:opacity-50"
               {...form.register("sell_quantity", { valueAsNumber: true })}
             />
           </div>
           {form.formState.errors.sell_quantity && (
-            <p className="text-status-negative text-[11px]">
+            <p className="text-status-negative text-xs">
               {form.formState.errors.sell_quantity.message}
             </p>
           )}
@@ -92,7 +92,7 @@ export function SellAssetSheet({ position, open, onOpenChange }: Props) {
 
         {/* Sell price */}
         <div className="flex flex-col gap-2">
-          <span className="text-foreground-muted text-[10px] font-semibold">
+          <span className="text-foreground-muted text-xs font-semibold">
             GIÁ BÁN MỖI CHỈ (VND)
           </span>
           <div className="bg-background border-border flex h-12 items-center border px-3.5">
@@ -111,14 +111,12 @@ export function SellAssetSheet({ position, open, onOpenChange }: Props) {
                   shouldValidate: true,
                 });
               }}
-              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-sm font-medium outline-none disabled:opacity-50"
             />
-            <span className="text-foreground-muted shrink-0 text-[13px]">
-              ₫
-            </span>
+            <span className="text-foreground-muted shrink-0 text-sm">₫</span>
           </div>
           {form.formState.errors.sell_price_per_chi && (
-            <p className="text-status-negative text-[11px]">
+            <p className="text-status-negative text-xs">
               {form.formState.errors.sell_price_per_chi.message}
             </p>
           )}
@@ -126,7 +124,7 @@ export function SellAssetSheet({ position, open, onOpenChange }: Props) {
 
         {/* Sell date */}
         <div className="flex flex-col gap-2">
-          <span className="text-foreground-muted text-[10px] font-semibold">
+          <span className="text-foreground-muted text-xs font-semibold">
             NGÀY BÁN
           </span>
           <Controller

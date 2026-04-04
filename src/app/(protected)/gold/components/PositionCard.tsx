@@ -56,7 +56,7 @@ export function PositionCard({ position, livePrice, onTap }: Props) {
           <span className="text-foreground text-sm font-semibold">
             {position.brand_name}
           </span>
-          <span className="text-foreground-muted text-[11px]">
+          <span className="text-foreground-muted text-xs">
             {formatDate(position.buy_date)} · {days} ngày
           </span>
         </div>
@@ -103,7 +103,7 @@ function DetailRow({
   return (
     <div className="flex items-center justify-between">
       <span className="text-foreground-muted text-xs">{label}</span>
-      <span className={`text-[13px] ${valueClass}`}>{value}</span>
+      <span className={`text-sm ${valueClass}`}>{value}</span>
     </div>
   );
 }

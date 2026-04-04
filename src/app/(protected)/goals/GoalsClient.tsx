@@ -49,7 +49,7 @@ export function GoalsClient({
         {goal && (
           <button
             onClick={() => setOpenSheet("goal")}
-            className="border-accent text-accent border px-4 py-2 text-[13px] font-semibold"
+            className="border-accent text-accent border px-4 py-2 text-sm font-semibold"
           >
             Chỉnh sửa
           </button>
@@ -83,10 +83,10 @@ export function GoalsClient({
           <div className="flex flex-col items-center gap-3 border border-dashed border-[#333] p-8 text-center">
             <Target size={36} className="text-[#444]" />
             <div>
-              <p className="text-foreground mb-1 text-[15px] font-bold">
+              <p className="text-foreground mb-1 text-base font-bold">
                 Chưa có mục tiêu nào
               </p>
-              <p className="text-foreground-muted text-[13px]">
+              <p className="text-foreground-muted text-sm">
                 Đặt mục tiêu tài chính cho hai vợ chồng và theo dõi tiến độ mỗi
                 ngày
               </p>

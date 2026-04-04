@@ -111,7 +111,7 @@ export function GoalSheet({ goal, open, onOpenChange }: Props) {
                 {...form.register("name")}
                 placeholder="VD: Mua nhà, Du lịch Nhật..."
                 disabled={isPending}
-                className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+                className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-sm font-medium outline-none disabled:opacity-50"
               />
             </div>
             {form.formState.errors.name && (
@@ -130,11 +130,9 @@ export function GoalSheet({ goal, open, onOpenChange }: Props) {
               inputMode="numeric"
               placeholder="VD: 1.500.000.000"
               disabled={isPending}
-              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-sm font-medium outline-none disabled:opacity-50"
             />
-            <span className="text-foreground-muted shrink-0 text-[13px]">
-              ₫
-            </span>
+            <span className="text-foreground-muted shrink-0 text-sm">₫</span>
           </div>
           {form.formState.errors.target_amount && (
             <ErrorMsg>{form.formState.errors.target_amount.message}</ErrorMsg>
@@ -166,7 +164,7 @@ export function GoalSheet({ goal, open, onOpenChange }: Props) {
               rows={3}
               placeholder="Tuỳ chọn..."
               disabled={isPending}
-              className="text-foreground placeholder:text-foreground-muted w-full resize-none bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+              className="text-foreground placeholder:text-foreground-muted w-full resize-none bg-transparent text-sm font-medium outline-none disabled:opacity-50"
             />
           </div>
         </div>
@@ -184,5 +182,5 @@ function Label({ children }: { children: ReactNode }) {
 }
 
 function ErrorMsg({ children }: { children: ReactNode }) {
-  return <p className="text-status-negative text-[11px]">{children}</p>;
+  return <p className="text-status-negative text-xs">{children}</p>;
 }

@@ -35,7 +35,7 @@ function ColorSwatch({
     <div className="flex flex-col gap-1">
       <div className={`h-14 w-full ${bg}`} />
       <p className="type-card-label">{label}</p>
-      <p className={`font-mono text-[10px] ${text}`}>{hex}</p>
+      <p className={`font-mono text-xs ${text}`}>{hex}</p>
     </div>
   );
 }

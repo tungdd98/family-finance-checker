@@ -74,7 +74,7 @@ export function TabBar() {
               className={isActive ? "text-[#111111]" : "text-foreground-muted"}
             />
             <span
-              className={`type-tab-label ${isActive ? "font-semibold text-[#111111]" : "text-foreground-muted font-medium"}`}
+              className={`text-2xs font-medium uppercase ${isActive ? "font-semibold text-[#111111]" : "text-foreground-muted font-medium"}`}
             >
               {item.label}
             </span>

@@ -66,19 +66,17 @@ export function RecentTransactions({ transactions }: Props) {
   if (!transactions || transactions.length === 0) {
     return (
       <div className="mt-2">
-        <h2 className="text-foreground mb-2 text-[13px] font-bold uppercase">
+        <h2 className="text-foreground mb-2 text-sm font-bold uppercase">
           GIAO DỊCH GẦN ĐÂY
         </h2>
-        <p className="text-foreground-muted text-[13px]">
-          Chưa có giao dịch nào
-        </p>
+        <p className="text-foreground-muted text-sm">Chưa có giao dịch nào</p>
       </div>
     );
   }
 
   return (
     <div className="mt-2">
-      <h2 className="text-foreground mb-2 text-[13px] font-bold uppercase">
+      <h2 className="text-foreground mb-2 text-sm font-bold uppercase">
         GIAO DỊCH GẦN ĐÂY
       </h2>
       <div className="divide-border flex flex-col divide-y">
@@ -93,20 +91,18 @@ export function RecentTransactions({ transactions }: Props) {
                 <div
                   className={`h-6 w-6 ${config.bgClass} flex flex-shrink-0 items-center justify-center rounded-full`}
                 >
-                  <span className={`${config.amountClass} text-[10px]`}>
+                  <span className={`${config.amountClass} text-xs`}>
                     {config.icon}
                   </span>
                 </div>
                 <span className="type-body">{tx.label}</span>
               </div>
               <div className="text-right">
-                <div
-                  className={`${config.amountClass} text-[13px] font-semibold`}
-                >
+                <div className={`${config.amountClass} text-sm font-semibold`}>
                   {config.prefix}
                   {formatAmount(tx.amount)}
                 </div>
-                <div className="text-foreground-muted text-[11px] font-medium">
+                <div className="text-foreground-muted text-xs font-medium">
                   {formatDate(tx.date)}
                 </div>
               </div>

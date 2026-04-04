@@ -121,11 +121,9 @@ export function CashFlowSheet({ cashFlow, open, onOpenChange }: Props) {
               inputMode="numeric"
               placeholder="VD: 25.000.000"
               disabled={isPending}
-              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-sm font-medium outline-none disabled:opacity-50"
             />
-            <span className="text-foreground-muted shrink-0 text-[13px]">
-              ₫
-            </span>
+            <span className="text-foreground-muted shrink-0 text-sm">₫</span>
           </div>
           {form.formState.errors.avg_monthly_income_husband && (
             <ErrorMsg>
@@ -146,11 +144,9 @@ export function CashFlowSheet({ cashFlow, open, onOpenChange }: Props) {
               inputMode="numeric"
               placeholder="VD: 20.000.000"
               disabled={isPending}
-              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-sm font-medium outline-none disabled:opacity-50"
             />
-            <span className="text-foreground-muted shrink-0 text-[13px]">
-              ₫
-            </span>
+            <span className="text-foreground-muted shrink-0 text-sm">₫</span>
           </div>
           {form.formState.errors.avg_monthly_income_wife && (
             <ErrorMsg>
@@ -171,11 +167,9 @@ export function CashFlowSheet({ cashFlow, open, onOpenChange }: Props) {
               inputMode="numeric"
               placeholder="VD: 28.000.000"
               disabled={isPending}
-              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-sm font-medium outline-none disabled:opacity-50"
             />
-            <span className="text-foreground-muted shrink-0 text-[13px]">
-              ₫
-            </span>
+            <span className="text-foreground-muted shrink-0 text-sm">₫</span>
           </div>
           {form.formState.errors.avg_monthly_expense && (
             <ErrorMsg>
@@ -186,11 +180,11 @@ export function CashFlowSheet({ cashFlow, open, onOpenChange }: Props) {
 
         {/* Live preview */}
         <div className="bg-surface border-border border p-4">
-          <p className="text-foreground-muted mb-2 text-[11px] font-semibold uppercase">
+          <p className="text-foreground-muted mb-2 text-xs font-semibold uppercase">
             Thặng dư dự kiến
           </p>
           <p
-            className={`text-[20px] font-bold ${surplus >= 0 ? "text-green-500" : "text-red-400"}`}
+            className={`text-xl font-bold ${surplus >= 0 ? "text-green-500" : "text-red-400"}`}
           >
             {surplus >= 0 ? "+" : ""}
             {formatVND(surplus)}
@@ -210,5 +204,5 @@ function Label({ children }: { children: ReactNode }) {
 }
 
 function ErrorMsg({ children }: { children: ReactNode }) {
-  return <p className="text-status-negative text-[11px]">{children}</p>;
+  return <p className="text-status-negative text-xs">{children}</p>;
 }

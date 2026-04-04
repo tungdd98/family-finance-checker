@@ -76,7 +76,7 @@ export function AllocationTab({
             Phân Bổ Thặng Dư
           </span>
           <span
-            className={`text-[13px] font-bold ${unallocated > 0 ? "text-green-500" : unallocated < 0 ? "text-red-400" : "text-accent"}`}
+            className={`text-sm font-bold ${unallocated > 0 ? "text-green-500" : unallocated < 0 ? "text-red-400" : "text-accent"}`}
           >
             {unallocated === 0 && surplus > 0
               ? "✓ Hoàn hảo"
@@ -164,7 +164,7 @@ function AllocationRow({
                 { shouldValidate: true }
               )
             }
-            className={`border px-1.5 py-0.5 text-[9px] font-bold uppercase transition-colors ${
+            className={`border px-1.5 py-0.5 text-xs font-bold uppercase transition-colors ${
               is_executed
                 ? "border-green-500/30 bg-green-500/10 text-green-500"
                 : "border-border text-foreground-muted hover:text-foreground"
@@ -176,7 +176,7 @@ function AllocationRow({
         <button
           type="button"
           onClick={() => remove(index)}
-          className="text-foreground-muted -mr-2 px-2 text-[10px] font-bold uppercase hover:text-red-400"
+          className="text-foreground-muted -mr-2 px-2 text-xs font-bold uppercase hover:text-red-400"
         >
           <Trash2 size={14} />
         </button>
@@ -217,11 +217,9 @@ function AllocationRow({
             inputMode="numeric"
             disabled={isPending || is_executed}
             placeholder="Số tiền..."
-            className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+            className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-sm font-medium outline-none disabled:opacity-50"
           />
-          <span className="text-foreground-muted ml-1 shrink-0 text-[13px]">
-            ₫
-          </span>
+          <span className="text-foreground-muted ml-1 shrink-0 text-sm">₫</span>
         </div>
       </div>
 
@@ -241,7 +239,7 @@ function AllocationRow({
                   );
                 }
               }}
-              className="bg-background border-border text-foreground-muted hover:text-foreground hover:border-foreground/30 disabled:hover:text-foreground-muted disabled:hover:border-border flex-1 border px-2 py-2 text-[10px] font-bold transition-colors disabled:opacity-30"
+              className="bg-background border-border text-foreground-muted hover:text-foreground hover:border-foreground/30 disabled:hover:text-foreground-muted disabled:hover:border-border flex-1 border px-2 py-2 text-xs font-bold transition-colors disabled:opacity-30"
             >
               {pct * 100}%
             </button>

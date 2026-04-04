@@ -92,7 +92,7 @@ export function ResponsiveDatePicker({
           className="bg-background border-border flex h-12 w-full cursor-pointer items-center justify-between border px-3.5 disabled:opacity-50"
         >
           <span
-            className={`text-[13px] font-medium ${value ? "text-foreground" : "text-foreground-muted"}`}
+            className={`text-sm font-medium ${value ? "text-foreground" : "text-foreground-muted"}`}
           >
             {triggerLabel}
           </span>
@@ -123,7 +123,7 @@ export function ResponsiveDatePicker({
         className="bg-background border-border flex h-12 w-full cursor-pointer items-center justify-between border px-3.5 disabled:opacity-50"
       >
         <span
-          className={`text-[13px] font-medium ${value ? "text-foreground" : "text-foreground-muted"}`}
+          className={`text-sm font-medium ${value ? "text-foreground" : "text-foreground-muted"}`}
         >
           {triggerLabel}
         </span>
@@ -135,7 +135,7 @@ export function ResponsiveDatePicker({
           <Drawer.Backdrop className="fixed inset-0 !z-[9999] bg-black/60 opacity-100 transition-opacity duration-300 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
           <Drawer.Popup className="bg-background fixed inset-x-0 bottom-0 !z-[10000] flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-[ending-style]:translate-y-full data-[starting-style]:translate-y-full">
             <div className="border-border flex items-center justify-between border-b px-7 pt-5 pb-4">
-              <span className="text-foreground text-[16px] font-bold tracking-[-0.5px]">
+              <span className="text-foreground text-lg font-bold">
                 Chọn Ngày
               </span>
               <Drawer.Close className="text-foreground-muted cursor-pointer">

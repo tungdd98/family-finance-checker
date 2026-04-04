@@ -60,9 +60,7 @@ export function NotificationBell({ allNotis }: { allNotis: NotiItem[] }) {
         <Drawer.Backdrop className="fixed inset-0 z-40 bg-black/60 opacity-100 transition-opacity duration-300 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
         <Drawer.Popup className="bg-background fixed inset-x-0 bottom-0 z-50 flex h-[92dvh] flex-col overflow-y-auto transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-[ending-style]:translate-y-full data-[starting-style]:translate-y-full">
           <div className="bg-background border-border sticky top-0 z-10 flex items-center justify-between border-b px-7 pt-5 pb-4">
-            <span className="text-foreground text-[16px] font-bold tracking-[-0.5px]">
-              THÔNG BÁO
-            </span>
+            <span className="text-foreground text-lg font-bold">THÔNG BÁO</span>
             <Drawer.Close className="text-foreground-muted">
               <X size={20} />
             </Drawer.Close>
@@ -72,9 +70,7 @@ export function NotificationBell({ allNotis }: { allNotis: NotiItem[] }) {
             {activeNotis.length === 0 ? (
               <div className="flex flex-col items-center justify-center gap-2 py-10 opacity-50">
                 <Bell size={40} className="text-foreground-muted" />
-                <p className="text-[13px] font-medium tracking-[0.5px]">
-                  Không có thông báo mới
-                </p>
+                <p className="text-sm font-medium">Không có thông báo mới</p>
               </div>
             ) : (
               <div className="flex flex-col gap-3">
@@ -88,10 +84,10 @@ export function NotificationBell({ allNotis }: { allNotis: NotiItem[] }) {
                         {getIcon(noti.type)}
                       </div>
                       <div className="flex flex-1 flex-col gap-1 pr-6">
-                        <span className="text-foreground text-[13px] font-bold tracking-[0.2px]">
+                        <span className="text-foreground text-sm font-bold">
                           {noti.title}
                         </span>
-                        <span className="text-foreground-muted text-[12px] leading-relaxed">
+                        <span className="text-foreground-muted text-sm leading-relaxed">
                           {noti.message}
                         </span>
                       </div>
@@ -100,7 +96,7 @@ export function NotificationBell({ allNotis }: { allNotis: NotiItem[] }) {
                     <div className="border-border mt-1 flex justify-end border-t pt-2">
                       <button
                         onClick={() => handleAction(noti.actionUrl)}
-                        className="text-accent text-[11px] font-bold tracking-[1px] uppercase hover:underline"
+                        className="text-accent text-xs font-bold uppercase hover:underline"
                       >
                         Xử lý ngay →
                       </button>

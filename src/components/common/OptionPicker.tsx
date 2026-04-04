@@ -53,7 +53,7 @@ export function OptionPicker({
         className="bg-background border-border flex h-12 w-full items-center justify-between border px-3.5 disabled:opacity-50"
       >
         <span
-          className={`text-[13px] font-medium ${selected ? "text-foreground" : "text-foreground-muted"}`}
+          className={`text-sm font-medium ${selected ? "text-foreground" : "text-foreground-muted"}`}
         >
           {selected ? selected.label : placeholder}
         </span>
@@ -81,7 +81,7 @@ export function OptionPicker({
           >
             {/* Header */}
             <div className="flex items-center justify-between px-5 pt-5 pb-4">
-              <Dialog.Title className="text-foreground text-[16px] font-bold tracking-[-0.5px]">
+              <Dialog.Title className="text-foreground text-lg font-bold">
                 {title}
               </Dialog.Title>
               <Dialog.Close className="text-foreground-muted">
@@ -107,9 +107,9 @@ export function OptionPicker({
                     }`}
                   >
                     <div className="flex flex-col items-start gap-0.5">
-                      <span className="text-[14px] font-medium">{o.label}</span>
+                      <span className="text-base font-medium">{o.label}</span>
                       {o.sublabel && (
-                        <span className="text-foreground-muted text-[11px]">
+                        <span className="text-foreground-muted text-xs">
                           {o.sublabel}
                         </span>
                       )}

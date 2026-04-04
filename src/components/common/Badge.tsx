@@ -20,7 +20,7 @@ const variantStyles: Record<
   gold: {
     container: "bg-accent-soft",
     dot: "bg-accent",
-    label: "text-accent text-[10px] font-semibold tracking-[1px] uppercase",
+    label: "text-accent text-xs font-semibold uppercase",
   },
 };
 

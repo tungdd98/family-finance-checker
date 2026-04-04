@@ -49,7 +49,7 @@ export default async function ProtectedLayout({
         <div className="flex touch-none items-center justify-between px-5 py-4 select-none lg:px-7">
           {/* Left side: Greeting */}
           <div className="flex flex-col gap-0.5">
-            <span className="text-foreground-muted text-[10px] font-semibold uppercase">
+            <span className="text-foreground-muted text-xs font-semibold uppercase">
               XIN CHÀO,
             </span>
             <span className="text-foreground text-sm font-bold">

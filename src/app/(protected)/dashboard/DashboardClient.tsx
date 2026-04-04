@@ -130,32 +130,32 @@ export function DashboardClient({
 
   return (
     <div className="flex flex-col gap-4 pb-20">
-      <h1 className="text-foreground pt-2 text-[28px] font-bold">TỔNG QUAN</h1>
+      <h1 className="text-foreground pt-2 text-3xl font-bold">TỔNG QUAN</h1>
 
       <HeroCard netWorth={currentAssets} goal={heroGoal} />
 
       <div className="grid grid-cols-2 gap-3">
         {/* Vàng tile */}
         <StatTile label="Vàng" href="/gold" accentColor="gold">
-          <span className="text-foreground text-[15px] leading-tight font-bold">
+          <span className="text-foreground text-base leading-tight font-bold">
             {fmtTile(goldDisplayValue)} đ
           </span>
           <div className="flex items-center justify-between gap-2">
             {goldTotalChi > 0 && (
-              <span className="text-foreground-muted text-[11px] font-semibold">
+              <span className="text-foreground-muted text-xs font-semibold">
                 {goldTotalChi} chỉ
               </span>
             )}
             {goldPnlPct !== null ? (
               <span
-                className={`text-[11px] font-semibold ${goldPnlPct >= 0 ? "text-status-positive" : "text-status-negative"}`}
+                className={`text-xs font-semibold ${goldPnlPct >= 0 ? "text-status-positive" : "text-status-negative"}`}
               >
                 {goldPnlPct >= 0 ? "+" : ""}
                 {goldPnlPct.toFixed(2)}%
               </span>
             ) : (
               goldPositions.length === 0 && (
-                <span className="text-foreground-muted text-[11px]">
+                <span className="text-foreground-muted text-xs">
                   Chưa có tài sản
                 </span>
               )
@@ -165,17 +165,17 @@ export function DashboardClient({
 
         {/* Tiết Kiệm tile */}
         <StatTile label="Tiết kiệm" href="/savings" accentColor="blue">
-          <span className="text-foreground text-[15px] leading-tight font-bold">
+          <span className="text-foreground text-base leading-tight font-bold">
             {fmtTile(savingsTotalValue)} đ
           </span>
           <div className="flex items-center justify-between gap-2">
-            <span className="text-[11px] font-semibold text-[#6B7FD7]">
+            <span className="text-xs font-semibold text-[#6B7FD7]">
               {savingsAccounts.length > 0
                 ? `${savingsAccounts.length} khoản`
                 : "Chưa có tài sản"}
             </span>
             {savingsTotalAccrued > 0 && (
-              <span className="text-status-positive text-[11px] font-semibold">
+              <span className="text-status-positive text-xs font-semibold">
                 +{fmtTile(savingsTotalAccrued)} đ
               </span>
             )}
@@ -186,14 +186,14 @@ export function DashboardClient({
         <StatTile label={`Thu/Chi T${currentMonth}`} href="/cashflow">
           {monthlyActual ? (
             <>
-              <span className="text-status-positive text-[11px] font-semibold">
+              <span className="text-status-positive text-xs font-semibold">
                 ↑ {fmtTile(monthlyActual.actual_income)} đ
               </span>
-              <span className="text-status-negative text-[11px] font-semibold">
+              <span className="text-status-negative text-xs font-semibold">
                 ↓ {fmtTile(monthlyActual.actual_expense)} đ
               </span>
               <span
-                className={`text-[11px] font-bold ${(cashflowNet ?? 0) >= 0 ? "text-accent" : "text-status-negative"}`}
+                className={`text-xs font-bold ${(cashflowNet ?? 0) >= 0 ? "text-accent" : "text-status-negative"}`}
               >
                 = {(cashflowNet ?? 0) >= 0 ? "+" : ""}
                 {formatVND(cashflowNet ?? 0)}
@@ -201,10 +201,10 @@ export function DashboardClient({
             </>
           ) : (
             <>
-              <span className="text-foreground-muted text-[11px]">
+              <span className="text-foreground-muted text-xs">
                 Chưa có dữ liệu
               </span>
-              <span className="text-accent text-[10px] font-semibold">
+              <span className="text-accent text-xs font-semibold">
                 Bắt đầu nhập →
               </span>
             </>
@@ -217,15 +217,15 @@ export function DashboardClient({
             <div className="grid grid-cols-2 gap-2">
               {/* Mua */}
               <div className="flex flex-col gap-0.5">
-                <span className="text-foreground-muted text-[9px] font-semibold uppercase">
+                <span className="text-foreground-muted text-xs font-semibold uppercase">
                   Mua
                 </span>
-                <span className="text-foreground text-[13px] leading-tight font-bold">
+                <span className="text-foreground text-sm leading-tight font-bold">
                   {fmtTile(marketPrice.buy)} đ
                 </span>
                 {marketPrice.change_buy !== 0 && (
                   <span
-                    className={`text-[10px] font-semibold ${marketPrice.change_buy > 0 ? "text-status-positive" : "text-status-negative"}`}
+                    className={`text-xs font-semibold ${marketPrice.change_buy > 0 ? "text-status-positive" : "text-status-negative"}`}
                   >
                     {marketPrice.change_buy > 0 ? "+" : ""}
                     {(
@@ -239,15 +239,15 @@ export function DashboardClient({
               </div>
               {/* Bán */}
               <div className="flex flex-col gap-0.5">
-                <span className="text-foreground-muted text-[9px] font-semibold uppercase">
+                <span className="text-foreground-muted text-xs font-semibold uppercase">
                   Bán
                 </span>
-                <span className="text-foreground text-[13px] leading-tight font-bold">
+                <span className="text-foreground text-sm leading-tight font-bold">
                   {fmtTile(marketPrice.sell)} đ
                 </span>
                 {marketPrice.change_sell !== 0 && (
                   <span
-                    className={`text-[10px] font-semibold ${marketPrice.change_sell > 0 ? "text-status-positive" : "text-status-negative"}`}
+                    className={`text-xs font-semibold ${marketPrice.change_sell > 0 ? "text-status-positive" : "text-status-negative"}`}
                   >
                     {marketPrice.change_sell > 0 ? "+" : ""}
                     {(
@@ -261,9 +261,7 @@ export function DashboardClient({
               </div>
             </div>
           ) : (
-            <span className="text-foreground-muted text-[11px]">
-              Đang tải...
-            </span>
+            <span className="text-foreground-muted text-xs">Đang tải...</span>
           )}
         </StatTile>
       </div>

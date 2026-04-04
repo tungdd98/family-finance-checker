@@ -131,7 +131,7 @@ export function BankPicker({
         className="bg-background border-border flex h-12 w-full items-center justify-between border px-3.5 disabled:opacity-50"
       >
         <span
-          className={`text-[13px] font-medium ${selectedName ? "text-foreground" : "text-foreground-muted"}`}
+          className={`text-sm font-medium ${selectedName ? "text-foreground" : "text-foreground-muted"}`}
         >
           {selectedName || "Chọn ngân hàng / ví điện tử"}
         </span>
@@ -175,7 +175,7 @@ export function BankPicker({
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Tìm ngân hàng..."
-                  className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] outline-none"
+                  className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-sm outline-none"
                 />
               </div>
             </div>
@@ -183,7 +183,7 @@ export function BankPicker({
             {/* List */}
             <div className="flex-1 overflow-y-auto px-5 pb-8">
               {filtered.length === 0 && (
-                <p className="text-foreground-muted py-4 text-center text-[13px]">
+                <p className="text-foreground-muted py-4 text-center text-sm">
                   Không tìm thấy ngân hàng
                 </p>
               )}
@@ -205,7 +205,7 @@ export function BankPicker({
                   />
                   <div className="flex flex-col items-start gap-0.5">
                     <span className="text-sm font-medium">{b.name}</span>
-                    <span className="text-foreground-muted text-[11px]">
+                    <span className="text-foreground-muted text-xs">
                       {b.shortName}
                     </span>
                   </div>

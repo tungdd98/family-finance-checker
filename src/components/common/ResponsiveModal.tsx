@@ -31,9 +31,7 @@ export function ResponsiveModal({
             style={{ maxHeight: "85dvh" }}
           >
             <div className="bg-background border-border sticky top-0 flex items-center justify-between border-b px-7 pt-5 pb-4">
-              <span className="text-foreground text-[16px] font-bold tracking-[-0.5px]">
-                {title}
-              </span>
+              <span className="text-foreground text-lg font-bold">{title}</span>
               <Dialog.Close className="text-foreground-muted cursor-pointer">
                 <X size={20} />
               </Dialog.Close>
@@ -51,9 +49,7 @@ export function ResponsiveModal({
         <Drawer.Backdrop className="fixed inset-0 z-40 bg-black/60 opacity-100 transition-opacity duration-300 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
         <Drawer.Popup className="bg-background fixed inset-x-0 bottom-0 z-50 flex max-h-[92dvh] flex-col overflow-y-auto transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-[ending-style]:translate-y-full data-[starting-style]:translate-y-full">
           <div className="bg-background border-border sticky top-0 flex items-center justify-between border-b px-7 pt-5 pb-4">
-            <span className="text-foreground text-[16px] font-bold tracking-[-0.5px]">
-              {title}
-            </span>
+            <span className="text-foreground text-lg font-bold">{title}</span>
             <Drawer.Close className="text-foreground-muted cursor-pointer">
               <X size={20} />
             </Drawer.Close>

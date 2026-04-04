@@ -35,7 +35,7 @@ export function IncomeTab({
           <span className="type-card-label text-accent">
             Tổng thu nhập tháng
           </span>
-          <span className="text-foreground text-[20px] font-bold">
+          <span className="text-foreground text-xl font-bold">
             {incomeTotalDisplay || "0"} ₫
           </span>
         </div>
@@ -109,12 +109,12 @@ function IncomeRow({
           {!isExpanded && (
             <>
               <div
-                className={`mt-0.5 truncate text-[13px] font-medium ${watchedType ? "text-foreground" : "text-foreground-muted"}`}
+                className={`mt-0.5 truncate text-sm font-medium ${watchedType ? "text-foreground" : "text-foreground-muted"}`}
               >
                 {watchedType || "Chưa chọn danh mục"}
               </div>
               {watchedNote && (
-                <div className="text-foreground-muted mt-0.5 truncate text-[11px]">
+                <div className="text-foreground-muted mt-0.5 truncate text-xs">
                   {watchedNote}
                 </div>
               )}
@@ -138,14 +138,14 @@ function IncomeRow({
                   <button
                     type="button"
                     onClick={() => remove(index)}
-                    className="px-2 py-1 text-[10px] font-bold text-red-400 uppercase"
+                    className="px-2 py-1 text-xs font-bold text-red-400 uppercase"
                   >
                     XOÁ?
                   </button>
                   <button
                     type="button"
                     onClick={() => setIsConfirmingDelete(false)}
-                    className="text-foreground-muted hover:text-foreground px-2 py-1 text-[10px] font-bold uppercase"
+                    className="text-foreground-muted hover:text-foreground px-2 py-1 text-xs font-bold uppercase"
                   >
                     HUỶ
                   </button>
@@ -221,11 +221,9 @@ function IncomeRow({
                   });
                 }}
                 disabled={isPending}
-                className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none"
+                className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-sm font-medium outline-none"
               />
-              <span className="text-foreground-muted shrink-0 text-[13px]">
-                ₫
-              </span>
+              <span className="text-foreground-muted shrink-0 text-sm">₫</span>
             </div>
 
             <div className="bg-background border-border flex h-10 items-center border px-3.5">
@@ -233,7 +231,7 @@ function IncomeRow({
                 {...form.register(`actual_income_details.${index}.note`)}
                 placeholder="Ghi chú (tùy chọn)..."
                 disabled={isPending}
-                className="text-foreground-muted placeholder:text-foreground-muted/50 w-full bg-transparent text-[11px] outline-none"
+                className="text-foreground-muted placeholder:text-foreground-muted/50 w-full bg-transparent text-xs outline-none"
               />
             </div>
           </div>

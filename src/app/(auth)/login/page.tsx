@@ -34,10 +34,10 @@ export default function LoginPage() {
         {/* Header */}
         <div className="mb-7 flex flex-col items-center gap-4">
           <div className="bg-accent h-8 w-8" />
-          <h1 className="text-foreground text-center text-[28px] font-bold">
+          <h1 className="text-foreground text-center text-3xl font-bold">
             FAMILY FINANCE
           </h1>
-          <p className="text-foreground-secondary text-center text-[11px] font-medium">
+          <p className="text-foreground-secondary text-center text-xs font-medium">
             QUẢN LÝ TÀI SẢN GIA ĐÌNH
           </p>
           <div className="bg-accent h-px w-full" />
@@ -50,7 +50,7 @@ export default function LoginPage() {
             <div className="flex flex-col gap-2">
               <Label
                 htmlFor="email"
-                className="text-foreground-muted flex items-center gap-2 text-[11px] font-semibold"
+                className="text-foreground-muted flex items-center gap-2 text-xs font-semibold"
               >
                 <span className="bg-accent h-3.5 w-0.75 shrink-0" />
                 EMAIL
@@ -64,7 +64,7 @@ export default function LoginPage() {
                 {...form.register("email")}
               />
               {form.formState.errors.email && (
-                <p className="text-status-negative text-[11px]">
+                <p className="text-status-negative text-xs">
                   {form.formState.errors.email.message}
                 </p>
               )}
@@ -74,7 +74,7 @@ export default function LoginPage() {
             <div className="flex flex-col gap-2">
               <Label
                 htmlFor="password"
-                className="text-foreground-muted flex items-center gap-2 text-[11px] font-semibold"
+                className="text-foreground-muted flex items-center gap-2 text-xs font-semibold"
               >
                 <span className="bg-accent h-3.5 w-0.75 shrink-0" />
                 MẬT KHẨU
@@ -88,7 +88,7 @@ export default function LoginPage() {
                 {...form.register("password")}
               />
               {form.formState.errors.password && (
-                <p className="text-status-negative text-[11px]">
+                <p className="text-status-negative text-xs">
                   {form.formState.errors.password.message}
                 </p>
               )}

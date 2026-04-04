@@ -28,25 +28,25 @@ export function HeroCard({ netWorth, goal }: HeroCardProps) {
       {/* Top row: net worth (left) + goal % (right) */}
       <div className="flex items-start justify-between">
         <div className="flex flex-col gap-0.5">
-          <span className="text-foreground-secondary text-[9px] font-bold uppercase">
+          <span className="text-foreground-secondary text-xs font-bold uppercase">
             Tổng tài sản
           </span>
-          <span className="text-foreground text-[26px] leading-none font-black">
+          <span className="text-foreground text-2xl leading-none font-black">
             {compactNetWorth}
           </span>
         </div>
 
         {goal ? (
           <div className="flex flex-col items-end gap-0.5">
-            <span className="text-foreground-secondary text-[9px] font-bold uppercase">
+            <span className="text-foreground-secondary text-xs font-bold uppercase">
               Mục tiêu
             </span>
-            <span className="text-accent text-[26px] leading-none font-black">
+            <span className="text-accent text-2xl leading-none font-black">
               {goal.progressPct}%
             </span>
           </div>
         ) : (
-          <Link href="/goals" className="text-accent text-[11px] font-bold">
+          <Link href="/goals" className="text-accent text-xs font-bold">
             Đặt mục tiêu →
           </Link>
         )}
@@ -64,12 +64,12 @@ export function HeroCard({ netWorth, goal }: HeroCardProps) {
 
           {/* Footer */}
           <div className="mt-2 flex items-center justify-between">
-            <span className="text-foreground-muted text-[11px]">
+            <span className="text-foreground-muted text-xs">
               {goal.emoji} {goal.name} · {formatVND(goal.currentAssets)} /{" "}
               {formatVND(goal.target)}
             </span>
             {goal.projectedDate && (
-              <span className="text-foreground-muted text-[11px]">
+              <span className="text-foreground-muted text-xs">
                 Dự kiến{" "}
                 <span className="text-accent font-semibold">
                   {goal.projectedDate}

@@ -11,16 +11,14 @@ export function BannerCard({ currentAssets, avgMonthlySurplus }: Props) {
       <p className="type-card-label text-accent mb-3">Tổng quan tài chính</p>
       <div className="flex gap-0">
         <div className="flex-1">
-          <p className="text-foreground-muted mb-1 text-[11px]">
-            Tài sản hiện tại
-          </p>
+          <p className="text-foreground-muted mb-1 text-xs">Tài sản hiện tại</p>
           <p className="text-foreground text-base font-bold">
             {formatVND(currentAssets)}
           </p>
         </div>
         <div className="mx-4 w-px shrink-0 bg-[#333]" />
         <div className="flex-1">
-          <p className="text-foreground-muted mb-1 text-[11px]">
+          <p className="text-foreground-muted mb-1 text-xs">
             Thặng dư TB/tháng
           </p>
           {avgMonthlySurplus !== null ? (
@@ -31,7 +29,7 @@ export function BannerCard({ currentAssets, avgMonthlySurplus }: Props) {
               {formatVND(avgMonthlySurplus)}
             </p>
           ) : (
-            <p className="text-foreground-muted text-[13px]">Chưa cài đặt</p>
+            <p className="text-foreground-muted text-sm">Chưa cài đặt</p>
           )}
         </div>
       </div>
