@@ -5,7 +5,7 @@ import type { UseFormReturn, FieldArrayWithId } from "react-hook-form";
 import { Controller } from "react-hook-form";
 import { Plus, ChevronUp, Trash2, Pencil, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { OptionPicker } from "@/app/(protected)/savings/components/OptionPicker";
+import { OptionPicker } from "@/components/common";
 import type { MonthlyActualInput } from "@/lib/validations/goals";
 import { INCOME_CATEGORIES } from "../constants";
 

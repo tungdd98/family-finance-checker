@@ -5,7 +5,7 @@ import type { UseFormReturn, FieldArrayWithId } from "react-hook-form";
 import { Controller } from "react-hook-form";
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { OptionPicker } from "@/app/(protected)/savings/components/OptionPicker";
+import { OptionPicker } from "@/components/common";
 import { formatVND } from "@/lib/gold-utils";
 import type { MonthlyActualInput } from "@/lib/validations/goals";
 

@@ -5,3 +5,4 @@ export { TabBar } from "./tab-bar";
 export { ResponsiveModal } from "./responsive-modal";
 export { ResponsiveActionMenu } from "./responsive-action-menu";
 export { ResponsiveDatePicker } from "./responsive-date-picker";
+export { OptionPicker, type OptionItem } from "./option-picker";
