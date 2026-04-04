@@ -226,9 +226,7 @@ export function CashflowClient({ year, month, existing, cashFlow }: Props) {
   return (
     <div className="flex flex-col pb-20">
       {/* ── Page header ── */}
-      <h1 className="text-foreground text-[28px] font-bold tracking-[-1px] uppercase">
-        THU / CHI
-      </h1>
+      <h1 className="type-featured-stat uppercase">THU / CHI</h1>
 
       <div
         className={
@@ -261,25 +259,19 @@ export function CashflowClient({ year, month, existing, cashFlow }: Props) {
         {/* ── Summary cards ── */}
         <div className="mt-4 grid grid-cols-3 gap-3">
           <div className="border-border border p-3">
-            <div className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px] uppercase">
-              Thu
-            </div>
+            <div className="type-card-label">Thu</div>
             <div className="mt-1 text-[16px] font-bold text-green-500">
               {totalIncome > 0 ? `+${formatMil(totalIncome)}tr` : "—"}
             </div>
           </div>
           <div className="border-border border p-3">
-            <div className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px] uppercase">
-              Chi
-            </div>
+            <div className="type-card-label">Chi</div>
             <div className="mt-1 text-[16px] font-bold text-red-400">
               {totalExpense > 0 ? `-${formatMil(totalExpense)}tr` : "—"}
             </div>
           </div>
           <div className="border-border border p-3">
-            <div className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px] uppercase">
-              Thặng dư
-            </div>
+            <div className="type-card-label">Thặng dư</div>
             <div
               className={`mt-1 text-[16px] font-bold ${surplus > 0 ? "text-accent" : surplus < 0 ? "text-red-400" : "text-foreground-muted"}`}
             >
@@ -668,9 +660,7 @@ function IncomeRow({
       {/* ── Always-visible header row ── */}
       <div className="flex items-center gap-3 p-4">
         <div className="min-w-0 flex-1">
-          <div className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px] uppercase">
-            Khoản Thu #{index + 1}
-          </div>
+          <div className="type-card-label">Khoản Thu #{index + 1}</div>
           {!isExpanded && (
             <>
               <div
@@ -850,9 +840,7 @@ function ExpenseRow({
       {/* ── Always-visible header row ── */}
       <div className="flex items-center gap-3 p-4">
         <div className="min-w-0 flex-1">
-          <div className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px] uppercase">
-            Khoản Chi #{index + 1}
-          </div>
+          <div className="type-card-label">Khoản Chi #{index + 1}</div>
           {!isExpanded && (
             <>
               <div
@@ -996,9 +984,5 @@ function ExpenseRow({
 }
 
 function FieldLabel({ children }: { children: ReactNode }) {
-  return (
-    <span className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px] uppercase">
-      {children}
-    </span>
-  );
+  return <span className="type-card-label">{children}</span>;
 }

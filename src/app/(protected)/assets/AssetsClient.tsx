@@ -44,9 +44,7 @@ export function AssetsClient({
     <div className="flex flex-col gap-5 pb-20">
       {/* Page title */}
       <div className="pt-2">
-        <h1 className="text-foreground text-[28px] font-bold tracking-[-1px] uppercase">
-          Tài Sản
-        </h1>
+        <h1 className="type-featured-stat uppercase">Tài Sản</h1>
       </div>
 
       {/* Net worth banner */}

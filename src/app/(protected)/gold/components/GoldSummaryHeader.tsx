@@ -53,9 +53,7 @@ export function GoldSummaryHeader({
 
       {/* Summary card */}
       <div className="bg-surface flex flex-col gap-1 p-4">
-        <p className="text-foreground-muted text-[11px] font-semibold tracking-[1.5px]">
-          TỔNG GIÁ TRỊ ƯỚC TÍNH
-        </p>
+        <p className="type-section-label">TỔNG GIÁ TRỊ ƯỚC TÍNH</p>
         <p className="text-foreground text-[28px] font-bold tracking-[-1px]">
           {totalValue > 0 ? formatVND(totalValue) : "—"}
         </p>

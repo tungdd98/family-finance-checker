@@ -107,9 +107,7 @@ export function MarketClient({ initialPrices = [] }: Props) {
       {/* Page Header */}
       <div className="mb-6 flex flex-col gap-1">
         <div className="flex items-center justify-between">
-          <h1 className="text-foreground text-[28px] font-bold tracking-[-1px] uppercase">
-            THỊ TRƯỜNG
-          </h1>
+          <h1 className="type-featured-stat uppercase">THỊ TRƯỜNG</h1>
           <button
             onClick={refresh}
             disabled={isRefreshing}

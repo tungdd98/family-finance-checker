@@ -13,9 +13,7 @@ export function CashFlowCard({ cashFlow, onEdit }: Props) {
 
   return (
     <div className="bg-surface border-border border p-4">
-      <p className="text-foreground-muted mb-3 text-[10px] font-semibold tracking-[1.5px] uppercase">
-        Cài đặt thu chi trung bình
-      </p>
+      <p className="type-card-label mb-3">Cài đặt thu chi trung bình</p>
       {cashFlow ? (
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">

@@ -206,11 +206,7 @@ export function CashFlowSheet({ cashFlow, open, onOpenChange }: Props) {
 }
 
 function Label({ children }: { children: ReactNode }) {
-  return (
-    <span className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px] uppercase">
-      {children}
-    </span>
-  );
+  return <span className="type-card-label">{children}</span>;
 }
 
 function ErrorMsg({ children }: { children: ReactNode }) {

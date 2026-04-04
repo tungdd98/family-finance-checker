@@ -22,9 +22,7 @@ export function SavingsActionSheet({
 }: Props) {
   return (
     <ResponsiveActionMenu open={open} onOpenChange={onOpenChange}>
-      <p className="text-foreground-muted px-7 pb-3 text-[11px] font-semibold tracking-[1.5px] uppercase">
-        TÙY CHỌN TIẾT KIỆM
-      </p>
+      <p className="type-section-label px-7 pb-3">TÙY CHỌN TIẾT KIỆM</p>
 
       <ActionItem
         icon={<Pencil size={16} />}

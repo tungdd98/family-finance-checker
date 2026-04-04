@@ -97,9 +97,7 @@ export function RecentTransactions({ transactions }: Props) {
                     {config.icon}
                   </span>
                 </div>
-                <span className="text-foreground text-[13px] font-medium">
-                  {tx.label}
-                </span>
+                <span className="type-body">{tx.label}</span>
               </div>
               <div className="text-right">
                 <div

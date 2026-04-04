@@ -40,9 +40,7 @@ export function SavingsClient({ initialAccounts }: Props) {
             >
               <ChevronLeft size={24} />
             </Link>
-            <h1 className="text-foreground text-[28px] font-bold tracking-[-1px] uppercase">
-              TIẾT KIỆM
-            </h1>
+            <h1 className="type-featured-stat uppercase">TIẾT KIỆM</h1>
           </div>
           <button
             onClick={() => setActiveSheet("add")}
@@ -56,9 +54,7 @@ export function SavingsClient({ initialAccounts }: Props) {
         {/* Summary */}
         {initialAccounts.length > 0 && (
           <div className="bg-surface mt-4 flex flex-col gap-1 p-4">
-            <p className="text-foreground-muted text-[11px] font-semibold tracking-[1.5px]">
-              TỔNG TIẾT KIỆM GỐC
-            </p>
+            <p className="type-section-label">TỔNG TIẾT KIỆM GỐC</p>
             <p className="text-foreground text-[28px] font-bold tracking-[-1px]">
               {totalPrincipal > 0 ? formatVND(totalPrincipal) : "—"}
             </p>

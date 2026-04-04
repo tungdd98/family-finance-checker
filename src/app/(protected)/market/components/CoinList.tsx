@@ -56,13 +56,13 @@ export function CoinList({
           </div>
         ) : coins.length > 0 ? (
           <div className="flex h-full items-center justify-center">
-            <span className="text-foreground-muted text-[13px] font-medium">
+            <span className="type-body text-foreground-muted">
               Không tìm thấy coin
             </span>
           </div>
         ) : (
           <div className="flex h-full items-center justify-center">
-            <span className="text-foreground-muted text-[13px] font-medium">
+            <span className="type-body text-foreground-muted">
               Không có dữ liệu
             </span>
           </div>

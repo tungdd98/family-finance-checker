@@ -144,7 +144,7 @@ export function GoalCard({
 
         {/* Monthly section */}
         <div>
-          <p className="text-foreground-muted mb-2 text-[10px] font-semibold tracking-[1.5px] uppercase">
+          <p className="type-card-label mb-2">
             Tháng {currentMonth}/{currentYear}
           </p>
           {monthlyActual ? (

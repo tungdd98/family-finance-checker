@@ -45,9 +45,7 @@ export function GoalsClient({
     <div className="flex flex-col gap-5 pb-20">
       {/* Page header */}
       <div className="flex items-center justify-between pt-2">
-        <h1 className="text-foreground text-[28px] font-bold tracking-[-1px] uppercase">
-          MỤC TIÊU
-        </h1>
+        <h1 className="type-featured-stat uppercase">MỤC TIÊU</h1>
         {goal && (
           <button
             onClick={() => setOpenSheet("goal")}

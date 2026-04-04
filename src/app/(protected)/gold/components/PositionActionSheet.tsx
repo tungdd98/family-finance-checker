@@ -27,9 +27,7 @@ export function PositionActionSheet({
 
   return (
     <ResponsiveActionMenu open={open} onOpenChange={onOpenChange}>
-      <p className="text-foreground-muted px-7 pb-3 text-[11px] font-semibold tracking-[1.5px]">
-        TÙY CHỌN TÀI SẢN
-      </p>
+      <p className="type-section-label px-7 pb-3">TÙY CHỌN TÀI SẢN</p>
 
       <ActionItem
         icon={<Pencil size={16} />}
