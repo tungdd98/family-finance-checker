@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, PiggyBank } from "lucide-react";
+import { Plus, PiggyBank, ChevronLeft } from "lucide-react";
+import Link from "next/link";
 
 import type { SavingsAccount } from "@/lib/services/savings";
 import { formatVND } from "@/lib/gold-utils";
@@ -28,35 +29,45 @@ export function SavingsClient({ initialAccounts }: Props) {
   };
 
   return (
-    <div className="flex flex-col gap-5 pb-20">
-      {/* Page Header */}
-      <div className="flex items-center justify-between pt-2">
-        <h1 className="text-foreground text-[28px] font-bold tracking-[-1px] uppercase">
-          TIẾT KIỆM
-        </h1>
-        <button
-          onClick={() => setActiveSheet("add")}
-          className="bg-accent text-background flex h-11 w-11 shrink-0 items-center justify-center"
-          aria-label="Thêm tiết kiệm"
-        >
-          <Plus size={20} />
-        </button>
-      </div>
-
-      {/* Summary */}
-      {initialAccounts.length > 0 && (
-        <div className="bg-surface flex flex-col gap-1 p-4">
-          <p className="text-foreground-muted text-[11px] font-semibold tracking-[1.5px]">
-            TỔNG TIẾT KIỆM GỐC
-          </p>
-          <p className="text-foreground text-[28px] font-bold tracking-[-1px]">
-            {totalPrincipal > 0 ? formatVND(totalPrincipal) : "—"}
-          </p>
-          <p className="text-foreground-secondary text-[12px]">
-            {initialAccounts.length} khoản tiết kiệm đang được quản lý
-          </p>
+    <div className="flex flex-col gap-6 pb-20">
+      {/* Sticky Header Section */}
+      <div className="bg-background sticky top-0 z-20 -mx-5 px-5 pt-5 pb-4 lg:-mx-10 lg:px-10">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Link
+              href="/assets"
+              className="text-foreground-muted hover:text-foreground transition-colors"
+            >
+              <ChevronLeft size={24} />
+            </Link>
+            <h1 className="text-foreground text-[28px] font-bold tracking-[-1px] uppercase">
+              TIẾT KIỆM
+            </h1>
+          </div>
+          <button
+            onClick={() => setActiveSheet("add")}
+            className="bg-accent text-background flex h-11 w-11 shrink-0 items-center justify-center"
+            aria-label="Thêm tiết kiệm"
+          >
+            <Plus size={20} />
+          </button>
         </div>
-      )}
+
+        {/* Summary */}
+        {initialAccounts.length > 0 && (
+          <div className="bg-surface mt-4 flex flex-col gap-1 p-4">
+            <p className="text-foreground-muted text-[11px] font-semibold tracking-[1.5px]">
+              TỔNG TIẾT KIỆM GỐC
+            </p>
+            <p className="text-foreground text-[28px] font-bold tracking-[-1px]">
+              {totalPrincipal > 0 ? formatVND(totalPrincipal) : "—"}
+            </p>
+            <p className="text-foreground-secondary text-[12px]">
+              {initialAccounts.length} khoản tiết kiệm đang được quản lý
+            </p>
+          </div>
+        )}
+      </div>
 
       {/* List */}
       {initialAccounts.length === 0 ? (
@@ -83,7 +94,6 @@ export function SavingsClient({ initialAccounts }: Props) {
         </div>
       )}
 
-      {/* Action Sheet */}
       <SavingsActionSheet
         account={selected}
         open={activeSheet === "action"}
@@ -94,7 +104,6 @@ export function SavingsClient({ initialAccounts }: Props) {
         onDelete={() => setActiveSheet("delete")}
       />
 
-      {/* Add/Edit Drawer */}
       <AddEditSavingsSheet
         key={selected?.id ?? "add"}
         mode={activeSheet === "edit" ? "edit" : "add"}
@@ -105,7 +114,6 @@ export function SavingsClient({ initialAccounts }: Props) {
         }}
       />
 
-      {/* Delete Dialog */}
       <DeleteSavingsDialog
         account={selected}
         open={activeSheet === "delete"}

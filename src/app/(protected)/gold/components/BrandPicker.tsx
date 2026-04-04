@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Dialog } from "@base-ui/react/dialog";
 import { Search, X } from "lucide-react";
+import { useMediaQuery } from "@/hooks/use-media-query";
 import type { GoldPrice } from "@/lib/services/gold";
 
 interface Props {
@@ -20,6 +21,7 @@ export function BrandPicker({
 }: Props) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   const filtered = prices.filter(
     (p) =>
@@ -54,8 +56,14 @@ export function BrandPicker({
       {/* Dialog */}
       <Dialog.Root open={open} onOpenChange={setOpen}>
         <Dialog.Portal>
-          <Dialog.Backdrop className="fixed inset-0 z-40 bg-black/60 opacity-100 transition-opacity duration-300 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
-          <Dialog.Popup className="bg-surface fixed inset-x-0 bottom-0 z-50 flex max-h-[80dvh] flex-col transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-[ending-style]:translate-y-full data-[starting-style]:translate-y-full">
+          <Dialog.Backdrop className="fixed inset-0 !z-[9999] bg-black/60 opacity-100 transition-opacity duration-300 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
+          <Dialog.Popup
+            className={`bg-surface !z-[10000] flex flex-col transition-all duration-300 ${
+              isDesktop
+                ? "fixed top-1/2 left-1/2 max-h-[90dvh] w-full max-w-md -translate-x-1/2 -translate-y-1/2 overflow-hidden opacity-100 data-[ending-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:scale-95 data-[starting-style]:opacity-0"
+                : "fixed inset-x-0 bottom-0 max-h-[80dvh] ease-[cubic-bezier(0.32,0.72,0,1)] data-[ending-style]:translate-y-full data-[starting-style]:translate-y-full"
+            }`}
+          >
             {/* Header */}
             <div className="flex items-center justify-between px-7 pt-5 pb-4">
               <Dialog.Title className="text-foreground text-[16px] font-bold tracking-[-0.5px]">

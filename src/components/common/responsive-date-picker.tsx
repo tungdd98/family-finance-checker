@@ -99,8 +99,13 @@ export function ResponsiveDatePicker({
           <CalendarIcon size={16} className="text-foreground-muted" />
         </Popover.Trigger>
         <Popover.Portal>
-          <Popover.Positioner side="bottom" align="start" sideOffset={4}>
-            <Popover.Popup className="bg-surface border-border z-50 border shadow-lg">
+          <Popover.Positioner
+            side="bottom"
+            align="start"
+            sideOffset={4}
+            className="!z-[10000]"
+          >
+            <Popover.Popup className="bg-surface border-border !z-[10000] border shadow-lg">
               {calendar}
             </Popover.Popup>
           </Popover.Positioner>
@@ -127,8 +132,8 @@ export function ResponsiveDatePicker({
 
       <Drawer.Root open={open} onOpenChange={setOpen}>
         <Drawer.Portal>
-          <Drawer.Backdrop className="fixed inset-0 z-[60] bg-black/60 opacity-100 transition-opacity duration-300 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
-          <Drawer.Popup className="bg-background fixed inset-x-0 bottom-0 z-[70] flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-[ending-style]:translate-y-full data-[starting-style]:translate-y-full">
+          <Drawer.Backdrop className="fixed inset-0 !z-[9999] bg-black/60 opacity-100 transition-opacity duration-300 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
+          <Drawer.Popup className="bg-background fixed inset-x-0 bottom-0 !z-[10000] flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-[ending-style]:translate-y-full data-[starting-style]:translate-y-full">
             <div className="border-border flex items-center justify-between border-b px-7 pt-5 pb-4">
               <span className="text-foreground text-[16px] font-bold tracking-[-0.5px]">
                 Chọn Ngày

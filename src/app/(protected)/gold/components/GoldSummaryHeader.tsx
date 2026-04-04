@@ -1,7 +1,8 @@
 // src/app/(protected)/gold/components/GoldSummaryHeader.tsx
 "use client";
 
-import { Plus } from "lucide-react";
+import { Plus, ChevronLeft } from "lucide-react";
+import Link from "next/link";
 import { formatVND } from "@/lib/gold-utils";
 
 interface Brand {
@@ -30,9 +31,17 @@ export function GoldSummaryHeader({
     <div className="flex flex-col gap-4">
       {/* Page title row */}
       <div className="flex items-center justify-between pt-2">
-        <h1 className="text-foreground text-[28px] font-bold tracking-[-1px]">
-          TÀI SẢN VÀNG
-        </h1>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/assets"
+            className="text-foreground-muted hover:text-foreground transition-colors"
+          >
+            <ChevronLeft size={24} />
+          </Link>
+          <h1 className="text-foreground text-[28px] font-bold tracking-[-1px]">
+            TÀI SẢN VÀNG
+          </h1>
+        </div>
         <button
           onClick={onAdd}
           className="bg-accent text-background flex h-11 w-11 shrink-0 items-center justify-center"

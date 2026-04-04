@@ -9,6 +9,35 @@
 
 @custom-variant dark (&:is(.dark *));
 
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+/* Custom scrollbar globally */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground-muted);
+}
+
 @theme inline {
   /* Design System Tokens */
   --color-background: var(--background);
@@ -162,24 +191,5 @@
   /* 9px · Medium 500 · tracking +0.5 */
   .type-tab-label {
     @apply text-[9px] font-medium tracking-[0.005em] uppercase;
-  }
-
-  /* Custom scrollbar */
-  .scrollbar-thin {
-    scrollbar-width: thin;
-    scrollbar-color: var(--border-strong) transparent;
-  }
-  .scrollbar-thin::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
-  }
-  .scrollbar-thin::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  .scrollbar-thin::-webkit-scrollbar-thumb {
-    background: var(--border-strong);
-  }
-  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-    background: var(--foreground-muted);
   }
 }

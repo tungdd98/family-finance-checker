@@ -129,7 +129,7 @@ export function DashboardClient({
     : null;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 pb-20">
       <h1 className="text-foreground pt-2 text-[28px] font-bold tracking-[-1px]">
         TỔNG QUAN
       </h1>

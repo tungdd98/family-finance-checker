@@ -72,15 +72,17 @@ export function GoldClient({ initialPositions, initialPrices = [] }: Props) {
   };
 
   return (
-    <div className="flex flex-col gap-5 pb-5">
-      <GoldSummaryHeader
-        totalValue={totalValue}
-        positionCount={positions.length}
-        brands={uniqueBrands}
-        filterBrand={filterBrand}
-        onFilterChange={setFilterBrand}
-        onAdd={() => setActiveSheet("add")}
-      />
+    <div className="flex flex-col gap-6 pb-20">
+      <div className="bg-background sticky top-0 z-20 -mx-5 px-5 pt-5 pb-4 lg:-mx-10 lg:px-10">
+        <GoldSummaryHeader
+          totalValue={totalValue}
+          positionCount={positions.length}
+          brands={uniqueBrands}
+          filterBrand={filterBrand}
+          onFilterChange={setFilterBrand}
+          onAdd={() => setActiveSheet("add")}
+        />
+      </div>
 
       {/* Position list */}
       {filteredPositions.length === 0 ? (

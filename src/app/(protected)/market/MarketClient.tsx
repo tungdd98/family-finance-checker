@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   TrendingDown,
   TrendingUp,
@@ -26,6 +26,12 @@ export function MarketClient({ initialPrices = [] }: Props) {
   const [coinPrices, setCoinPrices] = useState<CoinPrice[]>([]);
   const [coinLoaded, setCoinLoaded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    setLastUpdated(new Date());
+  }, []);
 
   const fetchCoinPrices = useCallback(async () => {
     const r = await fetch("/api/coin/prices");
@@ -119,7 +125,7 @@ export function MarketClient({ initialPrices = [] }: Props) {
         <p className="text-foreground-muted text-[13px]">
           Giá vàng & tiền điện tử trực tuyến
         </p>
-        {lastUpdated && (
+        {isMounted && lastUpdated && (
           <span className="text-foreground-muted text-[10px] opacity-60">
             {`Cập nhật lúc ${lastUpdated.toLocaleTimeString("vi-VN", {
               hour: "2-digit",

@@ -5,6 +5,8 @@ import { useState, useTransition } from "react";
 import { Trash2, TriangleAlert, X, CheckSquare, Square } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { Dialog } from "@base-ui/react/dialog";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 import { resetAllDataAction, type ResetTable } from "@/app/actions/settings";
 
@@ -58,6 +60,7 @@ export function ResetDataSection({ displayName }: Props) {
   const [sheet, setSheet] = useState<"closed" | "confirm" | "type">("closed");
   const [selected, setSelected] = useState<Set<ResetTable>>(new Set());
   const [typed, setTyped] = useState("");
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   const KEYWORD = "RESET";
   const isUnlocked = typed.trim().toUpperCase() === KEYWORD;
@@ -132,250 +135,252 @@ export function ResetDataSection({ displayName }: Props) {
         XÓA DỮ LIỆU
       </button>
 
-      {/* Overlay */}
-      {sheet !== "closed" && (
-        <div
-          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
-          onClick={handleClose}
-        />
-      )}
-
       {/* ── Sheet 1: Select categories ── */}
-      <div
-        className={`fixed inset-x-0 bottom-0 z-50 flex flex-col rounded-t-2xl transition-transform duration-300 ease-out ${
-          sheet === "confirm"
-            ? "translate-y-0"
-            : "pointer-events-none translate-y-full"
-        } border-t border-[var(--color-border)] bg-[var(--color-surface)]`}
+      <Dialog.Root
+        open={sheet === "confirm"}
+        onOpenChange={(o) => !o && handleClose()}
       >
-        <div className="flex flex-col gap-5 px-5 pt-6 pb-10">
-          {/* Handle */}
-          <div className="mx-auto h-1 w-10 rounded-full bg-[var(--color-border-strong)]" />
+        <Dialog.Portal>
+          <Dialog.Backdrop className="fixed inset-0 z-50 bg-black/60 opacity-100 transition-opacity duration-300 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
+          <Dialog.Popup
+            className={`bg-surface z-50 flex flex-col transition-all duration-300 ${
+              isDesktop
+                ? "fixed top-1/2 left-1/2 max-h-[90dvh] w-full max-w-lg -translate-x-1/2 -translate-y-1/2 overflow-hidden opacity-100 data-[ending-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:scale-95 data-[starting-style]:opacity-0"
+                : "fixed inset-x-0 bottom-0 rounded-t-2xl ease-out data-[ending-style]:translate-y-full data-[starting-style]:translate-y-full"
+            } border-border border-t`}
+          >
+            <div className="flex flex-col gap-5 px-5 pt-6 pb-10">
+              {/* Handle */}
+              <div className="bg-border-strong mx-auto h-1 w-10 rounded-full lg:hidden" />
 
-          {/* Header */}
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex flex-col gap-1.5">
-              <div className="flex items-center gap-2">
-                <TriangleAlert
-                  size={18}
-                  className="text-status-negative shrink-0"
-                />
-                <span className="text-status-negative text-[14px] font-semibold tracking-[1px]">
-                  CẢNH BÁO
-                </span>
+              {/* Header */}
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex items-center gap-2">
+                    <TriangleAlert
+                      size={18}
+                      className="text-status-negative shrink-0"
+                    />
+                    <span className="text-status-negative text-[14px] font-semibold tracking-[1px]">
+                      CẢNH BÁO
+                    </span>
+                  </div>
+                  <Dialog.Title className="text-foreground text-[16px] leading-snug font-bold">
+                    {displayName}, chọn dữ liệu muốn xóa
+                  </Dialog.Title>
+                </div>
+                <Dialog.Close className="text-foreground-muted hover:text-foreground mt-0.5 shrink-0">
+                  <X size={20} />
+                </Dialog.Close>
               </div>
-              <p className="text-foreground text-[16px] leading-snug font-bold">
-                {displayName}, chọn dữ liệu muốn xóa
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={handleClose}
-              className="text-foreground-muted hover:text-foreground mt-0.5 shrink-0"
-            >
-              <X size={20} />
-            </button>
-          </div>
 
-          {/* Toggle all + count */}
-          <div className="flex items-center justify-between">
-            <button
-              type="button"
-              onClick={toggleAll}
-              className="text-foreground-secondary hover:text-foreground flex items-center gap-1.5 text-[12px] font-semibold tracking-[0.5px] transition-colors"
-            >
-              {allSelected ? (
-                <CheckSquare size={15} className="text-status-negative" />
-              ) : (
-                <Square size={15} />
-              )}
-              {allSelected ? "Bỏ chọn tất cả" : "Chọn tất cả"}
-            </button>
-            {selectedCount > 0 && (
-              <span className="text-status-negative text-[11px] font-semibold tracking-[0.5px]">
-                {selectedCount}/{DATA_CATEGORIES.length} mục được chọn
-              </span>
-            )}
-          </div>
-
-          {/* Checkbox list */}
-          <div className="flex flex-col gap-0 overflow-hidden border border-[var(--color-border)]">
-            {DATA_CATEGORIES.map((cat, idx) => {
-              const isChecked = selected.has(cat.key);
-              return (
+              {/* Toggle all + count */}
+              <div className="flex items-center justify-between">
                 <button
-                  key={cat.key}
                   type="button"
-                  onClick={() => toggleItem(cat.key)}
-                  className={`flex items-center gap-3 px-4 py-3 text-left transition-colors ${
-                    idx < DATA_CATEGORIES.length - 1
-                      ? "border-b border-[var(--color-border)]"
-                      : ""
-                  } ${isChecked ? "bg-status-negative/8" : "hover:bg-white/3"}`}
+                  onClick={toggleAll}
+                  className="text-foreground-secondary hover:text-foreground flex items-center gap-1.5 text-[12px] font-semibold tracking-[0.5px] transition-colors"
                 >
-                  {/* Custom checkbox */}
-                  <div
-                    className={`flex h-5 w-5 shrink-0 items-center justify-center border transition-colors ${
-                      isChecked
-                        ? "border-status-negative bg-status-negative"
-                        : "border-[var(--color-border-strong)] bg-transparent"
-                    }`}
-                  >
-                    {isChecked && (
-                      <svg
-                        width="10"
-                        height="8"
-                        viewBox="0 0 10 8"
-                        fill="none"
-                        className="shrink-0"
-                      >
-                        <path
-                          d="M1 4L3.5 6.5L9 1"
-                          stroke="white"
-                          strokeWidth="1.8"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    )}
-                  </div>
-
-                  {/* Label */}
-                  <div className="flex min-w-0 flex-col gap-0.5">
-                    <span
-                      className={`text-[13px] font-semibold transition-colors ${
-                        isChecked ? "text-status-negative" : "text-foreground"
-                      }`}
-                    >
-                      {cat.label}
-                    </span>
-                    <span className="text-foreground-muted text-[11px]">
-                      {cat.description}
-                    </span>
-                  </div>
+                  {allSelected ? (
+                    <CheckSquare size={15} className="text-status-negative" />
+                  ) : (
+                    <Square size={15} />
+                  )}
+                  {allSelected ? "Bỏ chọn tất cả" : "Chọn tất cả"}
                 </button>
-              );
-            })}
-          </div>
+                {selectedCount > 0 && (
+                  <span className="text-status-negative text-[11px] font-semibold tracking-[0.5px]">
+                    {selectedCount}/{DATA_CATEGORIES.length} mục được chọn
+                  </span>
+                )}
+              </div>
 
-          {/* Warning note */}
-          <p className="text-status-negative text-[11px] font-semibold tracking-[0.5px]">
-            Không thể hoàn tác sau khi xóa.
-          </p>
+              {/* Checkbox list */}
+              <div className="border-border flex flex-col gap-0 overflow-hidden border">
+                {DATA_CATEGORIES.map((cat, idx) => {
+                  const isChecked = selected.has(cat.key);
+                  return (
+                    <button
+                      key={cat.key}
+                      type="button"
+                      onClick={() => toggleItem(cat.key)}
+                      className={`flex items-center gap-3 px-4 py-3 text-left transition-colors ${
+                        idx < DATA_CATEGORIES.length - 1
+                          ? "border-border border-b"
+                          : ""
+                      } ${isChecked ? "bg-status-negative/8" : "hover:bg-white/3"}`}
+                    >
+                      {/* Custom checkbox */}
+                      <div
+                        className={`flex h-5 w-5 shrink-0 items-center justify-center border transition-colors ${
+                          isChecked
+                            ? "border-status-negative bg-status-negative"
+                            : "border-border-strong bg-transparent"
+                        }`}
+                      >
+                        {isChecked && (
+                          <svg
+                            width="10"
+                            height="8"
+                            viewBox="0 0 10 8"
+                            fill="none"
+                            className="shrink-0"
+                          >
+                            <path
+                              d="M1 4L3.5 6.5L9 1"
+                              stroke="white"
+                              strokeWidth="1.8"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        )}
+                      </div>
 
-          {/* Actions */}
-          <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={handleClose}
-              className="border-border text-foreground h-12 flex-1 border text-[13px] font-bold tracking-[0.5px] transition-colors hover:bg-white/5"
-            >
-              HỦY
-            </button>
-            <button
-              type="button"
-              onClick={handleContinue}
-              disabled={selectedCount === 0}
-              className={`h-12 flex-1 border text-[13px] font-bold tracking-[0.5px] transition-colors ${
-                selectedCount > 0
-                  ? "border-status-negative/30 bg-status-negative/10 text-status-negative hover:bg-status-negative/20"
-                  : "border-border text-foreground-muted cursor-not-allowed opacity-40"
-              }`}
-            >
-              {selectedCount > 0
-                ? `TIẾP TỤC XÓA (${selectedCount}) →`
-                : "TIẾP TỤC XÓA →"}
-            </button>
-          </div>
-        </div>
-      </div>
+                      {/* Label */}
+                      <div className="flex min-w-0 flex-col gap-0.5">
+                        <span
+                          className={`text-[13px] font-semibold transition-colors ${
+                            isChecked
+                              ? "text-status-negative"
+                              : "text-foreground"
+                          }`}
+                        >
+                          {cat.label}
+                        </span>
+                        <span className="text-foreground-muted text-[11px]">
+                          {cat.description}
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Warning note */}
+              <p className="text-status-negative text-[11px] font-semibold tracking-[0.5px]">
+                Không thể hoàn tác sau khi xóa.
+              </p>
+
+              {/* Actions */}
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={handleClose}
+                  className="border-border text-foreground h-12 flex-1 border text-[13px] font-bold tracking-[0.5px] transition-colors hover:bg-white/5"
+                >
+                  HỦY
+                </button>
+                <button
+                  type="button"
+                  onClick={handleContinue}
+                  disabled={selectedCount === 0}
+                  className={`h-12 flex-1 border text-[13px] font-bold tracking-[0.5px] transition-colors ${
+                    selectedCount > 0
+                      ? "border-status-negative/30 bg-status-negative/10 text-status-negative hover:bg-status-negative/20"
+                      : "border-border text-foreground-muted cursor-not-allowed opacity-40"
+                  }`}
+                >
+                  {selectedCount > 0
+                    ? `TIẾP TỤC XÓA (${selectedCount}) →`
+                    : "TIẾP TỤC XÓA →"}
+                </button>
+              </div>
+            </div>
+          </Dialog.Popup>
+        </Dialog.Portal>
+      </Dialog.Root>
 
       {/* ── Sheet 2: Type RESET ── */}
-      <div
-        className={`fixed inset-x-0 bottom-0 z-50 flex flex-col rounded-t-2xl transition-transform duration-300 ease-out ${
-          sheet === "type"
-            ? "translate-y-0"
-            : "pointer-events-none translate-y-full"
-        } border-t border-[var(--color-border)] bg-[var(--color-surface)]`}
+      <Dialog.Root
+        open={sheet === "type"}
+        onOpenChange={(o) => !o && handleClose()}
       >
-        <div className="flex flex-col gap-6 px-5 pt-6 pb-10">
-          {/* Handle */}
-          <div className="mx-auto h-1 w-10 rounded-full bg-[var(--color-border-strong)]" />
+        <Dialog.Portal>
+          <Dialog.Backdrop className="fixed inset-0 z-50 bg-black/60 opacity-100 transition-opacity duration-300 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
+          <Dialog.Popup
+            className={`bg-surface z-50 flex flex-col transition-all duration-300 ${
+              isDesktop
+                ? "fixed top-1/2 left-1/2 max-h-[90dvh] w-full max-w-md -translate-x-1/2 -translate-y-1/2 overflow-hidden opacity-100 data-[ending-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:scale-95 data-[starting-style]:opacity-0"
+                : "fixed inset-x-0 bottom-0 rounded-t-2xl ease-out data-[ending-style]:translate-y-full data-[starting-style]:translate-y-full"
+            } border-border border-t`}
+          >
+            <div className="flex flex-col gap-6 px-5 pt-6 pb-10">
+              {/* Handle */}
+              <div className="bg-border-strong mx-auto h-1 w-10 rounded-full lg:hidden" />
 
-          {/* Header */}
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex flex-col gap-1">
-              <span className="text-status-negative text-[13px] font-semibold tracking-[1.5px]">
-                XÁC NHẬN LẦN CUỐI
-              </span>
-              <p className="text-foreground text-[15px] font-bold">
-                Gõ{" "}
-                <span className="text-status-negative">
-                  &ldquo;RESET&rdquo;
-                </span>{" "}
-                để xác nhận xóa {selectedCount} mục
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={handleClose}
-              className="text-foreground-muted hover:text-foreground mt-0.5 shrink-0"
-            >
-              <X size={20} />
-            </button>
-          </div>
+              {/* Header */}
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex flex-col gap-1">
+                  <span className="text-status-negative text-[13px] font-semibold tracking-[1.5px]">
+                    XÁC NHẬN LẦN CUỐI
+                  </span>
+                  <Dialog.Title className="text-foreground text-[15px] font-bold">
+                    Gõ{" "}
+                    <span className="text-status-negative">
+                      &ldquo;RESET&rdquo;
+                    </span>{" "}
+                    để xác nhận xóa {selectedCount} mục
+                  </Dialog.Title>
+                </div>
+                <Dialog.Close className="text-foreground-muted hover:text-foreground mt-0.5 shrink-0">
+                  <X size={20} />
+                </Dialog.Close>
+              </div>
 
-          {/* Selected summary */}
-          <div className="bg-status-negative/8 border-status-negative/20 flex flex-col gap-1.5 border p-3.5">
-            <span className="text-foreground-secondary text-[11px] font-semibold tracking-[1px]">
-              SẼ XÓA:
-            </span>
-            {DATA_CATEGORIES.filter((c) => selected.has(c.key)).map((c) => (
-              <span
-                key={c.key}
-                className="text-status-negative flex items-center gap-2 text-[12px] font-medium"
+              {/* Selected summary */}
+              <div className="bg-status-negative/8 border-status-negative/20 flex flex-col gap-1.5 border p-3.5">
+                <span className="text-foreground-secondary text-[11px] font-semibold tracking-[1px]">
+                  SẼ XÓA:
+                </span>
+                {DATA_CATEGORIES.filter((c) => selected.has(c.key)).map((c) => (
+                  <span
+                    key={c.key}
+                    className="text-status-negative flex items-center gap-2 text-[12px] font-medium"
+                  >
+                    <span className="bg-status-negative h-1 w-1 shrink-0 rounded-full" />
+                    {c.label}
+                  </span>
+                ))}
+              </div>
+
+              {/* Input */}
+              <div
+                className={`flex h-14 items-center border px-4 transition-colors ${
+                  isUnlocked
+                    ? "border-status-negative bg-status-negative/5"
+                    : "border-border bg-background"
+                }`}
               >
-                <span className="bg-status-negative h-1 w-1 shrink-0 rounded-full" />
-                {c.label}
-              </span>
-            ))}
-          </div>
+                <input
+                  type="text"
+                  value={typed}
+                  onChange={(e) => setTyped(e.target.value)}
+                  placeholder="Nhập RESET..."
+                  autoComplete="off"
+                  autoCorrect="off"
+                  className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[14px] font-bold tracking-[2px] outline-none placeholder:font-normal placeholder:tracking-normal"
+                />
+              </div>
 
-          {/* Input */}
-          <div
-            className={`flex h-14 items-center border px-4 transition-colors ${
-              isUnlocked
-                ? "border-status-negative bg-status-negative/5"
-                : "border-border bg-background"
-            }`}
-          >
-            <input
-              type="text"
-              value={typed}
-              onChange={(e) => setTyped(e.target.value)}
-              placeholder="Nhập RESET..."
-              autoComplete="off"
-              autoCorrect="off"
-              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[14px] font-bold tracking-[2px] outline-none placeholder:font-normal placeholder:tracking-normal"
-            />
-          </div>
-
-          {/* Delete button */}
-          <button
-            id="confirm-reset-btn"
-            type="button"
-            disabled={!isUnlocked || isPending}
-            onClick={handleReset}
-            className={`h-14 w-full text-[13px] font-bold tracking-[1px] transition-all duration-200 ${
-              isUnlocked && !isPending
-                ? "bg-status-negative text-white opacity-100 active:scale-[0.98]"
-                : "bg-status-negative/20 text-status-negative/40 cursor-not-allowed opacity-60"
-            }`}
-          >
-            {isPending ? "ĐANG XÓA..." : `XÓA ${selectedCount} MỤC DỮ LIỆU`}
-          </button>
-        </div>
-      </div>
+              {/* Delete button */}
+              <button
+                id="confirm-reset-btn"
+                type="button"
+                disabled={!isUnlocked || isPending}
+                onClick={handleReset}
+                className={`h-14 w-full text-[13px] font-bold tracking-[1px] transition-all duration-200 ${
+                  isUnlocked && !isPending
+                    ? "bg-status-negative text-white opacity-100 active:scale-[0.98]"
+                    : "bg-status-negative/20 text-status-negative/40 cursor-not-allowed opacity-60"
+                }`}
+              >
+                {isPending ? "ĐANG XÓA..." : `XÓA ${selectedCount} MỤC DỮ LIỆU`}
+              </button>
+            </div>
+          </Dialog.Popup>
+        </Dialog.Portal>
+      </Dialog.Root>
     </>
   );
 }
