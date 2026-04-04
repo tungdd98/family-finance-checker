@@ -116,7 +116,7 @@ export function GoalCard({
 
         {/* Projection pill */}
         {monthsToGoal !== null && monthsToGoal > 0 && estimatedDate && (
-          <div className="border-border inline-flex items-center gap-1.5 self-start border bg-[#1a1a1a] px-3 py-1.5">
+          <div className="border-border bg-surface inline-flex items-center gap-1.5 self-start border px-3 py-1.5">
             <span className="text-foreground-muted text-[12px]">
               ⏱ Dự kiến đạt{" "}
               <span className="text-accent font-semibold">
@@ -127,7 +127,7 @@ export function GoalCard({
           </div>
         )}
         {monthsToGoal === 0 && (
-          <div className="inline-flex items-center gap-1.5 self-start border border-green-800 bg-[#1a1a1a] px-3 py-1.5">
+          <div className="bg-surface inline-flex items-center gap-1.5 self-start border border-green-800 px-3 py-1.5">
             <span className="text-[12px] font-semibold text-green-500">
               🎉 Đã đạt mục tiêu!
             </span>
