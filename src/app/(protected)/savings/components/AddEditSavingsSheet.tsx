@@ -152,169 +152,163 @@ export function AddEditSavingsSheet({
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-5 px-5 py-5 pb-10"
       >
-            {/* Ngân hàng */}
-            <div className="flex flex-col gap-2">
-              <Label>NGÂN HÀNG / VÍ ĐIỆN TỬ *</Label>
-              <Controller
-                name="bank_name"
-                control={form.control}
-                render={({ field }) => (
-                  <BankPicker
-                    selectedCode={field.value}
-                    selectedName={field.value}
-                    onSelect={(_code, name) => field.onChange(name)}
-                    disabled={isPending}
-                  />
-                )}
+        {/* Ngân hàng */}
+        <div className="flex flex-col gap-2">
+          <Label>NGÂN HÀNG / VÍ ĐIỆN TỬ *</Label>
+          <Controller
+            name="bank_name"
+            control={form.control}
+            render={({ field }) => (
+              <BankPicker
+                selectedCode={field.value}
+                selectedName={field.value}
+                onSelect={(_code, name) => field.onChange(name)}
+                disabled={isPending}
               />
-              {form.formState.errors.bank_name && (
-                <ErrorMsg>{form.formState.errors.bank_name.message}</ErrorMsg>
-              )}
-            </div>
+            )}
+          />
+          {form.formState.errors.bank_name && (
+            <ErrorMsg>{form.formState.errors.bank_name.message}</ErrorMsg>
+          )}
+        </div>
 
-            {/* Tên sổ */}
-            <div className="flex flex-col gap-2">
-              <Label>TÊN SỔ / GỢI NHỚ (TÙY CHỌN)</Label>
-              <div className="bg-background border-border flex h-12 items-center border px-3.5">
-                <input
-                  placeholder="VD: Sổ học phí, Quỹ du lịch..."
-                  disabled={isPending}
-                  className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
-                  {...form.register("account_name")}
-                />
-              </div>
-            </div>
-
-            {/* Số tiền gốc */}
-            <div className="flex flex-col gap-2">
-              <Label>SỐ TIỀN GỐC (VND) *</Label>
-              <div className="bg-background border-border flex h-12 items-center border px-3.5">
-                <input
-                  inputMode="numeric"
-                  placeholder="0"
-                  value={principalDisplay}
-                  onChange={handlePrincipalChange}
-                  disabled={isPending}
-                  className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
-                />
-                <span className="text-foreground-muted shrink-0 text-[13px]">
-                  ₫
-                </span>
-              </div>
-              {form.formState.errors.principal && (
-                <ErrorMsg>{form.formState.errors.principal.message}</ErrorMsg>
-              )}
-            </div>
-
-            {/* Lãi suất */}
-            <div className="flex flex-col gap-2">
-              <Label>LÃI SUẤT (%/NĂM) *</Label>
-              <div className="bg-background border-border flex h-12 items-center border px-3.5">
-                <input
-                  inputMode="decimal"
-                  placeholder="5.2"
-                  value={interestRateDisplay}
-                  onChange={handleInterestRateChange}
-                  disabled={isPending}
-                  className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
-                />
-                <span className="text-foreground-muted shrink-0 text-[12px]">
-                  %/năm
-                </span>
-              </div>
-              {form.formState.errors.interest_rate && (
-                <ErrorMsg>
-                  {form.formState.errors.interest_rate.message}
-                </ErrorMsg>
-              )}
-            </div>
-
-            {/* Kỳ hạn */}
-            <div className="flex flex-col gap-2">
-              <Label>KỲ HẠN</Label>
-              <Controller
-                name="term_months"
-                control={form.control}
-                render={({ field }) => (
-                  <OptionPicker
-                    title="Chọn Kỳ Hạn"
-                    options={TERM_OPTIONS.map((o) => ({
-                      ...o,
-                      value: o.value,
-                    }))}
-                    value={field.value}
-                    onChange={(v) => field.onChange(Number(v))}
-                    disabled={isPending}
-                  />
-                )}
-              />
-            </div>
-
-            {/* Ngày gửi */}
-            <div className="flex flex-col gap-2">
-              <Label>NGÀY GỬI *</Label>
-              <Controller
-                name="start_date"
-                control={form.control}
-                render={({ field }) => (
-                  <ResponsiveDatePicker
-                    value={field.value}
-                    onChange={field.onChange}
-                    disabled={isPending}
-                  />
-                )}
-              />
-              {form.formState.errors.start_date && (
-                <ErrorMsg>{form.formState.errors.start_date.message}</ErrorMsg>
-              )}
-            </div>
-
-            {/* Hình thức tất toán */}
-            <div className="flex flex-col gap-2">
-              <Label>HÌNH THỨC TẤT TOÁN</Label>
-              <Controller
-                name="rollover_type"
-                control={form.control}
-                render={({ field }) => (
-                  <OptionPicker
-                    title="Hình Thức Tất Toán"
-                    options={ROLLOVER_OPTIONS.map((o) => ({ ...o }))}
-                    value={field.value}
-                    onChange={(v) => field.onChange(String(v))}
-                    disabled={isPending}
-                  />
-                )}
-              />
-            </div>
-
-            {/* Ghi chú */}
-            <div className="flex flex-col gap-2">
-              <Label>GHI CHÚ (TÙY CHỌN)</Label>
-              <div className="bg-background border-border flex min-h-[80px] items-start border px-3.5 py-3">
-                <textarea
-                  rows={3}
-                  placeholder="Ghi chú thêm..."
-                  disabled={isPending}
-                  className="text-foreground placeholder:text-foreground-muted w-full resize-none bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
-                  {...form.register("note")}
-                />
-              </div>
-            </div>
-
-            <Button
-              type="submit"
+        {/* Tên sổ */}
+        <div className="flex flex-col gap-2">
+          <Label>TÊN SỔ / GỢI NHỚ (TÙY CHỌN)</Label>
+          <div className="bg-background border-border flex h-12 items-center border px-3.5">
+            <input
+              placeholder="VD: Sổ học phí, Quỹ du lịch..."
               disabled={isPending}
-              className="mt-2 h-14 w-full"
-            >
-              {isPending
-                ? isEdit
-                  ? "ĐANG LƯU..."
-                  : "ĐANG THÊM..."
-                : isEdit
-                  ? "CẬP NHẬT TIẾT KIỆM"
-                  : "LƯU TIẾT KIỆM"}
-            </Button>
-          </form>
+              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+              {...form.register("account_name")}
+            />
+          </div>
+        </div>
+
+        {/* Số tiền gốc */}
+        <div className="flex flex-col gap-2">
+          <Label>SỐ TIỀN GỐC (VND) *</Label>
+          <div className="bg-background border-border flex h-12 items-center border px-3.5">
+            <input
+              inputMode="numeric"
+              placeholder="0"
+              value={principalDisplay}
+              onChange={handlePrincipalChange}
+              disabled={isPending}
+              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+            />
+            <span className="text-foreground-muted shrink-0 text-[13px]">
+              ₫
+            </span>
+          </div>
+          {form.formState.errors.principal && (
+            <ErrorMsg>{form.formState.errors.principal.message}</ErrorMsg>
+          )}
+        </div>
+
+        {/* Lãi suất */}
+        <div className="flex flex-col gap-2">
+          <Label>LÃI SUẤT (%/NĂM) *</Label>
+          <div className="bg-background border-border flex h-12 items-center border px-3.5">
+            <input
+              inputMode="decimal"
+              placeholder="5.2"
+              value={interestRateDisplay}
+              onChange={handleInterestRateChange}
+              disabled={isPending}
+              className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+            />
+            <span className="text-foreground-muted shrink-0 text-[12px]">
+              %/năm
+            </span>
+          </div>
+          {form.formState.errors.interest_rate && (
+            <ErrorMsg>{form.formState.errors.interest_rate.message}</ErrorMsg>
+          )}
+        </div>
+
+        {/* Kỳ hạn */}
+        <div className="flex flex-col gap-2">
+          <Label>KỲ HẠN</Label>
+          <Controller
+            name="term_months"
+            control={form.control}
+            render={({ field }) => (
+              <OptionPicker
+                title="Chọn Kỳ Hạn"
+                options={TERM_OPTIONS.map((o) => ({
+                  ...o,
+                  value: o.value,
+                }))}
+                value={field.value}
+                onChange={(v) => field.onChange(Number(v))}
+                disabled={isPending}
+              />
+            )}
+          />
+        </div>
+
+        {/* Ngày gửi */}
+        <div className="flex flex-col gap-2">
+          <Label>NGÀY GỬI *</Label>
+          <Controller
+            name="start_date"
+            control={form.control}
+            render={({ field }) => (
+              <ResponsiveDatePicker
+                value={field.value}
+                onChange={field.onChange}
+                disabled={isPending}
+              />
+            )}
+          />
+          {form.formState.errors.start_date && (
+            <ErrorMsg>{form.formState.errors.start_date.message}</ErrorMsg>
+          )}
+        </div>
+
+        {/* Hình thức tất toán */}
+        <div className="flex flex-col gap-2">
+          <Label>HÌNH THỨC TẤT TOÁN</Label>
+          <Controller
+            name="rollover_type"
+            control={form.control}
+            render={({ field }) => (
+              <OptionPicker
+                title="Hình Thức Tất Toán"
+                options={ROLLOVER_OPTIONS.map((o) => ({ ...o }))}
+                value={field.value}
+                onChange={(v) => field.onChange(String(v))}
+                disabled={isPending}
+              />
+            )}
+          />
+        </div>
+
+        {/* Ghi chú */}
+        <div className="flex flex-col gap-2">
+          <Label>GHI CHÚ (TÙY CHỌN)</Label>
+          <div className="bg-background border-border flex min-h-[80px] items-start border px-3.5 py-3">
+            <textarea
+              rows={3}
+              placeholder="Ghi chú thêm..."
+              disabled={isPending}
+              className="text-foreground placeholder:text-foreground-muted w-full resize-none bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
+              {...form.register("note")}
+            />
+          </div>
+        </div>
+
+        <Button type="submit" disabled={isPending} className="mt-2 h-14 w-full">
+          {isPending
+            ? isEdit
+              ? "ĐANG LƯU..."
+              : "ĐANG THÊM..."
+            : isEdit
+              ? "CẬP NHẬT TIẾT KIỆM"
+              : "LƯU TIẾT KIỆM"}
+        </Button>
+      </form>
     </ResponsiveModal>
   );
 }
