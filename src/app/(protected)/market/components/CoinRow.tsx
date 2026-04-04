@@ -36,9 +36,7 @@ export function CoinRow({ coin }: Props) {
           )}
         </div>
         <div className="flex flex-col">
-          <span className="text-foreground text-[14px] font-bold">
-            {coin.name}
-          </span>
+          <span className="text-foreground text-sm font-bold">{coin.name}</span>
           <span className="text-foreground-muted text-[11px] font-semibold uppercase">
             {coin.symbol}
           </span>

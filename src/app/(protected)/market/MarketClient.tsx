@@ -156,13 +156,13 @@ export function MarketClient({ initialPrices = [] }: Props) {
                       <span className="text-foreground truncate text-[15px] font-bold">
                         {worldGold.name}
                       </span>
-                      <span className="text-foreground-muted text-[11px] font-semibold tracking-wider uppercase">
+                      <span className="text-foreground-muted text-[11px] font-semibold uppercase">
                         {worldGold.type_code}
                       </span>
                     </div>
                   </div>
                   <div className="flex shrink-0 flex-col items-end">
-                    <span className="text-foreground text-[22px] font-bold tracking-[-1px]">
+                    <span className="text-foreground text-[22px] font-bold">
                       $
                       {worldGold.buy.toLocaleString("en-US", {
                         minimumFractionDigits: 2,
@@ -179,14 +179,14 @@ export function MarketClient({ initialPrices = [] }: Props) {
             {/* Local Markets Table — scrollable */}
             <div className="border-border bg-surface flex flex-1 flex-col overflow-hidden border">
               <div className="border-border flex shrink-0 items-center justify-between border-b px-5 py-3">
-                <span className="text-foreground-muted text-[10px] font-bold tracking-[1.5px] uppercase">
+                <span className="text-foreground-muted text-[10px] font-bold uppercase">
                   LOẠI VÀNG
                 </span>
                 <div className="flex items-center">
-                  <span className="text-foreground-muted w-[100px] text-right text-[10px] font-bold tracking-[1.5px] uppercase">
+                  <span className="text-foreground-muted w-[100px] text-right text-[10px] font-bold uppercase">
                     MUA VÀO
                   </span>
-                  <span className="text-foreground-muted w-[100px] text-right text-[10px] font-bold tracking-[1.5px] uppercase">
+                  <span className="text-foreground-muted w-[100px] text-right text-[10px] font-bold uppercase">
                     BÁN RA
                   </span>
                 </div>
@@ -199,7 +199,7 @@ export function MarketClient({ initialPrices = [] }: Props) {
                       className="flex items-center justify-between px-5 py-4"
                     >
                       <div className="flex min-w-0 flex-col">
-                        <span className="text-foreground truncate text-[14px] font-bold">
+                        <span className="text-foreground truncate text-sm font-bold">
                           {p.name}
                         </span>
                         <div className="mt-1 flex items-center gap-1.5">

@@ -91,10 +91,10 @@ export function AssetsClient({
         </svg>
 
         <div className="flex flex-col gap-1">
-          <span className="text-foreground-muted text-[9px] font-semibold tracking-[1.5px] uppercase">
+          <span className="text-foreground-muted text-[9px] font-semibold uppercase">
             Tổng tài sản
           </span>
-          <span className="text-accent text-[22px] font-black tracking-[-1px]">
+          <span className="text-accent text-[22px] font-black">
             {formatVND(netWorth)}
           </span>
           {netWorth > 0 && (
@@ -123,7 +123,7 @@ export function AssetsClient({
       </div>
 
       {/* Section label */}
-      <span className="text-foreground-muted text-[9px] font-semibold tracking-[1.5px] uppercase">
+      <span className="text-foreground-muted text-[9px] font-semibold uppercase">
         Danh mục tài sản
       </span>
 
@@ -136,10 +136,10 @@ export function AssetsClient({
           style={{ borderLeftColor: GOLD_COLOR }}
         >
           <div className="flex flex-col gap-0.5">
-            <span className="text-foreground-muted text-[9px] font-semibold tracking-[1.5px] uppercase">
+            <span className="text-foreground-muted text-[9px] font-semibold uppercase">
               Vàng
             </span>
-            <span className="text-foreground text-[18px] font-extrabold tracking-[-0.5px]">
+            <span className="text-foreground text-[18px] font-extrabold">
               {formatVND(goldTotal)}
             </span>
           </div>
@@ -147,7 +147,7 @@ export function AssetsClient({
             {goldCost > 0 && (
               <div className="flex flex-col items-end gap-0.5">
                 <span
-                  className={`text-[12px] font-bold tracking-[-0.3px] ${goldPnl >= 0 ? "text-green-500" : "text-red-500"}`}
+                  className={`text-xs font-bold ${goldPnl >= 0 ? "text-green-500" : "text-red-500"}`}
                 >
                   {goldPnl >= 0 ? "+" : ""}
                   {formatVND(goldPnl)}
@@ -159,7 +159,7 @@ export function AssetsClient({
                 </span>
               </div>
             )}
-            <span className="text-foreground-muted text-[14px]">›</span>
+            <span className="text-foreground-muted text-sm">›</span>
           </div>
         </button>
 
@@ -170,10 +170,10 @@ export function AssetsClient({
           style={{ borderLeftColor: SAVINGS_COLOR }}
         >
           <div className="flex flex-col gap-0.5">
-            <span className="text-foreground-muted text-[9px] font-semibold tracking-[1.5px] uppercase">
+            <span className="text-foreground-muted text-[9px] font-semibold uppercase">
               Tiết Kiệm
             </span>
-            <span className="text-foreground text-[18px] font-extrabold tracking-[-0.5px]">
+            <span className="text-foreground text-[18px] font-extrabold">
               {formatVND(savingsTotal)}
             </span>
           </div>
@@ -181,7 +181,7 @@ export function AssetsClient({
             {savingsPrincipal > 0 && (
               <div className="flex flex-col items-end gap-0.5">
                 <span
-                  className={`text-[12px] font-bold tracking-[-0.3px] ${savingsPnl >= 0 ? "text-green-500" : "text-red-500"}`}
+                  className={`text-xs font-bold ${savingsPnl >= 0 ? "text-green-500" : "text-red-500"}`}
                 >
                   {savingsPnl >= 0 ? "+" : ""}
                   {formatVND(savingsPnl)}
@@ -193,19 +193,19 @@ export function AssetsClient({
                 </span>
               </div>
             )}
-            <span className="text-foreground-muted text-[14px]">›</span>
+            <span className="text-foreground-muted text-sm">›</span>
           </div>
         </button>
       </div>
 
       {/* Coming soon */}
       <div className="flex flex-col gap-2">
-        <span className="text-[9px] font-semibold tracking-[1.5px] uppercase opacity-40">
+        <span className="text-[9px] font-semibold uppercase opacity-40">
           Sắp ra mắt
         </span>
         <div className="grid grid-cols-2 gap-1.5 opacity-35">
           <div className="bg-surface border-border flex flex-col gap-1 border border-dashed p-3">
-            <span className="text-foreground-muted text-[8px] font-semibold tracking-[1.5px] uppercase">
+            <span className="text-foreground-muted text-[8px] font-semibold uppercase">
               Coin
             </span>
             <span className="text-foreground-muted text-[10px]">
@@ -213,7 +213,7 @@ export function AssetsClient({
             </span>
           </div>
           <div className="bg-surface border-border flex flex-col gap-1 border border-dashed p-3">
-            <span className="text-foreground-muted text-[8px] font-semibold tracking-[1.5px] uppercase">
+            <span className="text-foreground-muted text-[8px] font-semibold uppercase">
               Chứng Khoán
             </span>
             <span className="text-foreground-muted text-[10px]">

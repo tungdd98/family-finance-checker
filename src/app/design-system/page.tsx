@@ -48,9 +48,7 @@ export default function DesignSystemPage() {
       {/* Header */}
       <div className="mb-10 flex items-center gap-4">
         <span className="bg-accent h-8 w-0.75" />
-        <h1 className="type-card-title tracking-[3px]">
-          Brutalist Luxury — Design System
-        </h1>
+        <h1 className="type-card-title">Brutalist Luxury — Design System</h1>
       </div>
 
       {/* Two-column grid */}
