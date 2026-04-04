@@ -19,16 +19,13 @@ import { Button } from "@/components/ui/button";
 import { ResponsiveModal, ResponsiveDatePicker } from "@/components/common";
 import { BankPicker } from "./BankPicker";
 import { OptionPicker } from "./OptionPicker";
+import { formatVND } from "@/lib/utils";
 
 interface Props {
   mode: "add" | "edit";
   account?: SavingsAccount;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-}
-
-function formatVND(n: number) {
-  return n > 0 ? new Intl.NumberFormat("vi-VN").format(n) : "";
 }
 
 export function AddEditSavingsSheet({
