@@ -1,4 +1,4 @@
-import { MarketSkeleton } from "@/components/ScreenSkeleton";
+import { MarketSkeleton } from "@/components/layout";
 
 export default function Loading() {
   return <MarketSkeleton />;

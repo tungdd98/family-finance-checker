@@ -1,4 +1,4 @@
-import { SavingsSkeleton } from "@/components/ScreenSkeleton";
+import { SavingsSkeleton } from "@/components/layout";
 
 export default function Loading() {
   return <SavingsSkeleton />;

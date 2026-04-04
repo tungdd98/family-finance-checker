@@ -3,9 +3,11 @@ import { Settings } from "lucide-react";
 import { redirect } from "next/navigation";
 
 import { TabBar } from "@/components/common";
-import { NotificationBell } from "@/components/NotificationBell";
-import { NavigationProgress } from "@/components/NavigationProgress";
-import { Sidebar } from "@/components/pc/Sidebar";
+import {
+  NotificationBell,
+  NavigationProgress,
+  Sidebar,
+} from "@/components/layout";
 import { createClient } from "@/lib/supabase/server";
 import {
   cachedGetSettings,
