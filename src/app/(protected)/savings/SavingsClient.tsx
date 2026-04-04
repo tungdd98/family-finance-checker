@@ -1,14 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { Plus, PiggyBank, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
 import type { SavingsAccount } from "@/lib/services/savings";
 import { formatVND } from "@/lib/gold-utils";
+import { deleteSavingsAction } from "@/app/actions/savings";
 import { SavingsCard } from "./components/SavingsCard";
 import { AddEditSavingsSheet } from "./components/AddEditSavingsSheet";
-import { DeleteSavingsDialog } from "./components/DeleteSavingsDialog";
+import { DeleteConfirmDialog } from "@/components/common";
 import { SavingsActionSheet } from "./components/SavingsActionSheet";
 
 interface Props {
@@ -20,12 +23,28 @@ export function SavingsClient({ initialAccounts }: Props) {
     "add" | "edit" | "delete" | "action" | null
   >(null);
   const [selected, setSelected] = useState<SavingsAccount | null>(null);
+  const [isDeleting, startDeleteTransition] = useTransition();
+  const router = useRouter();
 
   const totalPrincipal = initialAccounts.reduce((s, a) => s + a.principal, 0);
 
   const openAction = (account: SavingsAccount) => {
     setSelected(account);
     setActiveSheet("action");
+  };
+
+  const handleDeleteConfirm = () => {
+    if (!selected) return;
+    startDeleteTransition(async () => {
+      const result = await deleteSavingsAction(selected.id);
+      if (result?.error) {
+        toast.error(result.error);
+      } else {
+        toast.success("Đã xóa khoản tiết kiệm");
+        router.refresh();
+        setActiveSheet(null);
+      }
+    });
   };
 
   return (
@@ -110,12 +129,27 @@ export function SavingsClient({ initialAccounts }: Props) {
         }}
       />
 
-      <DeleteSavingsDialog
-        account={selected}
+      <DeleteConfirmDialog
         open={activeSheet === "delete"}
         onOpenChange={(o) => {
           if (!o) setActiveSheet(null);
         }}
+        title="Xóa khoản tiết kiệm"
+        description={
+          selected ? (
+            <>
+              Bạn có chắc muốn xóa khoản tiết kiệm{" "}
+              <span className="text-foreground font-semibold">
+                {selected.account_name || selected.bank_name}
+              </span>{" "}
+              — gốc {formatVND(selected.principal)}?
+            </>
+          ) : (
+            ""
+          )
+        }
+        onConfirm={handleDeleteConfirm}
+        isPending={isDeleting}
       />
     </div>
   );
