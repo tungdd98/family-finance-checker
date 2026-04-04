@@ -34,10 +34,10 @@ export default function LoginPage() {
         {/* Header */}
         <div className="mb-7 flex flex-col items-center gap-4">
           <div className="bg-accent h-8 w-8" />
-          <h1 className="text-foreground text-center text-[28px] font-bold tracking-[-1px]">
+          <h1 className="text-foreground text-center text-[28px] font-bold">
             FAMILY FINANCE
           </h1>
-          <p className="text-foreground-secondary text-center text-[11px] font-medium tracking-[2px]">
+          <p className="text-foreground-secondary text-center text-[11px] font-medium">
             QUẢN LÝ TÀI SẢN GIA ĐÌNH
           </p>
           <div className="bg-accent h-px w-full" />
@@ -50,7 +50,7 @@ export default function LoginPage() {
             <div className="flex flex-col gap-2">
               <Label
                 htmlFor="email"
-                className="text-foreground-muted flex items-center gap-2 text-[11px] font-semibold tracking-[1.5px]"
+                className="text-foreground-muted flex items-center gap-2 text-[11px] font-semibold"
               >
                 <span className="bg-accent h-3.5 w-0.75 shrink-0" />
                 EMAIL
@@ -74,7 +74,7 @@ export default function LoginPage() {
             <div className="flex flex-col gap-2">
               <Label
                 htmlFor="password"
-                className="text-foreground-muted flex items-center gap-2 text-[11px] font-semibold tracking-[1.5px]"
+                className="text-foreground-muted flex items-center gap-2 text-[11px] font-semibold"
               >
                 <span className="bg-accent h-3.5 w-0.75 shrink-0" />
                 MẬT KHẨU
@@ -96,7 +96,7 @@ export default function LoginPage() {
 
             {/* Root error */}
             {form.formState.errors.root && (
-              <p className="border-status-negative text-status-negative border px-4 py-3 text-[12px]">
+              <p className="border-status-negative text-status-negative border px-4 py-3 text-xs">
                 {form.formState.errors.root.message}
               </p>
             )}

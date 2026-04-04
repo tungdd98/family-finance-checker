@@ -53,7 +53,7 @@ export function SettingsForm({ initialData, displayName }: Props) {
       <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
         {/* Top section: title + cash balance */}
         <div className="flex flex-col gap-6 pb-6">
-          <h1 className="text-foreground pt-4 text-[28px] font-bold tracking-[-1px]">
+          <h1 className="text-foreground pt-4 text-[28px] font-bold">
             CÀI ĐẶT
           </h1>
 
@@ -61,12 +61,12 @@ export function SettingsForm({ initialData, displayName }: Props) {
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
               <div className="bg-accent h-3.5 w-0.75 shrink-0" />
-              <span className="text-foreground-secondary text-[11px] font-semibold tracking-[1.5px]">
+              <span className="text-foreground-secondary text-[11px] font-semibold">
                 TIỀN MẶT
               </span>
             </div>
             <div className="bg-surface flex flex-col gap-3 p-4.5">
-              <p className="text-foreground-secondary text-[12px] font-medium">
+              <p className="text-foreground-secondary text-xs font-medium">
                 Số dư ban đầu
               </p>
               <div className="bg-background border-border flex h-12 items-center border px-3.5">
@@ -94,14 +94,14 @@ export function SettingsForm({ initialData, displayName }: Props) {
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
               <div className="bg-accent h-3.5 w-0.75 shrink-0" />
-              <span className="text-foreground-secondary text-[11px] font-semibold tracking-[2px]">
+              <span className="text-foreground-secondary text-[11px] font-semibold">
                 THÔNG TIN CÁ NHÂN
               </span>
             </div>
             <div className="bg-surface border-border-strong flex flex-col gap-2 border px-4 py-3.5">
               <label
                 htmlFor="display_name"
-                className="text-foreground-muted text-[10px] font-medium tracking-[1.5px]"
+                className="text-foreground-muted text-[10px] font-medium"
               >
                 TÊN HIỂN THỊ
               </label>
@@ -130,7 +130,7 @@ export function SettingsForm({ initialData, displayName }: Props) {
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-3">
           <div className="bg-status-negative/40 h-3.5 w-0.75 shrink-0" />
-          <span className="text-foreground-secondary text-[11px] font-semibold tracking-[2px]">
+          <span className="text-foreground-secondary text-[11px] font-semibold">
             HÀNH ĐỘNG
           </span>
         </div>
@@ -138,7 +138,7 @@ export function SettingsForm({ initialData, displayName }: Props) {
           <Button
             type="submit"
             variant="outline"
-            className="border-status-negative/20 text-status-negative hover:bg-status-negative/10 flex h-14 w-full items-center justify-center gap-2 text-[13px] font-bold tracking-[1px]"
+            className="border-status-negative/20 text-status-negative hover:bg-status-negative/10 flex h-14 w-full items-center justify-center gap-2 text-[13px] font-bold"
           >
             <LogOut size={18} />
             ĐĂNG XUẤT TÀI KHOẢN

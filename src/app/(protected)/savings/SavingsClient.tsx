@@ -74,10 +74,10 @@ export function SavingsClient({ initialAccounts }: Props) {
         {initialAccounts.length > 0 && (
           <div className="bg-surface mt-4 flex flex-col gap-1 p-4">
             <p className="type-section-label">TỔNG TIẾT KIỆM GỐC</p>
-            <p className="text-foreground text-[28px] font-bold tracking-[-1px]">
+            <p className="text-foreground text-[28px] font-bold">
               {totalPrincipal > 0 ? formatVND(totalPrincipal) : "—"}
             </p>
-            <p className="text-foreground-secondary text-[12px]">
+            <p className="text-foreground-secondary text-xs">
               {initialAccounts.length} khoản tiết kiệm đang được quản lý
             </p>
           </div>

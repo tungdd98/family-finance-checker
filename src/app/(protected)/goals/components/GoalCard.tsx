@@ -78,15 +78,13 @@ export function GoalCard({
       <div className="flex items-center gap-3 p-4 pb-3">
         <span className="shrink-0 text-[28px] leading-none">{goal.emoji}</span>
         <div className="min-w-0 flex-1">
-          <p className="text-foreground text-[15px] font-bold tracking-[-0.5px]">
-            {goal.name}
-          </p>
-          <p className="text-foreground-muted mt-0.5 text-[12px]">
+          <p className="text-foreground text-[15px] font-bold">{goal.name}</p>
+          <p className="text-foreground-muted mt-0.5 text-xs">
             Mục tiêu: {formatVND(goal.target_amount)}
           </p>
         </div>
         <div className="shrink-0 text-right">
-          <p className="text-accent text-[30px] leading-none font-black tracking-[-1px]">
+          <p className="text-accent text-[30px] leading-none font-black">
             {progressPct}%
           </p>
           <p className="text-foreground-muted mt-0.5 text-[10px]">hoàn thành</p>
@@ -108,7 +106,7 @@ export function GoalCard({
             {formatVND(currentAssets)}
           </span>
           {remaining > 0 && (
-            <span className="text-foreground-muted text-[12px]">
+            <span className="text-foreground-muted text-xs">
               Còn thiếu {formatVND(remaining)}
             </span>
           )}
@@ -117,7 +115,7 @@ export function GoalCard({
         {/* Projection pill */}
         {monthsToGoal !== null && monthsToGoal > 0 && estimatedDate && (
           <div className="border-border bg-surface inline-flex items-center gap-1.5 self-start border px-3 py-1.5">
-            <span className="text-foreground-muted text-[12px]">
+            <span className="text-foreground-muted text-xs">
               ⏱ Dự kiến đạt{" "}
               <span className="text-accent font-semibold">
                 {formatEstimatedDate(estimatedDate)}
@@ -128,13 +126,13 @@ export function GoalCard({
         )}
         {monthsToGoal === 0 && (
           <div className="bg-surface inline-flex items-center gap-1.5 self-start border border-green-800 px-3 py-1.5">
-            <span className="text-[12px] font-semibold text-green-500">
+            <span className="text-xs font-semibold text-green-500">
               🎉 Đã đạt mục tiêu!
             </span>
           </div>
         )}
         {monthsToGoal === null && (
-          <p className="text-foreground-muted text-[12px]">
+          <p className="text-foreground-muted text-xs">
             ⚠️ Không thể dự báo — thặng dư âm hoặc chưa cài đặt thu chi
           </p>
         )}
@@ -150,27 +148,27 @@ export function GoalCard({
           {monthlyActual ? (
             <div className="flex flex-col gap-1.5">
               <div className="flex justify-between">
-                <span className="text-foreground-secondary text-[12px]">
+                <span className="text-foreground-secondary text-xs">
                   Thu nhập thực tế
                 </span>
-                <span className="text-foreground text-[12px] font-semibold">
+                <span className="text-foreground text-xs font-semibold">
                   {formatVND(monthlyActual.actual_income)}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-foreground-secondary text-[12px]">
+                <span className="text-foreground-secondary text-xs">
                   Chi tiêu thực tế
                 </span>
-                <span className="text-foreground text-[12px] font-semibold">
+                <span className="text-foreground text-xs font-semibold">
                   {formatVND(monthlyActual.actual_expense)}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-foreground-secondary text-[12px]">
+                <span className="text-foreground-secondary text-xs">
                   Thặng dư tháng này
                 </span>
                 <span
-                  className={`text-[12px] font-bold ${actualSurplus! >= 0 ? "text-green-500" : "text-red-400"}`}
+                  className={`text-xs font-bold ${actualSurplus! >= 0 ? "text-green-500" : "text-red-400"}`}
                 >
                   {actualSurplus! >= 0 ? "+" : ""}
                   {formatVND(actualSurplus!)}
@@ -178,11 +176,11 @@ export function GoalCard({
               </div>
               {delta !== null && (
                 <div className="flex justify-between">
-                  <span className="text-foreground-secondary text-[12px]">
+                  <span className="text-foreground-secondary text-xs">
                     So với TB dự kiến
                   </span>
                   <span
-                    className={`text-[12px] font-bold ${delta >= 0 ? "text-green-500" : "text-red-400"}`}
+                    className={`text-xs font-bold ${delta >= 0 ? "text-green-500" : "text-red-400"}`}
                   >
                     {delta >= 0 ? "+" : ""}
                     {formatVND(delta)} {delta >= 0 ? "↑" : "↓"}
@@ -196,11 +194,11 @@ export function GoalCard({
                 monthlyActual.allocations.length > 0 && (
                   <div className="border-border/50 mt-1.5 flex flex-col gap-2 border bg-[#141414] p-2.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-foreground-muted text-[10px] font-bold tracking-[1px] uppercase">
+                      <span className="text-foreground-muted text-[10px] font-bold uppercase">
                         Zero-Based Budget
                       </span>
                       <span
-                        className={`text-[10px] font-bold tracking-[0.5px] uppercase ${
+                        className={`text-[10px] font-bold uppercase ${
                           unallocated === 0
                             ? "text-accent"
                             : unallocated < 0
@@ -240,7 +238,7 @@ export function GoalCard({
                         return (
                           <div
                             key={i}
-                            className={`flex items-center gap-1 text-[10px] font-medium tracking-[0.2px] ${TYPE_TEXT_COLORS[a.type] || "text-gray-500"} ${isExec ? "opacity-50" : ""}`}
+                            className={`flex items-center gap-1 text-[10px] font-medium ${TYPE_TEXT_COLORS[a.type] || "text-gray-500"} ${isExec ? "opacity-50" : ""}`}
                           >
                             <span className="text-[7px]">■</span>
                             <span className={isExec ? "line-through" : ""}>
@@ -266,7 +264,7 @@ export function GoalCard({
 
               <button
                 onClick={onLogMonth}
-                className="text-accent mt-1 text-right text-[12px] font-semibold"
+                className="text-accent mt-1 text-right text-xs font-semibold"
               >
                 Chỉnh sửa →
               </button>

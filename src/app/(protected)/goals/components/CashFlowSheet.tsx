@@ -186,11 +186,11 @@ export function CashFlowSheet({ cashFlow, open, onOpenChange }: Props) {
 
         {/* Live preview */}
         <div className="bg-surface border-border border p-4">
-          <p className="text-foreground-muted mb-2 text-[11px] font-semibold tracking-[1px] uppercase">
+          <p className="text-foreground-muted mb-2 text-[11px] font-semibold uppercase">
             Thặng dư dự kiến
           </p>
           <p
-            className={`text-[20px] font-bold tracking-[-0.5px] ${surplus >= 0 ? "text-green-500" : "text-red-400"}`}
+            className={`text-[20px] font-bold ${surplus >= 0 ? "text-green-500" : "text-red-400"}`}
           >
             {surplus >= 0 ? "+" : ""}
             {formatVND(surplus)}

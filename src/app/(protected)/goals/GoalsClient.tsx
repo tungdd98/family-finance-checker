@@ -93,7 +93,7 @@ export function GoalsClient({
             </div>
             <button
               onClick={() => setOpenSheet("goal")}
-              className="bg-accent text-background mt-2 px-6 py-3 text-[14px] font-bold tracking-[1px] uppercase"
+              className="bg-accent text-background mt-2 px-6 py-3 text-sm font-bold uppercase"
             >
               + Đặt mục tiêu
             </button>

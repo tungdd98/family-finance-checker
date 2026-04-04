@@ -51,7 +51,7 @@ function DetailRow({
 }) {
   return (
     <div className="flex items-center justify-between">
-      <span className="text-foreground-muted text-[12px]">{label}</span>
+      <span className="text-foreground-muted text-xs">{label}</span>
       <span className={`text-[13px] font-medium ${valueClass}`}>{value}</span>
     </div>
   );
@@ -72,7 +72,7 @@ export function SavingsCard({ account, onTap }: Props) {
       {/* Header row */}
       <div className="flex w-full items-start justify-between">
         <div className="flex flex-col gap-0.5">
-          <span className="text-foreground text-[14px] font-semibold">
+          <span className="text-foreground text-sm font-semibold">
             {account.account_name || account.bank_name}
           </span>
           {account.account_name && (
@@ -85,9 +85,7 @@ export function SavingsCard({ account, onTap }: Props) {
         {/* Status badge */}
         <div className="flex shrink-0 items-center gap-1.5">
           <div className={`h-1.5 w-1.5 rounded-full ${statusCfg.dot}`} />
-          <span
-            className={`text-[10px] font-semibold tracking-[0.5px] ${statusCfg.text}`}
-          >
+          <span className={`text-[10px] font-semibold ${statusCfg.text}`}>
             {statusCfg.label}
           </span>
         </div>

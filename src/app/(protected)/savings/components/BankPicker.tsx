@@ -159,7 +159,7 @@ export function BankPicker({
           >
             {/* Header */}
             <div className="flex items-center justify-between px-5 pt-5 pb-4">
-              <Dialog.Title className="text-foreground text-[16px] font-bold tracking-[-0.5px]">
+              <Dialog.Title className="text-foreground text-base font-bold">
                 Chọn Ngân Hàng
               </Dialog.Title>
               <Dialog.Close className="text-foreground-muted">
@@ -204,7 +204,7 @@ export function BankPicker({
                     className={`h-2 w-2 shrink-0 rounded-full ${b.code === selectedCode ? "bg-accent" : "bg-foreground-muted"}`}
                   />
                   <div className="flex flex-col items-start gap-0.5">
-                    <span className="text-[14px] font-medium">{b.name}</span>
+                    <span className="text-sm font-medium">{b.name}</span>
                     <span className="text-foreground-muted text-[11px]">
                       {b.shortName}
                     </span>

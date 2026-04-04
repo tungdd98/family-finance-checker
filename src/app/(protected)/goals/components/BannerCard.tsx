@@ -14,7 +14,7 @@ export function BannerCard({ currentAssets, avgMonthlySurplus }: Props) {
           <p className="text-foreground-muted mb-1 text-[11px]">
             Tài sản hiện tại
           </p>
-          <p className="text-foreground text-[16px] font-bold tracking-[-0.5px]">
+          <p className="text-foreground text-base font-bold">
             {formatVND(currentAssets)}
           </p>
         </div>
@@ -25,7 +25,7 @@ export function BannerCard({ currentAssets, avgMonthlySurplus }: Props) {
           </p>
           {avgMonthlySurplus !== null ? (
             <p
-              className={`text-[16px] font-bold tracking-[-0.5px] ${avgMonthlySurplus >= 0 ? "text-green-500" : "text-red-400"}`}
+              className={`text-base font-bold ${avgMonthlySurplus >= 0 ? "text-green-500" : "text-red-400"}`}
             >
               {avgMonthlySurplus >= 0 ? "+" : ""}
               {formatVND(avgMonthlySurplus)}

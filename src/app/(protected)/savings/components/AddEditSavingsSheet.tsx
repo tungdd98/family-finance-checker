@@ -218,7 +218,7 @@ export function AddEditSavingsSheet({
               disabled={isPending}
               className="text-foreground placeholder:text-foreground-muted w-full bg-transparent text-[13px] font-medium outline-none disabled:opacity-50"
             />
-            <span className="text-foreground-muted shrink-0 text-[12px]">
+            <span className="text-foreground-muted shrink-0 text-xs">
               %/năm
             </span>
           </div>
@@ -315,7 +315,7 @@ export function AddEditSavingsSheet({
 
 function Label({ children }: { children: ReactNode }) {
   return (
-    <span className="text-foreground-muted text-[10px] font-semibold tracking-[1.5px]">
+    <span className="text-foreground-muted text-[10px] font-semibold">
       {children}
     </span>
   );
