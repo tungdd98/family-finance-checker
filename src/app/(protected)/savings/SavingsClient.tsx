@@ -59,7 +59,9 @@ export function SavingsClient({ initialAccounts }: Props) {
             >
               <ChevronLeft size={24} />
             </Link>
-            <h1 className="type-featured-stat uppercase">TIẾT KIỆM</h1>
+            <h1 className="text-foreground pt-2 text-3xl font-bold uppercase">
+              TIẾT KIỆM
+            </h1>
           </div>
           <button
             onClick={() => setActiveSheet("add")}

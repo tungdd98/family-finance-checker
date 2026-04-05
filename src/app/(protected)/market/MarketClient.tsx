@@ -107,7 +107,9 @@ export function MarketClient({ initialPrices = [] }: Props) {
       {/* Page Header */}
       <div className="mb-6 flex flex-col gap-1">
         <div className="flex items-center justify-between">
-          <h1 className="type-featured-stat uppercase">THỊ TRƯỜNG</h1>
+          <h1 className="text-foreground pt-2 text-3xl font-bold uppercase">
+            THỊ TRƯỜNG
+          </h1>
           <button
             onClick={refresh}
             disabled={isRefreshing}
@@ -183,10 +185,10 @@ export function MarketClient({ initialPrices = [] }: Props) {
                   LOẠI VÀNG
                 </span>
                 <div className="flex items-center">
-                  <span className="text-foreground-muted w-[100px] text-right text-xs font-bold uppercase">
+                  <span className="text-foreground-muted w-30 text-right text-xs font-bold uppercase">
                     MUA VÀO
                   </span>
-                  <span className="text-foreground-muted w-[100px] text-right text-xs font-bold uppercase">
+                  <span className="text-foreground-muted w-30 text-right text-xs font-bold uppercase">
                     BÁN RA
                   </span>
                 </div>
@@ -210,7 +212,7 @@ export function MarketClient({ initialPrices = [] }: Props) {
                         </div>
                       </div>
                       <div className="flex items-start">
-                        <div className="flex w-[100px] flex-col items-end">
+                        <div className="flex w-30 flex-col items-end">
                           <span className="text-foreground text-sm font-bold">
                             {p.buy > 0 ? formatVND(p.buy) : "—"}
                           </span>
@@ -218,7 +220,7 @@ export function MarketClient({ initialPrices = [] }: Props) {
                             {formatChange(p.change_buy)}
                           </div>
                         </div>
-                        <div className="flex w-[100px] flex-col items-end">
+                        <div className="flex w-30 flex-col items-end">
                           <span className="text-foreground text-sm font-bold">
                             {p.sell > 0 ? formatVND(p.sell) : "—"}
                           </span>

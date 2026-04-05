@@ -44,11 +44,13 @@ export function AssetsClient({
     <div className="flex flex-col gap-5 pb-20">
       {/* Page title */}
       <div className="pt-2">
-        <h1 className="type-featured-stat uppercase">Tài Sản</h1>
+        <h1 className="text-foreground pt-2 text-3xl font-bold uppercase">
+          Tài Sản
+        </h1>
       </div>
 
       {/* Net worth banner */}
-      <div className="bg-surface border-border flex items-center gap-[18px] border p-5">
+      <div className="bg-surface border-border flex items-center gap-4.5 border p-5">
         <svg
           width="80"
           height="80"

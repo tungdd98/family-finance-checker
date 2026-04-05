@@ -184,7 +184,9 @@ export function CashflowClient({ year, month, existing, cashFlow }: Props) {
   return (
     <div className="flex flex-col pb-20">
       {/* ── Page header ── */}
-      <h1 className="type-featured-stat uppercase">THU / CHI</h1>
+      <h1 className="text-foreground pt-2 text-3xl font-bold uppercase">
+        THU / CHI
+      </h1>
 
       <div
         className={
