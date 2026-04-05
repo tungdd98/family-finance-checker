@@ -46,7 +46,7 @@ export function DashboardClient({
   monthlyActual,
   currentAssets,
   recentTxs,
-}: Props) {
+}: Readonly<Props>) {
   const [prices, setPrices] = useState<GoldPrice[]>(initialPrices);
 
   useEffect(() => {

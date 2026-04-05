@@ -24,7 +24,11 @@ function stripFormatting(n: number) {
   return n > 0 ? new Intl.NumberFormat("vi-VN").format(n) : "";
 }
 
-export function CashFlowSheet({ cashFlow, open, onOpenChange }: Props) {
+export function CashFlowSheet({
+  cashFlow,
+  open,
+  onOpenChange,
+}: Readonly<Props>) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const [incomeHusbandDisplay, setIncomeHusbandDisplay] = useState("");
@@ -199,10 +203,10 @@ export function CashFlowSheet({ cashFlow, open, onOpenChange }: Props) {
   );
 }
 
-function Label({ children }: { children: ReactNode }) {
+function Label({ children }: Readonly<{ children: ReactNode }>) {
   return <span className="type-card-label">{children}</span>;
 }
 
-function ErrorMsg({ children }: { children: ReactNode }) {
+function ErrorMsg({ children }: Readonly<{ children: ReactNode }>) {
   return <p className="text-status-negative text-xs">{children}</p>;
 }

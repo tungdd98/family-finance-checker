@@ -18,7 +18,7 @@ export function AssetsClient({
   goldTotal,
   goldCost,
   savingsPrincipal,
-}: Props) {
+}: Readonly<Props>) {
   const router = useRouter();
   const netWorth = savingsTotal + goldTotal;
 

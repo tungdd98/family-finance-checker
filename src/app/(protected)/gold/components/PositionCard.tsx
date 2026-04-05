@@ -21,7 +21,7 @@ function formatDate(dateStr: string) {
   return `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")}/${d.getFullYear()}`;
 }
 
-export function PositionCard({ position, livePrice, onTap }: Props) {
+export function PositionCard({ position, livePrice, onTap }: Readonly<Props>) {
   const remaining = position.quantity - position.sold_quantity;
   const hasPnl = livePrice !== undefined;
   const pnl = hasPnl
@@ -95,11 +95,11 @@ function DetailRow({
   label,
   value,
   valueClass = "text-foreground font-medium",
-}: {
+}: Readonly<{
   label: string;
   value: string;
   valueClass?: string;
-}) {
+}>) {
   return (
     <div className="flex items-center justify-between">
       <span className="text-foreground-muted text-xs">{label}</span>

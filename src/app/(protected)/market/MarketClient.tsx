@@ -18,7 +18,7 @@ interface Props {
   initialPrices: GoldPrice[];
 }
 
-export function MarketClient({ initialPrices = [] }: Props) {
+export function MarketClient({ initialPrices = [] }: Readonly<Props>) {
   const [prices, setPrices] = useState<GoldPrice[]>(initialPrices);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);

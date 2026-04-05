@@ -18,7 +18,11 @@ interface Props {
   onOpenChange: (open: boolean) => void;
 }
 
-export function SellAssetSheet({ position, open, onOpenChange }: Props) {
+export function SellAssetSheet({
+  position,
+  open,
+  onOpenChange,
+}: Readonly<Props>) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const [priceDisplay, setPriceDisplay] = useState("");

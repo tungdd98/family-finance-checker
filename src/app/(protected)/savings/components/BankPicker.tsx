@@ -109,7 +109,7 @@ export function BankPicker({
   selectedName,
   onSelect,
   disabled,
-}: Props) {
+}: Readonly<Props>) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const isDesktop = useMediaQuery("(min-width: 1024px)");

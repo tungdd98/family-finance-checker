@@ -6,7 +6,9 @@ import { useRouter } from "next/navigation";
 import { Drawer } from "@base-ui/react/drawer";
 import type { NotiItem } from "@/app/actions/notifications";
 
-export function NotificationBell({ allNotis }: { allNotis: NotiItem[] }) {
+export function NotificationBell({
+  allNotis,
+}: Readonly<{ allNotis: NotiItem[] }>) {
   const [open, setOpen] = useState(false);
   const [dismissedIds, setDismissedIds] = useState<string[]>([]);
   const router = useRouter();

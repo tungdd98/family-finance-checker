@@ -10,7 +10,7 @@ interface Props {
   coin: CoinPrice;
 }
 
-export function CoinRow({ coin }: Props) {
+export function CoinRow({ coin }: Readonly<Props>) {
   const [imgError, setImgError] = useState(false);
   const isUp = coin.price_change_percentage_24h >= 0;
   const changeColor = isUp ? "text-status-positive" : "text-status-negative";

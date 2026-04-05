@@ -3,7 +3,7 @@ interface Props {
   onTabChange: (tab: "gold" | "coin") => void;
 }
 
-export function MarketTabs({ activeTab, onTabChange }: Props) {
+export function MarketTabs({ activeTab, onTabChange }: Readonly<Props>) {
   return (
     <div className="border-border flex border-b">
       {(["gold", "coin"] as const).map((tab) => (

@@ -36,7 +36,7 @@ export function AddEditSavingsSheet({
   account,
   open,
   onOpenChange,
-}: Props) {
+}: Readonly<Props>) {
   const isEdit = mode === "edit";
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -311,7 +311,7 @@ export function AddEditSavingsSheet({
   );
 }
 
-function Label({ children }: { children: ReactNode }) {
+function Label({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <span className="text-foreground-muted text-xs font-semibold">
       {children}
@@ -319,6 +319,6 @@ function Label({ children }: { children: ReactNode }) {
   );
 }
 
-function ErrorMsg({ children }: { children: ReactNode }) {
+function ErrorMsg({ children }: Readonly<{ children: ReactNode }>) {
   return <p className="text-status-negative text-xs">{children}</p>;
 }

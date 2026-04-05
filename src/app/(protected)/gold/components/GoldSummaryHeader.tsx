@@ -26,7 +26,7 @@ export function GoldSummaryHeader({
   filterBrand,
   onFilterChange,
   onAdd,
-}: Props) {
+}: Readonly<Props>) {
   return (
     <div className="flex flex-col gap-4">
       {/* Page title row */}

@@ -20,7 +20,7 @@ interface Props {
   onOpenChange: (open: boolean) => void;
 }
 
-export function GoalSheet({ goal, open, onOpenChange }: Props) {
+export function GoalSheet({ goal, open, onOpenChange }: Readonly<Props>) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const [amountDisplay, setAmountDisplay] = useState("");
@@ -177,10 +177,10 @@ export function GoalSheet({ goal, open, onOpenChange }: Props) {
   );
 }
 
-function Label({ children }: { children: ReactNode }) {
+function Label({ children }: Readonly<{ children: ReactNode }>) {
   return <span className="type-card-label">{children}</span>;
 }
 
-function ErrorMsg({ children }: { children: ReactNode }) {
+function ErrorMsg({ children }: Readonly<{ children: ReactNode }>) {
   return <p className="text-status-negative text-xs">{children}</p>;
 }

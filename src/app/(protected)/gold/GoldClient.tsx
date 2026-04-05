@@ -19,7 +19,10 @@ interface Props {
   initialPrices: GoldPrice[];
 }
 
-export function GoldClient({ initialPositions, initialPrices = [] }: Props) {
+export function GoldClient({
+  initialPositions,
+  initialPrices = [],
+}: Readonly<Props>) {
   const positions = initialPositions;
   const [prices, setPrices] = useState<GoldPrice[]>(initialPrices);
   const [isDeleting, startDeleteTransition] = useTransition();

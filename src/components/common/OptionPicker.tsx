@@ -31,7 +31,7 @@ export function OptionPicker({
   disabled,
   autoOpen,
   onAfterSelect,
-}: Props) {
+}: Readonly<Props>) {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 1024px)");
 

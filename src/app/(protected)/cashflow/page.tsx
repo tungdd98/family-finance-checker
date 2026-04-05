@@ -9,7 +9,7 @@ interface Props {
   searchParams: Promise<{ year?: string; month?: string }>;
 }
 
-export default async function CashflowPage({ searchParams }: Props) {
+export default async function CashflowPage({ searchParams }: Readonly<Props>) {
   const supabase = await createClient();
   const {
     data: { user },

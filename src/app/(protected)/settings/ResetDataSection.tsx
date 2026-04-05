@@ -53,7 +53,7 @@ interface Props {
   displayName: string;
 }
 
-export function ResetDataSection({ displayName }: Props) {
+export function ResetDataSection({ displayName }: Readonly<Props>) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 

@@ -19,7 +19,7 @@ export function SavingsActionSheet({
   onOpenChange,
   onEdit,
   onDelete,
-}: Props) {
+}: Readonly<Props>) {
   return (
     <ResponsiveActionMenu open={open} onOpenChange={onOpenChange}>
       <p className="type-section-label px-7 pb-3">TÙY CHỌN TIẾT KIỆM</p>
@@ -60,12 +60,12 @@ function ActionItem({
   label,
   destructive = false,
   onClick,
-}: {
+}: Readonly<{
   icon: ReactNode;
   label: string;
   destructive?: boolean;
   onClick: () => void;
-}) {
+}>) {
   return (
     <button
       onClick={onClick}

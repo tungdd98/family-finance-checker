@@ -13,7 +13,7 @@ export function StatTile({
   href,
   accentColor,
   children,
-}: StatTileProps) {
+}: Readonly<StatTileProps>) {
   return (
     <Link
       href={href}

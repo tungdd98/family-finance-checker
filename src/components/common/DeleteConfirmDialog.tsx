@@ -23,7 +23,7 @@ export function DeleteConfirmDialog({
   isPending,
   confirmLabel = "XÓA",
   pendingLabel = "ĐANG XÓA...",
-}: DeleteConfirmDialogProps) {
+}: Readonly<DeleteConfirmDialogProps>) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>

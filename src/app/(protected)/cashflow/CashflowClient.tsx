@@ -26,7 +26,12 @@ interface Props {
   cashFlow: HouseholdCashFlow | null;
 }
 
-export function CashflowClient({ year, month, existing, cashFlow }: Props) {
+export function CashflowClient({
+  year,
+  month,
+  existing,
+  cashFlow,
+}: Readonly<Props>) {
   const [isPending, startTransition] = useTransition();
   const [isNavigating, startNavTransition] = useTransition();
   const router = useRouter();

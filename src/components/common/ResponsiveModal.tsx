@@ -18,7 +18,7 @@ export function ResponsiveModal({
   onOpenChange,
   title,
   children,
-}: ResponsiveModalProps) {
+}: Readonly<ResponsiveModalProps>) {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   if (isDesktop) {

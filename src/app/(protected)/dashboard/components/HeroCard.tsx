@@ -15,7 +15,7 @@ interface HeroCardProps {
   goal: HeroGoal | null;
 }
 
-export function HeroCard({ netWorth, goal }: HeroCardProps) {
+export function HeroCard({ netWorth, goal }: Readonly<HeroCardProps>) {
   const compactNetWorth = new Intl.NumberFormat("vi-VN", {
     notation: "compact",
     maximumSignificantDigits: 3,

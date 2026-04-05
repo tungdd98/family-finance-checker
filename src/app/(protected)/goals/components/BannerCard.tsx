@@ -5,7 +5,10 @@ interface Props {
   avgMonthlySurplus: number | null;
 }
 
-export function BannerCard({ currentAssets, avgMonthlySurplus }: Props) {
+export function BannerCard({
+  currentAssets,
+  avgMonthlySurplus,
+}: Readonly<Props>) {
   return (
     <div className="to-surface border border-[#3a3010] bg-gradient-to-br from-[#1c1800] p-4">
       <p className="type-card-label text-accent mb-3">Tổng quan tài chính</p>

@@ -14,7 +14,7 @@ export function CoinList({
   searchQuery,
   onSearchChange,
   isLoading,
-}: Props) {
+}: Readonly<Props>) {
   const filtered = filterCoins(coins, searchQuery);
 
   return (

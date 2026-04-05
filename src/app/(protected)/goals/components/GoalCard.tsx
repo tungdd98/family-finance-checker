@@ -30,7 +30,7 @@ export function GoalCard({
   currentYear,
   currentMonth,
   onLogMonth,
-}: Props) {
+}: Readonly<Props>) {
   const { progressPct, remaining, monthsToGoal, estimatedDate, currentAssets } =
     projection;
 

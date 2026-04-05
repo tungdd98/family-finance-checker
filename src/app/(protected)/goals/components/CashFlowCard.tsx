@@ -6,7 +6,7 @@ interface Props {
   onEdit: () => void;
 }
 
-export function CashFlowCard({ cashFlow, onEdit }: Props) {
+export function CashFlowCard({ cashFlow, onEdit }: Readonly<Props>) {
   const surplus = cashFlow
     ? cashFlow.avg_monthly_income - cashFlow.avg_monthly_expense
     : null;

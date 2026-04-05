@@ -27,7 +27,7 @@ export function ExpenseTab({
   isPending,
   newExpenseIndex,
   expenseDisplay,
-}: ExpenseTabProps) {
+}: Readonly<ExpenseTabProps>) {
   return (
     <div className="flex flex-col gap-5">
       <div className="bg-accent/5 border-accent/20 mb-1 flex items-center justify-between border p-4">
@@ -77,13 +77,13 @@ function ExpenseRow({
   remove,
   isPending,
   initiallyExpanded = false,
-}: {
+}: Readonly<{
   index: number;
   form: UseFormReturn<MonthlyActualInput>;
   remove: (index: number) => void;
   isPending: boolean;
   initiallyExpanded?: boolean;
-}) {
+}>) {
   const [isExpanded, setIsExpanded] = useState(initiallyExpanded);
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
   const amountRef = useRef<HTMLInputElement>(null);

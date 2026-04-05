@@ -16,7 +16,7 @@ export function ResponsiveActionMenu({
   open,
   onOpenChange,
   children,
-}: ResponsiveActionMenuProps) {
+}: Readonly<ResponsiveActionMenuProps>) {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   if (isDesktop) {

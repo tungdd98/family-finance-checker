@@ -21,7 +21,7 @@ interface AllocationTabProps {
   allocations: MonthlyActualInput["allocations"];
 }
 
-function FieldLabel({ children }: { children: ReactNode }) {
+function FieldLabel({ children }: Readonly<{ children: ReactNode }>) {
   return <span className="type-card-label">{children}</span>;
 }
 
@@ -34,7 +34,7 @@ export function AllocationTab({
   surplus,
   delta,
   allocations,
-}: AllocationTabProps) {
+}: Readonly<AllocationTabProps>) {
   const totalAllocated = allocations.reduce(
     (sum, item) => sum + (Number(item.amount) || 0),
     0
@@ -125,13 +125,13 @@ function AllocationRow({
   remove,
   fieldAvailable,
   isPending,
-}: {
+}: Readonly<{
   index: number;
   form: UseFormReturn<MonthlyActualInput>;
   remove: (index: number) => void;
   fieldAvailable: number;
   isPending: boolean;
-}) {
+}>) {
   const currentAmount = form.watch(`allocations.${index}.amount` as const);
   const is_executed = form.watch(`allocations.${index}.is_executed` as const);
 

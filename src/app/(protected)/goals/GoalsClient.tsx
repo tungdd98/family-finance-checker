@@ -33,7 +33,7 @@ export function GoalsClient({
   currentAssets,
   currentYear,
   currentMonth,
-}: Props) {
+}: Readonly<Props>) {
   const router = useRouter();
   const [openSheet, setOpenSheet] = useState<"goal" | "cashflow" | null>(null);
 

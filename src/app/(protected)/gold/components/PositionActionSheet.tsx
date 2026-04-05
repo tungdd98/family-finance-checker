@@ -22,7 +22,7 @@ export function PositionActionSheet({
   onEdit,
   onSell,
   onDelete,
-}: Props) {
+}: Readonly<Props>) {
   const remaining = position ? position.quantity - position.sold_quantity : 0;
 
   return (
@@ -75,12 +75,12 @@ function ActionItem({
   label,
   destructive = false,
   onClick,
-}: {
+}: Readonly<{
   icon: ReactNode;
   label: string;
   destructive?: boolean;
   onClick: () => void;
-}) {
+}>) {
   return (
     <button
       onClick={onClick}

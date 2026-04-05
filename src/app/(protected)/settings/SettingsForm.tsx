@@ -19,7 +19,7 @@ interface Props {
   displayName: string;
 }
 
-export function SettingsForm({ initialData, displayName }: Props) {
+export function SettingsForm({ initialData, displayName }: Readonly<Props>) {
   const [isPending, startTransition] = useTransition();
   const [amountDisplay, setAmountDisplay] = useState(
     formatVND(initialData.initial_cash_balance)

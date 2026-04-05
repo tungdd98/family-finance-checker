@@ -18,7 +18,7 @@ interface Props {
   initialAccounts: SavingsAccount[];
 }
 
-export function SavingsClient({ initialAccounts }: Props) {
+export function SavingsClient({ initialAccounts }: Readonly<Props>) {
   const [activeSheet, setActiveSheet] = useState<
     "add" | "edit" | "delete" | "action" | null
   >(null);

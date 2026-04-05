@@ -44,11 +44,11 @@ function DetailRow({
   label,
   value,
   valueClass = "text-foreground",
-}: {
+}: Readonly<{
   label: string;
   value: string;
   valueClass?: string;
-}) {
+}>) {
   return (
     <div className="flex items-center justify-between">
       <span className="text-foreground-muted text-xs">{label}</span>
@@ -57,7 +57,7 @@ function DetailRow({
   );
 }
 
-export function SavingsCard({ account, onTap }: Props) {
+export function SavingsCard({ account, onTap }: Readonly<Props>) {
   const displayStatus = getSavingsDisplayStatus(account);
   const statusCfg = STATUS_CONFIG[displayStatus];
   const accrued = calcAccruedInterest(account);
